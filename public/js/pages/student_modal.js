@@ -59,3 +59,4 @@ $("#nestedForm").on("click", ".removeEdu", function() { $(this).parent().parent(
 
 $(".next").click(function() { $('#tabList li.active').next('li').find('a').trigger('click') });
 $(".previous").click(function() { $('#tabList li.active').prev('li').find('a').trigger('click') });
+
