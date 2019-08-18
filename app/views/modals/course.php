@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <div class="modal fade" id="addProgram" tabindex="-1" role="dialog" aria-hidden="true">
+=======
+<div class="modal fade" id="addCourse" tabindex="-1" role="dialog" aria-hidden="true">
+>>>>>>> 299c7e3f9b3531108abdfe989fbd75fc4b785f90
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,9 +18,15 @@
                     </div>
                     <div class="form-group" style="margin-top:20px; font-size:16px;">
                         <label class="text-primary">Course Type</label>
+<<<<<<< HEAD
                         <select name="coursetype" id="coursetype" class="form-control">
                             <option value="semster">Semester</option>
                             <option value="year">Year</option>
+=======
+                        <select name="coursetype" id="coursetype">
+                            <option value="semster">Semester</option>
+                            <option value="year">year</option>
+>>>>>>> 299c7e3f9b3531108abdfe989fbd75fc4b785f90
                         </select>
                     </div>
                     <div class="form-group" style="margin-top:20px; font-size:16px;">

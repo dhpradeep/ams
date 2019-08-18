@@ -15,7 +15,10 @@
     <link href="<?= CSS_DIR ?>/timeline.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?= CSS_DIR ?>/sb-admin-2.css" rel="stylesheet">
+<<<<<<< HEAD
     <link href="<?= CSS_DIR ?>/course.css" rel="stylesheet">
+=======
+>>>>>>> 299c7e3f9b3531108abdfe989fbd75fc4b785f90
     <!-- Morris Charts CSS -->
     <link href="<?= BOWER_DIR ?>/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom Fonts -->
@@ -138,6 +141,9 @@
     <!-- Custom Theme JavaScript -->
     <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
     <script src="<?= JS_DIR ?>/pages/course.js" type="text/javascript"></script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 299c7e3f9b3531108abdfe989fbd75fc4b785f90
 </body>
 </html>

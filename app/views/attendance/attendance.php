@@ -111,7 +111,10 @@
     </div>
 </div>
 </div>
-<!-- /#wrapper -->
+<!-- /#wrapper ->
+
+            <!-- modals -->
+            <?php include(MODALS_DIR.DS.'course.php'); ?>
      <!-- jQuery -->
      <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
