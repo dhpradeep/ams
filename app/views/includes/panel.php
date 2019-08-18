@@ -11,7 +11,7 @@
                 <a href="#students"><i class="fa fa-table fa-fw"></i> Attandance<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#">Attandance system</a>
+                    <a href="<?= SITE_URL.DS.'attendance'.DS ?>attendance">Take Attendance</a>
                     </li>
                 </ul>
             </li>
@@ -19,7 +19,7 @@
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Manage<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#">Manage Course</a>
+                    <a href="<?= SITE_URL.DS.'course'.DS ?>course"> Manage Courses</a>
                     </li>
                     <li>
                         <a href="#1">Manage Students</a>
