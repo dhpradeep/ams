@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -15,10 +14,6 @@
     <link href="<?= CSS_DIR ?>/timeline.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?= CSS_DIR ?>/sb-admin-2.css" rel="stylesheet">
-<<<<<<< HEAD
-    <link href="<?= CSS_DIR ?>/course.css" rel="stylesheet">
-=======
->>>>>>> 299c7e3f9b3531108abdfe989fbd75fc4b785f90
     <!-- Morris Charts CSS -->
     <link href="<?= BOWER_DIR ?>/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom Fonts -->
@@ -36,14 +31,14 @@
                 <div id="page-wrapper">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h2 class="page-header">All Programs</h2>
+                            <h2 class="page-header">All Course</h2>
                             <ol class="breadcrumb">
                                 <li>
                                     <i class="fa fa-dashboard"></i>
                                     <a href="<?= SITE_URL.DS.'home'.DS ?>dashboard">Dashboard</a>
                                 </li>
                                 <li class="active">
-                                    Program
+                                    Course
                                 </li>
                             </ol>
                         </div>
@@ -54,8 +49,8 @@
                         <div class="col-lg-12">
                             <div class="form-inline form-padding">
                                 <form id="frmSearch" role="form">
-                                    <a onclick="create_course()" class="btn btn-primary">Add Courses</a>
-                                    <a  class="btn btn-info">Refresh</a>
+                                    <a onclick="create_course()" class="btn btn-primary">Add Course</a>
+                                    <a class="btn btn-info">Refresh</a>
                                 </form>
                             </div>
                             <br>
@@ -141,9 +136,5 @@
     <!-- Custom Theme JavaScript -->
     <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
     <script src="<?= JS_DIR ?>/pages/course.js" type="text/javascript"></script>
-<<<<<<< HEAD
-
-=======
->>>>>>> 299c7e3f9b3531108abdfe989fbd75fc4b785f90
 </body>
 </html>
