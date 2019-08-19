@@ -8,10 +8,10 @@
                 <a href="<?= SITE_URL.DS.'home'.DS ?>dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
             <li>
-                <a href="#students"><i class="fa fa-table fa-fw"></i> Attandance<span class="fa arrow"></span></a>
+                <a href="#students"><i class="fa fa-table fa-fw"></i> Attendance<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#">Attandance system</a>
+                        <a href="#">Attendance system</a>
                     </li>
                 </ul>
             </li>
@@ -19,16 +19,21 @@
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Manage<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#">Manage Course</a>
+                        <a href="<?= SITE_URL.DS.'manage'.DS ?>program">Manage Programs</a>
                     </li>
                     <li>
-                        <a href="#1">Manage Students</a>
-                    </li>
-                    <li>
-                        <a href="<?= SITE_URL.DS.'question'.DS ?>all">Manage Questions</a>
+                    <a href="<?= SITE_URL.DS.'manage'.DS ?>subject">Manage Subjects</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#students"><i class="fa fa-table fa-fw"></i> Students<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="<?= SITE_URL.DS.'student'.DS ?>all">Manage Students</a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Settings<span class="fa arrow"></span></a>

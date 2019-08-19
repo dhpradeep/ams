@@ -2,14 +2,12 @@ jQuery.fn.CKEditorValFor = function(element_id) {
     return CKEDITOR.instances[element_id].getData();
 }
 
-$('#addProgram').on('hidden.bs.modal', function(e) {
-    resetFields();
-});
+function create_subject(data = null) {
+    $('#addSubject').modal('show');
+}
 
-$(document).ready(function() {
-    CKEDITOR.replace('welcome');
-    CKEDITOR.replace('thanks');
-    refresh();
+$('#addSubject').on('hidden.bs.modal', function(e) {
+    resetFields();
 });
 
 function sleep(time) {
@@ -39,6 +37,6 @@ function refresh() {
 
 
 function getAllData() {
-    $("#programTable").dataTable().fnDestroy();
+    $("#subjectTable").dataTable().fnDestroy();
     return;
 }
