@@ -57,11 +57,6 @@
                         <option value="bph">BPH</option>
                         <option value="bba">BBA</option>
                     </select>
-                    <select name="coursetype" id="coursetype" class="form-control">
-                        <option value="type">Choose Program Type</option>
-                        <option value="semester">Semester</option>
-                        <option value="year">Year</option>
-                    </select>
                     <select name="subject" id="subject" class="form-control">
                         <option value="type">Choose Subject</option>
                         <option value="dsa">DSA</option>
