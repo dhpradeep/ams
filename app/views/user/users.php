@@ -52,6 +52,14 @@
                         <form id="frmSearch" role="form">
                             <a onclick="create_user()" class="btn btn-primary">Add User</a>
                             <a onclick="refresh()" class="btn btn-info">Refresh</a>
+                            <div class="input-group"> <span class="input-group-addon">Filter by Role: </span>
+                                <select class="form-control" id="filterData" name="filterResult">
+                                    <option value="0" name="None"> None </option>
+                                    <option value="1" name="None"> Admin </option>
+                                    <option value="2" name="None"> Teacher </option>
+                                    <option value="3" name="None"> Student </option>
+                                </select>
+                            </div>
                         </form>
                     </div>
                     <br>

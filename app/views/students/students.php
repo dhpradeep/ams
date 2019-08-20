@@ -9,13 +9,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?= WEBSITE_TITLE ?> | Model</title>
+    <title><?= WEBSITE_TITLE ?> | Students</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?= BOWER_DIR ?>/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
     <link href="<?= BOWER_DIR ?>/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="<?= BOWER_DIR ?>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="<?= BOWER_DIR ?>/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
 
     <!-- Bootstrap Core CSS -->
     <link href="<?= BOWER_DIR ?>/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" rel="stylesheet">
@@ -26,7 +32,22 @@
 
     <!-- Custom Fonts -->
     <link href="<?= BOWER_DIR ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    <style type="text/css">
+        td.details-control {
+            background: url('<?= IMAGE_DIR ?>/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+        tr.shown td.details-control {
+            background: url('<?= IMAGE_DIR ?>//details_close.png') no-repeat center center;
+        }
+        .choices {
+            padding: 5px 20px;
+            font-weight: bold;
+        }
+        .answers {
+            padding: 5px 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -39,14 +60,14 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2 class="page-header">All Subjects</h2>
+                    <h2 class="page-header">Students</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <i class="fa fa-dashboard"></i>
+                            <i class="fa fa-dashboard"></i> 
                             <a href="<?= SITE_URL.DS.'home'.DS ?>dashboard">Dashboard</a>
                         </li>
                         <li class="active">
-                            Subjects
+                            Students
                         </li>
                     </ol>
                 </div>
@@ -57,7 +78,7 @@
                 <div class="col-lg-12">
                     <div class="form-inline form-padding">
                         <form id="frmSearch" role="form">
-                            <a onclick="create_subject()" class="btn btn-primary">Add Subject</a>
+                            <a onclick="create_student()" class="btn btn-primary">Add Student</a>
                             <a onclick="refresh()" class="btn btn-info">Refresh</a>
                             <div class="input-group"> <span class="input-group-addon">Program: </span>
                                 <select class="form-control" id="filterData" name="filterResult" style="width: 100px">
@@ -76,67 +97,52 @@
                                     <option value="4" name="None"> 4th </option>
                                 </select>
                             </div>
+                            <a onclick="getAllData(2)" class="btn btn-success" style="float:right">Export to excel</a>
                         </form>
                     </div>
                     <br>
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            List of Subjects
+                            List of Students
                         </div>
+                        <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                              <table id="subjectTable" class="table table-bordered table-striped paginated tablesorter">
-                                  <thead>
-                                      <tr role="row">
-                                            <th >
-                                                Subject Name
-                                            </th>
-                                            <th>
-                                                Program Name
-                                            </th>
-                                            <th>
-                                                Semester/Year
-                                            </th>
-                                            <th>
-                                                Assign Teacher
-                                            </th>
-                                            <th>
-                                              Section
-                                            </th>
-                                            <th style="min-width: 150px">Action</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                        <tr role="row">
-                                            <td>Math</td>
-                                            <td title="Diploma In hotel Management">Diploma In hotel Management</td>
-                                            <td>3rd semester</td>
-                                            <td>Raju Lamsal</td>
-                                            <td>Morning</td>
-                                            <td style="min-width: 150px">
-                                                <a data-id="1" class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i></a>
-                                                <a data-id="1" class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>
-                                            </td>
+                                <table class="table table-striped table-bordered table-hover paginated tablesorter" id="studentTable">
+                                    <thead>
+                                        <tr>
+                                            <th style="min-width: 60px">Details</th>
+                                            <th>Fullname</th>
+                                            <th>Entrance No</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th style="min-width: 30px">Action</th>
                                         </tr>
-                                  </tbody>
-                              </table>
+                                    </thead>
+                                    <tbody class="searchable">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+                        <!-- /.panel-body -->
                     </div>
+                    <!-- /.panel -->
                 </div>
+                <!-- /.col-lg-12 -->
             </div>
+            <!-- /.row -->
         </div>
+        <!-- /#page-wrapper -->
 
-    </div>
-    <!-- /#wrapper -->
+        <div id="mytable"></div>
 
-     <!-- modals -->
-     <?php include(MODALS_DIR.DS.'subject.php'); ?>
+        <!-- modals -->
+     <?php include(MODALS_DIR.DS.'student.php'); ?>
 
     <!-- jQuery -->
     <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>
 
-     <!-- jQuery tablesorter-->
+    <!-- jQuery tablesorter-->
     <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.js"></script>
     <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.widgets.js"></script>
 
@@ -146,12 +152,9 @@
     <!-- Metis Menu Plugin JavaScript -->
     <script src="<?= BOWER_DIR ?>/metisMenu/dist/metisMenu.min.js"></script>
 
-     <!-- DataTables JavaScript -->
+    <!-- DataTables JavaScript -->
     <script src="<?= BOWER_DIR ?>/datatables/media/js/jquery.dataTables.min.js"></script>
     <script src="<?= BOWER_DIR ?>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
-
-    <!-- ckeditor -->
-    <script src="<?= BOWER_DIR ?>/ckeditor/ckeditor.js"></script>
 
     <!-- Notify -->
     <script src="<?= BOWER_DIR ?>/notifyjs/dist/notify.js"></script>
@@ -159,11 +162,16 @@
     
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= BOWER_DIR ?>/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+
     <!-- spinJS -->
     <script src="<?= BOWER_DIR ?>/spin.js/spin.js"></script>
+
     <!-- Custom Theme JavaScript -->
-    <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
-    <script src="<?= JS_DIR ?>/pages/subject.js" type="text/javascript"></script>
+    <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>    
+    <script src="<?= JS_DIR ?>/pages/student_modal.js"></script>
+    <script src="<?= JS_DIR ?>/pages/student.js?v=1"></script>
+
+
 </body>
 
 </html>

@@ -4,34 +4,39 @@
             <div class="modal-header">
                 <h3>Manage Subject</h3>
             </div>
-            <div class="modal-body">
+            <div class="modal-body col-md-12">
                 <form role="form">
-                    <div class="form-group">
-                        <label class="control-label" for="name">Program Name *</label>
+                    <div class="form-group col-md-6">
+                        <label class="control-label" for="name">Subject Name *</label>
                         <input type="text" class="form-control" id="name" name="name" required>
                         <span class="help-inline"></span>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label" for="programId">Program ID *</label>
-                        <input type="text" class="form-control" id="programId" name="programId" required>
+                    <div class="form-group col-md-6">
+                        <label class="control-label" for="programId">Program *</label>
+                        <select class="form-control" id="programId" name="programId" required>
+                            <option value="1" name="diploma">Diploma in Hotel Management</option>
+                            <option value="2" name="pcl">PCL</option>
+                            <option value="3" name="tsl">TSL</option>
+                        </select>
                         <span class="help-inline"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
+                        <label class="control-label" for="userId">Assign Teacher *</label>
+                        <select class="form-control" id="userId" name="userId" required>
+                            <option value="1" name="raju">Raju Lamsal</option>
+                            <option value="2" name="arjun">Arjun Subedi</option>
+                            <option value="3" name="prabhu">Prabhu Gurung</option>
+                        </select>
+                        <span class="help-inline"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label" for="section">Section</label>
+                        <input type="text" class="form-control" id="section" name="section">
+                        <span class="help-inline"></span>
+                    </div>
+                    <div class="form-group col-md-12">
                         <label class="control-label" for="details">Details</label>
-                        <textarea name="details" class="form-control" id="details" required></textarea>
-                    </div>
-                    <div class="form-group col col-sm-12">
-                        <div class="col col-sm-6">
-                            <input type="radio" name="yearOrSemester"> Year
-                        </div>
-                        <div class="col col-sm-6">
-                            <input type="radio" name="yearOrSemester"> Semester
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="noOfYearOrSemester"> No of Year/Semester *</label>
-                        <input type="text" class="form-control" id="noOfYearOrSemester" name="noOfYearOrSemester" required>
-                        <span class="help-inline"></span>
+                        <textarea name="details" class="form-control" id="details" rows="3"></textarea>
                     </div>
                 </form>
             </div>

@@ -51,22 +51,11 @@
                 <a href="#"><i class="fa fa-files-o fa-fw"></i> Reports<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="<?= SITE_URL?>/test/result">View Result</a>
+                        <a href="<?= SITE_URL?>/report">View report</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-        <!-- Student session -->
-         <!--   <li>
-                <a href="#"><i class="fa fa-check fa-fw"></i> Test<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<?= SITE_URL?>/test">Take Test</a>
-                    </li>
-                </ul>
-            </li>-->
-        <!-- end of student session -->
-        
         </ul>
     </div>
     <!-- /.sidebar-collapse -->
