@@ -11,7 +11,7 @@
                 <a href="#students"><i class="fa fa-table fa-fw"></i> Attendance<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                     <a href="#">Attendance system</a>
+                     <a href="<?= SITE_URL.DS.'attendance'.DS ?>attendance">Attendance System</a>
                     </li>
                 </ul>
             </li>

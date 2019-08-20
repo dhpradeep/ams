@@ -15,6 +15,7 @@
     <link href="<?= CSS_DIR ?>/timeline.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?= CSS_DIR ?>/sb-admin-2.css" rel="stylesheet">
+    <link href="<?= CSS_DIR ?>/style.css" rel="stylesheet">
     <!-- Morris Charts CSS -->
     <link href="<?= BOWER_DIR ?>/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom Fonts -->
@@ -47,17 +48,17 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
-            <div class="form-inline form-padding">
-                <form id="frmSearch" role="form">
+            <div class=" form-padding">
+                <form id="frmSearch" role="form" class="form-inline">
                     <input type="date" name="currentdate" id="currentdate" class="form-control"/>
                     <select name="course" id="course" class="form-control">
-                        <option value="select">Choose Course</option>
+                        <option value="select">Choose Program</option>
                         <option value="bca">BCA</option>
                         <option value="bph">BPH</option>
                         <option value="bba">BBA</option>
                     </select>
                     <select name="coursetype" id="coursetype" class="form-control">
-                        <option value="type">Choose Course Type</option>
+                        <option value="type">Choose Program Type</option>
                         <option value="semester">Semester</option>
                         <option value="year">Year</option>
                     </select>
@@ -69,39 +70,53 @@
                 </form>
             </div>
             <br>
-            <div class="panel panel-primary">
+            <!-- <div class="panel panel-primary">
                 <div class="panel-heading">
                     List of Students
                 </div>
-                <div class="panel-body">
-                    <div class="dataTable_wrapper">
-                      <table id="Table" class="table table-bordered table-striped paginated tablesorter">
-                          <thead>
-                              <tr role="row">
-                                    <th >
-                                        Students Name
-                                    </th>
-                                    <th>
-                                        Present/Absent
-                                    </th>
-                              </tr>
-                          </thead>
+                <div class="panel-body"> -->
+                  <h3 class="text-center text-primary">List of Students</h3>
+                    <div class="dataTable_wrapper attTable">
+                      <table class="table">
+                        <thead>
                           <tr>
-                              <td>Raju Lamsal</td>
-                              <td><input type="checkbox" name="name1"/></td>
+                            <th scope="col">Roll No</th>
+                            <th scope="col">Full Name</th>
+                            <th scope="col">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>1</td>
+                            <td>Raju Lamsal</td>
+                            <td>
+                              <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                              </label>
+                            </td>
                           </tr>
                           <tr>
-                              <td>Arjun Subedi</td>
-                              <td><input type="checkbox" name="name1" /></td>
+                            <td>2</td>
+                            <td>Pradip Dhakal</td>
+                            <td>
+                              <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                              </label>
+                            </td>
                           </tr>
                           <tr>
-                              <td>Pravhu Gurung</td>
-                              <td><input type="checkbox" name="name1" /></td>
+                            <td>3</td>
+                            <td>Arzun Subedi</td>
+                            <td>
+                              <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                              </label>
+                            </td>
                           </tr>
-                          <tr>
-                              <td>Pradeep Poudel</td>
-                              <td><input type="checkbox" name="name1" /></td>
-                          </tr>
+                        </tbody>
                       </table>
                       <button type="submit" class="btn btn-primary pull-right">Submit</button>
                     </div>
@@ -109,8 +124,6 @@
             </div>
         </div>
     </div>
-</div>
-</div>
 <!-- /#wrapper ->
 
             <!-- modals -->
