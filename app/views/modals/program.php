@@ -18,10 +18,10 @@
                     </div>
                     <div class="form-group col-sm-12">
                         <div class="col-sm-6">
-                            <input type="radio" name="yearOrSemester"> Year
+                            <input type="radio" name="yearOrSemester" id="yearOrSemester"> Year
                         </div>
                         <div class="col-sm-6">
-                            <input type="radio" name="yearOrSemester"> Semester
+                            <input type="radio" name="yearOrSemester" id="yearOrSemester"> Semester
                         </div>
                     </div>
                     <div class="form-group col-sm-12">
