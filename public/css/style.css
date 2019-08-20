@@ -1,29 +1,9 @@
-.timer {
-    display: inline-block;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    background: rgb(71, 196, 71);
-    position: fixed;
-    top: 10%;
-    right: 5%;
-}
-
-.time {
-    font-size: 20px;
-    color: rgb(252, 252, 252);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: center;
-    position: relative;
-    top: 30%;
-    font-weight: bolder;
-}
-
 .sticky {
     position: fixed;
     top: 0;
     width: 100%;
 }
-#page-wrapper{
+
+#page-wrapper {
     margin-top: 20px;
 }

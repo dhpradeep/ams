@@ -22,6 +22,7 @@
 
     <!-- Custom CSS -->
     <link href="<?= CSS_DIR ?>/sb-admin-2.css" rel="stylesheet">
+    <link href="<?= CSS_DIR ?>/style.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="<?= BOWER_DIR ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -77,9 +78,26 @@
                                                 Total Year/Semester
                                             </th>
                                             <th>
-                                                Remarks
+                                                Details
                                             </th>
                                             <th style="min-width: 150px">Action</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr role="row">
+                                            <td>
+                                                Diploma In hotem Management
+                                            </td>
+                                            <td>
+                                                6 semester
+                                            </td>
+                                            <td>
+                                                Total 6 semesters 3 years.
+                                            </td>
+                                            <td style="min-width: 150px">
+                                                <a data-id="1" class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i></a>
+                                                <a data-id="1" class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>
+                                            </td>
                                       </tr>
                                   </thead>
                               </table>
@@ -126,7 +144,7 @@
     <script src="<?= BOWER_DIR ?>/spin.js/spin.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
-    <script src="<?= JS_DIR ?>/pages/program.js" type="text/javascript"></script>
+    <script src="<?= JS_DIR ?>/pages/program.js?v=1" type="text/javascript"></script>
 </body>
 
 </html>
