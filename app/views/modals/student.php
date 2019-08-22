@@ -95,9 +95,6 @@
                                 <input type="text" class="form-control" name="lname" id="lname" placeholder="Last Name" />
                                 <span class="help-inline"></span>
                             </div>
-                            <div class="form-group col-md-12 text-right">
-                                    <a href="#" class="btn btn-primary next">Next</a>
-                            </div>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="details">
@@ -112,6 +109,11 @@
                                          } 
                                     ?>
                                 </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="section">Section *</label>
+                                <input type="text" class="form-control" name="section" id="section" placeholder="Section" />
+                                <span class="help-inline"></span>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="doa">Date of Application (A.D) *</label>
@@ -141,51 +143,39 @@
                                 <input type="text" class="form-control" name="fatherName" id="fatherName" placeholder="Father's Name" />
                                 <span class="help-inline"></span>
                             </div>
-                            <div class="form-group col-sm-6 text-left">
-                                    <a href="#" class="btn btn-primary previous">Previous</a>
-                            </div>
-                            <div class="form-group col-sm-6 text-right">
-                                    <a href="#" class="btn btn-primary next">Next</a>
-                            </div>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="education">
                         <div class="form-group col-md-3">
-                            <label for="level i + '">Level *</label>
-                            <select class="form-control" name="level" id="level i + '">
+                            <label for="level">Level *</label>
+                            <select class="form-control" name="level" id="level">
                                 <option value="1">SLC</option>
                             </select>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="board i + '">Board *</label>
-                            <input type="text" class="form-control" name="board i + '" id="board i + '" placeholder="Board" />
+                            <label for="board">Board *</label>
+                            <input type="text" class="form-control" name="board" id="board" placeholder="Board" />
                             <span class="help-inline"></span>
                         </div>
                         <div class="form-group col-md-5">
-                            <label for="faculty i + '">Faculty</label>
-                            <input type="text" class="form-control" name="faculty i + '" id="faculty i + '" placeholder="Faculty" />
+                            <label for="faculty">Faculty</label>
+                            <input type="text" class="form-control" name="faculty" id="faculty" placeholder="Faculty" />
                             <span class="help-inline"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="yearOfCompletion i + '">Y.O.C *</label>
-                            <input type="text" class="form-control" name="yearOfCompletion i + '" id="yearOfCompletion i + '" placeholder="Year of completion" />
+                            <label for="yearOfCompletion">Y.O.C *</label>
+                            <input type="text" class="form-control" name="yearOfCompletion" id="yearOfCompletion" placeholder="Year of completion" />
                             <span class="help-inline"></span>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="percent i + '">Percent/GPA *</label>
-                            <input type="text" class="form-control" name="percent i + '" id="percent i + '" placeholder="Percent/GPA" />
+                            <label for="percent">Percent/GPA *</label>
+                            <input type="text" class="form-control" name="percent" id="percent" placeholder="Percent/GPA" />
                             <span class="help-inline"></span>
                         </div>
                         <div class="form-group col-md-5">
-                            <label for="institution i + '">Institute *</label>
-                            <input type="text" class="form-control" name="institution i + '" id="institution i + '" placeholder="Institute" />
+                            <label for="institution">Institute *</label>
+                            <input type="text" class="form-control" name="institution" id="institution" placeholder="Institute" />
                             <span class="help-inline"></span>
-                        </div>
-                        <div class="form-group col-sm-6 text-left">
-                            <a href="#" class="btn btn-primary previous">Previous</a>
-                        </div>
-                        <div class="form-group col-sm-6 text-right">
-                            <a href="#" class="btn btn-primary next">Next</a>
                         </div>
                     </div>
 
@@ -250,21 +240,22 @@
                                 <input type="text" class="form-control" name="guardianContact" id="guardianContact" placeholder="Gurdian Contact" />
                                 <span class="help-inline"></span>
                             </div>
-                            <div class="form-group col-sm-6 text-left">
-                                    <a href="#" class="btn btn-primary previous">Previous</a>
-                            </div>
+                            <div class="col-sm-6">&nbsp;</div>
                             <div class="form-group col-6 col-sm-6 text-right">
-                                    <a id="saveBtn" href="#" class="btn btn-success">Add</a>
-                                    <button class="btn btn-warning" data-dismiss="modal">Close</button>
+                                <a id="saveBtn" href="#" class="btn btn-success">Add</a>
+                                <button class="btn btn-warning" data-dismiss="modal">Close</button>
                             </div>
                     </div>
                 </div>
             </div>
             </div>
             <div class="modal-footer">
-                <!-- <button type="submit" class="btn btn-primary" id="saveBtn">Add</button>
-                <button type="reset" class="btn btn-warning">Reset</button>
-                <button class="btn btn-default" data-dismiss="modal">Close</button> -->
+                <div class="form-group col-sm-6 text-left">
+                    <a href="#" class="btn btn-primary previous">Previous</a>
+                </div>
+                <div class="form-group col col-sm-6 text-right">
+                    <a href="#" class="btn btn-primary next">Next</a>
+                </div>
             </div>
         </div>
     </div>

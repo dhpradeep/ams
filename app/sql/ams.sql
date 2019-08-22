@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 18, 2019 at 11:07 PM
+-- Generation Time: Aug 22, 2019 at 07:04 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.1.30
 
@@ -52,33 +52,9 @@ CREATE TABLE `contactdetails` (
   `zone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `mobileNo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `telephoneNo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `blockNo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `guardianName` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `guardianRelation` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `guardianContact` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `documents`
---
-
-CREATE TABLE `documents` (
-  `id` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `formNo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `entranceNo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `eligible` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false',
-  `remarks` varchar(1200) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `marksheet_see` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false',
-  `marksheet_11` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false',
-  `marksheet_12` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false',
-  `transcript` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false',
-  `characterCertificate_see` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false',
-  `characterCertificate_12` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false',
-  `citizenship` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false',
-  `photo` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -114,7 +90,9 @@ CREATE TABLE `personaldata` (
   `dobBs` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `gender` tinyint(11) NOT NULL,
   `nationality` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Nepali',
-  `fatherName` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `fatherName` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `semester` tinyint(11) NOT NULL,
+  `section` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -145,7 +123,8 @@ CREATE TABLE `subjects` (
   `semesterOrYear` tinyint(4) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `creditHr` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `details` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+  `details` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `section` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -166,6 +145,13 @@ CREATE TABLE `userlogin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
+-- Dumping data for table `userlogin`
+--
+
+INSERT INTO `userlogin` (`id`, `username`, `fname`, `mname`, `lname`, `email`, `passwordHash`, `role`) VALUES
+(60, 'admin', 'Pradip', NULL, 'Dhakal', 'dhpradeep25@gmail.com', '7488e331b8b64e5794da3fa4eb10ad5d', 1);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -179,12 +165,6 @@ ALTER TABLE `attendance`
 -- Indexes for table `contactdetails`
 --
 ALTER TABLE `contactdetails`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `documents`
---
-ALTER TABLE `documents`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -234,12 +214,6 @@ ALTER TABLE `contactdetails`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT for table `documents`
---
-ALTER TABLE `documents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
 -- AUTO_INCREMENT for table `education`
 --
 ALTER TABLE `education`
@@ -267,7 +241,7 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT for table `userlogin`
 --
 ALTER TABLE `userlogin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'userID for others', AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'userID for others', AUTO_INCREMENT=61;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
