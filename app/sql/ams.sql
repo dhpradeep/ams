@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 22, 2019 at 07:04 PM
+-- Generation Time: Aug 22, 2019 at 09:03 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.1.30
 
@@ -113,6 +113,21 @@ CREATE TABLE `program` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `section`
+--
+
+CREATE TABLE `section` (
+  `id` int(11) NOT NULL,
+  `programId` int(11) NOT NULL,
+  `subjectId` int(11) NOT NULL,
+  `semesterOrYear` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `details` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `subjects`
 --
 
@@ -186,6 +201,12 @@ ALTER TABLE `program`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `section`
+--
+ALTER TABLE `section`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `subjects`
 --
 ALTER TABLE `subjects`
@@ -229,6 +250,12 @@ ALTER TABLE `personaldata`
 -- AUTO_INCREMENT for table `program`
 --
 ALTER TABLE `program`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `section`
+--
+ALTER TABLE `section`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

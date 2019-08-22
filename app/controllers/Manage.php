@@ -19,6 +19,11 @@ class Manage extends Controller {
 		$this->model->template = VIEWS_DIR.DS."manage".DS."subject.php";
 		$this->view->render();
 	}
+
+	public function section() {
+		$this->model->template = VIEWS_DIR.DS."manage".DS."section.php";
+		$this->view->render();
+	}
 }
 
 ?>

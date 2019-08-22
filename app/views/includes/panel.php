@@ -24,6 +24,9 @@
                     <li>
                     <a href="<?= SITE_URL.DS.'manage'.DS ?>subject">Manage Subjects</a>
                     </li>
+                    <li>
+                    <a href="<?= SITE_URL.DS.'manage'.DS ?>section">Manage Section</a>
+                    </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
