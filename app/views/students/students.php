@@ -92,7 +92,7 @@
                                     ?>
                                 </select>
                             </div>
-                            <div class="input-group"> <span class="input-group-addon">Semester: </span>
+                            <div class="input-group"> <span class="input-group-addon">Semester/Year: </span>
                                 <select class="form-control" id="filterDataSemester" name="filterResultSemester">
                                     <option value="-1" name="None"> None </option>
                                 </select>

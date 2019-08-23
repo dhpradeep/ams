@@ -109,7 +109,7 @@ class Manage extends Controller {
 
 			$columnToSort = $_POST["order"][0]["column"];
 
-			$columnToSort = (!isset($_POST["columns"][$columnToSort]["name"]) && $_POST["columns"][$columnToSort]["orderable"]) ? $_POST["columns"][$columnToSort]["name"] : "name" ;
+			$columnToSort = (isset($_POST["columns"][$columnToSort]["data"]) && ($_POST["columns"][$columnToSort]["orderable"]) == "true") ? $_POST["columns"][$columnToSort]["data"] : "name" ;
 			$columnToSort = Sanitize::escape($columnToSort);
 		}
 		if(isset($_POST["search"]["value"])) {
@@ -287,7 +287,7 @@ class Manage extends Controller {
 
 			$columnToSort = $_POST["order"][0]["column"];
 
-			$columnToSort = (!isset($_POST["columns"][$columnToSort]["name"]) && $_POST["columns"][$columnToSort]["orderable"]) ? $_POST["columns"][$columnToSort]["name"] : "name" ;
+			$columnToSort = (isset($_POST["columns"][$columnToSort]["data"]) && ($_POST["columns"][$columnToSort]["orderable"]) == "true") ? $_POST["columns"][$columnToSort]["data"] : "name" ;
 			$columnToSort = Sanitize::escape($columnToSort);
 		}
 		if(isset($_POST["search"]["value"])) {

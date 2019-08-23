@@ -478,6 +478,7 @@ class Student extends Controller {
 		}
 		if($result['status'] == 0 || $result['status'] == -1) {
 			$result['success'] = false;
+			$result['errors'] = $validate->errors();
 		} 
 		unset($_POST);
 		return print json_encode($result);	
