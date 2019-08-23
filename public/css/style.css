@@ -25,15 +25,15 @@
     color:#fff;  
 }
 .table th {
-    text-align: center;
+    text-align: left;
 }
+
 .table td {
     font-size: 14px;
-    color:#337ab7;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align: center;
+    text-align: left;
 }
 /*Inputs Css*/
 .switch {

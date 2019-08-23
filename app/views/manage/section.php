@@ -39,7 +39,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2 class="page-header">All Section</h2>
+                    <h2 class="page-header">All Sections</h2>
                     <ol class="breadcrumb">
                         <li>
                             <i class="fa fa-dashboard"></i>
@@ -90,7 +90,7 @@
                                                 Program
                                             </th>
                                             <th>
-                                                Semester
+                                                Year/Semester
                                             </th>
                                             <th>
                                                 Details

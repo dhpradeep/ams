@@ -81,20 +81,25 @@
                             <a onclick="create_student()" class="btn btn-primary">Add Student</a>
                             <a onclick="refresh()" class="btn btn-info">Refresh</a>
                             <div class="input-group"> <span class="input-group-addon">Program: </span>
-                                <select class="form-control" id="filterData" name="filterResult" style="width: 100px">
-                                    <option value="0" name="None"> None </option>
-                                    <option value="1" name="None">Diploma In Hotem Management</option>
-                                    <option value="2" name="None"> PCL </option>
-                                    <option value="3" name="None"> TSL </option>
+                                <select class="form-control" id="filterDataProgram" name="filterResultProgram" style="width: 100px">
+                                    <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
+                                    <?php
+                                        foreach ($this->program as $value) {
+                                    ?>
+                                            <option data-no='<?= $value['noOfYearOrSemester'] ?>' data-value='<?= $value['id'] ?>' value="<?= $value['id'] ?>" name="<?= $value['name'] ?>"><?= $value['name'] ?></option>
+                                    <?php
+                                         } 
+                                    ?>
                                 </select>
                             </div>
                             <div class="input-group"> <span class="input-group-addon">Semester: </span>
-                                <select class="form-control" id="filterData" name="filterResult">
-                                    <option value="0" name="None"> None </option>
-                                    <option value="1" name="None"> 1st </option>
-                                    <option value="2" name="None"> 2nd </option>
-                                    <option value="3" name="None"> 3rd </option>
-                                    <option value="4" name="None"> 4th </option>
+                                <select class="form-control" id="filterDataSemester" name="filterResultSemester">
+                                    <option value="-1" name="None"> None </option>
+                                </select>
+                            </div>
+                            <div class="input-group"> <span class="input-group-addon">Section: </span>
+                                <select class="form-control" id="filterDataSection" name="filterResultSection">
+                                    <option value="-1" name="None"> None </option>
                                 </select>
                             </div>
                             <a onclick="getAllData(2)" class="btn btn-success" style="float:right">Export to excel</a>
@@ -113,9 +118,9 @@
                                         <tr>
                                             <th style="min-width: 60px">Details</th>
                                             <th>Fullname</th>
-                                            <th>Entrance No</th>
-                                            <th>Username</th>
-                                            <th>Email</th>
+                                            <th>Program</th>
+                                            <th>Semester/Year</th>
+                                            <th>Section</th>
                                             <th style="min-width: 30px">Action</th>
                                         </tr>
                                     </thead>
@@ -167,8 +172,7 @@
     <script src="<?= BOWER_DIR ?>/spin.js/spin.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>    
-    <script src="<?= JS_DIR ?>/pages/student_modal.js"></script>
+    <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
     <script src="<?= JS_DIR ?>/pages/student.js?v=1"></script>
 
 

@@ -11,7 +11,7 @@ class Student extends Controller {
 	}
 
 	public function all($name = "") {
-		if(($name == "add" || $name == "update" || $name == "delete" || $name == "get") && Session::isLoggedIn(1)) {
+		if(($name == "add" || $name == "update" || $name == "delete" || $name == "get" || $name == "getSections") && Session::isLoggedIn(1)) {
 			$result = array('status' => 0);	
 			if(isset($_POST) && count($_POST) > 0) {
 				if($name == "get") {
@@ -25,6 +25,9 @@ class Student extends Controller {
 				}
 				if($name == "add") {
 					return $this->addStudent($result);
+				}
+				if($name == "getSections" && isset($_POST['programId'])) {
+					return $this->getSectionsPrivate($result);
 				}
 			}else{
 				header("Location: ".SITE_URL."/home/dashboard");
@@ -42,6 +45,28 @@ class Student extends Controller {
 		} else {
 			header("Location: ".SITE_URL."/home/message");
 		}
+    }
+
+    private function getSectionsPrivate($result) {
+    	if(!isset($_POST['programId']) || !isset($_POST['yearOrSemester'])) {
+			$result['error'] = array("Invalid selection.");
+			$result['status'] = 0;
+		}else {
+			$programId = Input::get('programId');
+			$yearOrSemester = Input::get('yearOrSemester');
+			$dataToSearch = array('programId' => $programId, 'yearOrSemester' => $yearOrSemester);
+			$res = $this->model->searchData('section',$dataToSearch);
+			if(count($res) > 0) {
+				$result['sections'] = $res;
+				$result['status'] = 1;
+			}else {
+				$result['error'] = array("Section not found for this program and semester/year.");
+				$result['status'] = 0;
+			}
+		}
+		$result['success'] = ($result['status'] == 1) ? true : false;
+		unset($_POST);
+		return print json_encode($result);
     }
 
     private function getStudent($result) {
@@ -84,10 +109,34 @@ class Student extends Controller {
 
 		$res = $this->getAllStudentRecords($userIdArray);
 
-		if(isset($_POST['filterData']) && $_POST['filterData'] > 0) {
+		$totalCountWithoutFilter = count($res);
+
+		if(isset($_POST['filterDataProgram']) && $_POST['filterDataProgram'] > 0) {
 			$i = 0;
 			foreach ($res as $value) {
-				if($value['programId'] != $_POST['filterData']) {
+				if($value['programId'] != $_POST['filterDataProgram']) {
+					array_splice($res, $i, 1);
+					$i--;
+				}
+				$i++;
+			}
+		}
+
+		if(isset($_POST['filterDataSemester']) && $_POST['filterDataSemester'] > 0) {
+			$i = 0;
+			foreach ($res as $value) {
+				if($value['yearOrSemester'] != $_POST['filterDataSemester']) {
+					array_splice($res, $i, 1);
+					$i--;
+				}
+				$i++;
+			}
+		}
+
+		if(isset($_POST['filterDataSection']) && $_POST['filterDataSection'] > 0) {
+			$i = 0;
+			foreach ($res as $value) {
+				if($value['sectionId'] != $_POST['filterDataSection']) {
 					array_splice($res, $i, 1);
 					$i--;
 				}
@@ -104,27 +153,11 @@ class Student extends Controller {
 			$arr[$index]['id'] = $arr[$index]['userId'];
 			$arr[$index]['name'] = $arr[$index]['fname']." ".$arr[$index]['mname']." ".$arr[$index]['lname'];
 			unset($arr[$index]['passwordHash']);
+			unset($arr[$index]['username']);
+			unset($arr[$index]['password']);
 			unset($arr[$index]['role']);
 
-			if(count($arr[$index]['edu']) > 0) {
-				$co = 0;
-				foreach ($arr[$index]['edu'] as $value) {
-					switch ($arr[$index]['edu'][$co]['level']) {
-						case 1:
-							$arr[$index]['edu'][$co]['levelName'] = "SLC";
-							break;
-						case 2:
-							$arr[$index]['edu'][$co]['levelName'] = "+2";
-							break;
-						case 3:
-							$arr[$index]['edu'][$co]['levelName'] = "Intermediate";
-							break;
-						default:
-							$arr[$index]['edu'][$co]['levelName'] = "HA";					
-					}
-					$co++;
-				}
-			}			
+			$arr[$index]['levelName'] = ($arr[$index]['level'] == 1) ? "SLC" : "Unkown";			
 			switch ($arr[$index]['gender']) {
 				case 1:
 					$arr[$index]['genderName'] = "Male";
@@ -136,19 +169,22 @@ class Student extends Controller {
 					$arr[$index]['genderName'] = "Others";					
 			}
 			$toSearch = array("id" => $res[$i]['programId']);
-			$this->setForeignModel("QuestionModel");
-			$this->foreignModel->setTable("program");
-			$programs = $this->foreignModel->searchQuestion($toSearch);
+			$programs = $this->model->searchData('program', $toSearch);
 			if(count($programs) > 0) {
 				$arr[$index]['programName'] = $programs[0]['name'];
+			}
+			$toSearch = array("id" => $res[$i]['sectionId']);
+			$sections = $this->model->searchData('section', $toSearch);
+			if(count($sections) > 0) {
+				$arr[$index]['sectionName'] = $sections[0]['name'];
 			}
 			$index++;
 		}
 
 		$name  = array_column($arr, 'name');
-		$username = array_column($arr, 'username');
+		$sectionName = array_column($arr, 'sectionName');
 		$toSort = (isset($_POST["order"][0]["column"])) ? $_POST["columns"][$_POST["order"][0]["column"]]["data"] : $name;
-		if(isset($_POST["order"][0]["dir"]) && ($toSort == "name" || $toSort == "username")) {
+		if(isset($_POST["order"][0]["dir"]) && ($toSort == "name" || $toSort == "sectionName")) {
 			if($_POST["order"][0]["dir"] == "asc")
 				array_multisort($$toSort, SORT_ASC, $arr);
 			else
@@ -161,15 +197,15 @@ class Student extends Controller {
 		$result['data'] = $arr;
 		$result['success'] = ($result['status'] == 1) ? true : false;
 		$result['draw'] = $_POST['draw'];
-		$result['recordsTotal'] = $total;
-		$result['recordsFiltered'] = $total;
+		$result['recordsTotal'] = $totalCountWithoutFilter;
+		$result['recordsFiltered'] = $index;
 		unset($_POST);
 		return print json_encode($result);
 	}
 
 	private function getAllStudentRecords($idArray){
 		$total = array();
-		$tableName = array("personaldata", "documents","contactdetails");
+		$tableName = array("personaldata","contactdetails","education");
 		foreach ($idArray as $id) {
 			$one = array();
 			$res = $this->model->searchData("userlogin", array("id" => $id));
@@ -186,8 +222,6 @@ class Student extends Controller {
 					}
 				}				
 			}
-			$res = $this->model->searchData("education", array("userId" => $id));
-			$one["edu"] = $res;
 			array_push($total, $one);
 		}
 		return $total;
@@ -230,7 +264,7 @@ class Student extends Controller {
 
 	private function updateStudent($result) {
 		$validate = new Validator();
-		$validation = $validate->check($_POST, array());
+		$validation = $validate->check($_POST, $this->getValidators());
 		if($validate->passed()){
 			$dataForSearch = array('id' => $_POST['id']);
 			$res = $this->model->searchData('userlogin', $dataForSearch);
@@ -245,30 +279,18 @@ class Student extends Controller {
 						$data[$key] = Input::get($key);
 					}			
 				}
-				$data['password'] = "eversoft".strtolower(trim(str_replace(' ', '', Input::get('entranceNo'))));
-				$username = strtolower(trim(str_replace(' ', '', Input::get('fname')))) . 
-							strtolower(trim(str_replace(' ', '', Input::get('entranceNo'))));
+				$data['password'] = "studentPass";
+				$username = $data['fname'].$data['lname'].$data['programId'].$data['sectionId'].preg_replace("/[^0-9]/", "", $data['dobAd']);
 				$dataToSearch = array("username" => $username);
-				$isEmailRegistered = array();
 				$userdata3 = $this->model->searchData("userlogin", $dataToSearch);
 				$cnn = 0;
 				$userdata = array();
-				$isEmailRegistered = array();
 				for ($i = 0; $i < count($userdata3); $i++) { 
 					if($userdata3[$i]['id'] != $idToUpdate)
 						$userdata[$cnn++] = $userdata3[$i];
-				}	
-				if(isset($data['email']) && !empty($data['email'])) {
-					$dataToSearch = array("email" => $data['email']);
-					$isEmailRegistered3 = $this->model->searchData("userlogin", $dataToSearch);
-					$cnn = 0;
-					for ($i = 0; $i < count($isEmailRegistered3); $i++) { 
-						if($isEmailRegistered3[$i]['id'] != $idToUpdate)
-							$isEmailRegistered[$cnn++] = $isEmailRegistered3[$i];
-					}
 				}
 				$updates = array();
-				if(count($userdata) == 0 && count($isEmailRegistered) == 0) {
+				if(count($userdata) == 0 ) {
 					$toRegister = array(
 						"username" => $username,
 						"fname" => $data['fname'],
@@ -285,9 +307,9 @@ class Student extends Controller {
 						"userId" => $idToUpdate,
 						"password" => $data['password'],
 						"programId" => $data['programId'],
-						"doa" => $data['doa'],
+						"yearOrSemester" => $data['yearOrSemester'],
+						"sectionId" => $data['sectionId'],
 						"dobAd" => $data['dobAd'],
-						"dobBs" => $data['dobAd'], // temporary no change
 						"gender" => $data['gender'],
 						"nationality" => $data['nationality'],
 						"fatherName" => $data['fatherName']
@@ -304,57 +326,25 @@ class Student extends Controller {
 						"zone" => $data['zone'],
 						"mobileNo" => $data['mobileNo'],
 						"telephoneNo" => $data['telephoneNo'],
-						"blockNo" => $data['blockNo'],
 						"guardianName" => $data['guardianName'],
 						"guardianRelation" => $data['guardianRelation'],
 						"guardianContact" => $data['guardianContact']
 					);
 					$output = $this->model->updateData("contactdetails", $pk, $toRegister);
 					array_push($updates, $output);			
-					$pk = $this->model->getDataId("documents",array('userId' => $idToUpdate));
+					$pk = $this->model->getDataId("education",array('userId' => $idToUpdate));
 					$toRegister = array(
 						"userId" => $idToUpdate,
-						"formNo" => $data['formNo'],
-						"entranceNo" => $data['entranceNo'],
-						"eligible" => $data['eligible'],
-						"remarks" => $data['remarks'],
-						"marksheet_see" => $data['marksheet_see'],
-						"marksheet_11" => $data['marksheet_11'],
-						"marksheet_12" => $data['marksheet_12'],
-						"transcript" => $data['transcript'],
-						"characterCertificate_see" => $data['characterCertificate_see'],
-						"characterCertificate_12" => $data['characterCertificate_12'],
-						"citizenship" => $data['citizenship'],
-						"photo" => $data['photo']
+						"level" => $data['level'],
+						"faculty" => $data['faculty'],
+						"institution" => $data['institution'],
+						"board" => $data['board'],
+						"yearOfCompletion" => $data['yearOfCompletion'],
+						"percent" => $data['percent']
 					);
-					$output = $this->model->updateData("documents", $pk, $toRegister);
+					$output = $this->model->updateData("education", $pk, $toRegister);
 					array_push($updates, $output);
 					$isChanged = in_array(1, $updates);				
-					$pk = $this->model->getDataId("education",array('userId' => $idToUpdate));
-					do {
-						if($pk != 0) $this->model->deleteData("education", $pk);
-						$pk = $this->model->getDataId("education",array('userId' => $idToUpdate));
-					}while($pk != 0);
-					$registeredId = array();
-					if(isset($_POST['edu'])) {
-						$count = count($_POST['edu']);
-						foreach ($_POST['edu'] as $value) {
-							$toRegister = array(
-								"userId" => $idToUpdate,
-								"level" => Sanitize::escape(trim($value['level'], " ")),
-								"faculty" => Sanitize::escape(trim($value['faculty'], " ")),
-								"institution" => Sanitize::escape(trim($value['institution'], " ")),
-								"board" => Sanitize::escape(trim($value['board'], " ")),
-								"yearOfCompletion" => Sanitize::escape(trim($value['yearOfCompletion'], " ")),
-								"percent" => Sanitize::escape(trim($value['percent'], " "))
-							);
-							$educationId = $this->model->registerData("education", $toRegister);
-							if($educationId != 0) array_push($registeredId, $educationId);				
-						}
-						if($count == count($registeredId) || isChanged) {
-							$isChanged = true;
-						}
-					}
 					if($isChanged) {
 						$result['status'] = 1;
 						$result['success'] = true;
@@ -363,12 +353,7 @@ class Student extends Controller {
 						$validate->addError("Nothing changes!");
 					}						
 				}else {
-					if(count($userdata) != 0){
-						$validate->addError("User already registered!");
-					}
-					if(count($isEmailRegistered) != 0) {
-						$validate->addError("Email already registered!");
-					}
+					$validate->addError("Student already registered!");
 					$result['status'] = 0;				
 				}
 			}else {
@@ -388,80 +373,7 @@ class Student extends Controller {
 
 	private function addStudent($result){
 		$validate = new Validator();
-		$validation = $validate->check($_POST, array(
-			'fname' => array(
-				'name' => 'First Name',
-				'required' => true,
-				'min' => 1,
-				'max' => 255
-			),
-			'lname' => array(
-				'name' => 'Last Name',
-				'required' => true,
-				'min' => 1,
-				'max' => 255
-			),
-			'programId' => array(
-				'name' => 'Program',
-				'required' => true,
-				'minLevel' => 1
-			),
-			'doa' => array(
-				'name' => 'Date of Application',
-				'required' => true
-			),
-			'dobAd' => array(
-				'name' => 'Date of Birth(A.D)',
-				'required' => true
-			),
-			'gender' => array(
-				'name' => 'Gender',
-				'required' => true,
-				'minLevel' => 1,
-				'maxLevel' => 4
-			),
-			'area' => array(
-				'name' => 'Area',
-				'required' => true,
-				'min' => 1,
-				'max' => 255
-			),
-			'district' => array(
-				'name' => 'District',
-				'required' => true,
-				'min' => 1,
-				'max' => 255
-			),
-			'zone' => array(
-				'name' => 'Zone',
-				'required' => true,
-				'min' => 1,
-				'max' => 255
-			),
-			'mobileNo' => array(
-				'name' => 'Mobile No.',
-				'required' => true,
-				'min' => 1,
-				'max' => 255
-			),
-			'email' => array(
-				'name' => 'Email',
-				'required' => true,
-				'type' => 'email'
-			),
-			'formNo' => array(
-				'name' => 'Form No.',
-				'required' => true,
-				'min' => 1,
-				'max' => 255
-			),
-			'entranceNo' => array(
-				'name' => 'Registration No.',
-				'required' => true,
-				'min' => 1,
-				'max' => 255
-			)
-		));
+		$validation = $validate->check($_POST, $this->getValidators());
 		if($validate->passed()){
 			$data = array();
 			$data['id'] = null;
@@ -472,17 +384,11 @@ class Student extends Controller {
 					$data[$key] = Input::get($key);
 				}			
 			}
-			$data['password'] = "eversoft".strtolower(trim(str_replace(' ', '', Input::get('entranceNo'))));
-			$username = strtolower(trim(str_replace(' ', '', Input::get('fname')))) . 
-						strtolower(trim(str_replace(' ', '', Input::get('entranceNo'))));
+			$data['password'] = "studentPass";
+			$username = $data['fname'].$data['lname'].$data['programId'].$data['sectionId'].preg_replace("/[^0-9]/", "", $data['dobAd']);
 			$dataToSearch = array("username" => $username);
-			$isEmailRegistered = array();
 			$userdata = $this->model->searchData("userlogin", $dataToSearch);
-			if(isset($data['email']) && !empty($data['email'])) {
-				$dataToSearch = array("email" => $data['email']);
-				$isEmailRegistered = $this->model->searchData("userlogin", $dataToSearch);
-			}
-			if(count($userdata) == 0 && count($isEmailRegistered) == 0) {
+			if(count($userdata) <= 0) {
 				$toRegister = array(
 					"username" => $username,
 					"fname" => $data['fname'],
@@ -498,9 +404,9 @@ class Student extends Controller {
 						"userId" => $userId,
 						"password" => $data['password'],
 						"programId" => $data['programId'],
-						"doa" => $data['doa'],
+						"yearOrSemester" => $data['yearOrSemester'],
+						"sectionId" => $data['sectionId'],
 						"dobAd" => $data['dobAd'],
-						"dobBs" => $data['dobAd'], // temporary no change
 						"gender" => $data['gender'],
 						"nationality" => $data['nationality'],
 						"fatherName" => $data['fatherName']
@@ -516,7 +422,6 @@ class Student extends Controller {
 								"zone" => $data['zone'],
 								"mobileNo" => $data['mobileNo'],
 								"telephoneNo" => $data['telephoneNo'],
-								"blockNo" => $data['blockNo'],
 								"guardianName" => $data['guardianName'],
 								"guardianRelation" => $data['guardianRelation'],
 								"guardianContact" => $data['guardianContact']
@@ -525,59 +430,23 @@ class Student extends Controller {
 							if($contactId != 0) {
 								$toRegister = array(
 									"userId" => $userId,
-									"formNo" => $data['formNo'],
-									"entranceNo" => $data['entranceNo'],
-									"eligible" => $data['eligible'],
-									"remarks" => $data['remarks'],
-									"marksheet_see" => $data['marksheet_see'],
-									"marksheet_11" => $data['marksheet_11'],
-									"marksheet_12" => $data['marksheet_12'],
-									"transcript" => $data['transcript'],
-									"characterCertificate_see" => $data['characterCertificate_see'],
-									"characterCertificate_12" => $data['characterCertificate_12'],
-									"citizenship" => $data['citizenship'],
-									"photo" => $data['photo']
+									"level" => $data['level'],
+									"faculty" => $data['faculty'],
+									"institution" => $data['institution'],
+									"board" => $data['board'],
+									"yearOfCompletion" => $data['yearOfCompletion'],
+									"percent" => $data['percent']
 								);
-								$documentId = $this->model->registerData("documents", $toRegister);
-								if($documentId != 0) {
-									$registeredId = array();
-									if(isset($_POST['edu'])) {
-										$count = count($_POST['edu']);
-										foreach ($_POST['edu'] as $value) {
-											$toRegister = array(
-												"userId" => $userId,
-												"level" => Sanitize::escape(trim($value['level'], " ")),
-												"faculty" => Sanitize::escape(trim($value['faculty'], " ")),
-												"institution" => Sanitize::escape(trim($value['institution'], " ")),
-												"board" => Sanitize::escape(trim($value['board'], " ")),
-												"yearOfCompletion" => Sanitize::escape(trim($value['yearOfCompletion'], " ")),
-												"percent" => Sanitize::escape(trim($value['percent'], " "))
-											);
-											$educationId = $this->model->registerData("education", $toRegister);
-											if($educationId != 0) array_push($registeredId, $educationId);				
-										}
-										if($count == count($registeredId)) {
-											$result['status'] = 1;
-											$result['success'] = true;
-										} else {
-											foreach ($registeredId as $value) {
-												$this->model->deleteData("education", $value);
-											}
-											$this->model->deleteData("userlogin", $userId);
-											$this->model->deleteData("personaldata", $personalId);
-											$this->model->deleteData("contactdetails", $contactId);
-											$this->model->deleteData("documents", $documentId);
-											$result['status'] = 0;
-											$validate->addError("Can't add to education table.");		
-										}
-										
-									}
+								$educationId = $this->model->registerData("education", $toRegister);
+								if($educationId != 0) {
+									$result['status'] = 1;
+									$result['success'] = true;
 								}else {
 									$this->model->deleteData("userlogin", $userId);
 									$this->model->deleteData("personaldata", $personalId);
 									$this->model->deleteData("contactdetails", $contactId);
 									$result['status'] = 0;
-									$validate->addError("Can't add to document table.");
+									$validate->addError("Can't add to education table.");
 								}
 							} else {
 								$this->model->deleteData("userlogin", $userId);
@@ -595,12 +464,7 @@ class Student extends Controller {
 					$validate->addError("Can't add to login table.");
 				}
 			}else {
-				if(count($userdata) != 0){
-					$validate->addError("User already registered!");
-				}
-				if(count($isEmailRegistered) != 0) {
-					$validate->addError("Email already registered!");
-				}
+				$validate->addError("Student already registered!");
 				$result['status'] = 0;				
 			}
 			
@@ -618,6 +482,119 @@ class Student extends Controller {
 		unset($_POST);
 		return print json_encode($result);	
 	}
+
+
+	private function getValidators() {
+		if(Session::isLoggedIn(1))
+			return array(
+				'fname' => array(
+					'name' => 'First Name',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'lname' => array(
+					'name' => 'Last Name',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'programId' => array(
+					'name' => 'Program',
+					'required' => true,
+					'minLevel' => 1
+				),
+				'yearOrSemester' => array(
+					'name' => 'Year/Semester',
+					'required' => true,
+					'minLevel' => 1
+				),
+				'sectionId' => array(
+					'name' => 'Section',
+					'required' => true,
+					'minLevel' => 1
+				),
+				'dobAd' => array(
+					'name' => 'Date of Birth(A.D)',
+					'required' => true
+				),
+				'gender' => array(
+					'name' => 'Gender',
+					'required' => true,
+					'minLevel' => 1,
+					'maxLevel' => 4
+				),
+				'municipality' => array(
+					'name' => 'Municipality',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'wardNo' => array(
+					'name' => 'Ward Number',
+					'required' => true,
+					'minLevel' => 1,
+					'maxLevel' => 1000
+				),
+				'area' => array(
+					'name' => 'Area',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'district' => array(
+					'name' => 'District',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'zone' => array(
+					'name' => 'Zone',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'mobileNo' => array(
+					'name' => 'Mobile No.',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'email' => array(
+					'name' => 'Email',
+					'required' => true,
+					'type' => 'email'
+				),
+				'level' => array(
+					'name' => 'Education Level',
+					'required' => true,
+					'minLevel' => 1
+				),
+				'board' => array(
+					'name' => 'Education Board',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'percent' => array(
+					'name' => 'Percent/Grade',
+					'required' => true,
+					'max' => 255
+				),
+				'institution' => array(
+					'name' => 'Education institution',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'yearOfCompletion' => array(
+					'name' => "Year of Completion",
+					'required' => true,
+				)
+			);
+	}
+
+
 }
 
 ?>

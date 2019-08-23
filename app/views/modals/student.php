@@ -101,33 +101,37 @@
                             <div class="form-group col-md-6">
                                 <label for="programId">Program *</label>
                                 <select class="form-control" id="programId" name="programId">
+                                    <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
                                     <?php
                                         foreach ($this->program as $value) {
                                     ?>
-                                            <option value="<?= $value['id'] ?>" name="<?= $value['name'] ?>"><?= $value['name'] ?></option>
+                                            <option data-no='<?= $value['noOfYearOrSemester'] ?>' data-value='<?= $value['id'] ?>' value="<?= $value['id'] ?>" name="<?= $value['name'] ?>"><?= $value['name'] ?></option>
                                     <?php
                                          } 
                                     ?>
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="section">Section *</label>
-                                <input type="text" class="form-control" name="section" id="section" placeholder="Section" />
-                                <span class="help-inline"></span>
+                                <label for="yearOrSemester">Semester/Year *</label>
+                                <select class="form-control" id="yearOrSemester" name="yearOrSemester">
+                                    <option data-value='-1' value='-1' name="None">None</option>
+                                </select>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="doa">Date of Application (A.D) *</label>
-                                <input type="date" class="form-control" name="doa" value="<?= date('Y-m-d'); ?>" id="doa" placeholder="Date of Application" />
-                                <span class="help-inline"></span>
+                                <label for="sectionId">Section *</label>
+                                <select class="form-control" id="sectionId" name="sectionId">
+                                    <option data-value='-1' value='-1' name="None">None</option>
+                                </select>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="dobAd">Date of Birth (A.D)</label>
+                                <label for="dobAd">Date of Birth (A.D) *</label>
                                 <input type="date" class="form-control" name="dobAd" id="dobAd" placeholder="Date of Birth" />
                                 <span class="help-inline"></span>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="gender">Gender *</label>
                                 <select class="form-control" id="gender" name="gender">
+                                    <option value="-1"> Please Select </option>
                                     <option value="1">Male</option>
                                     <option value="2">Female</option>
                                     <option value="3">Other</option>
@@ -181,12 +185,12 @@
 
                     <div role="tabpanel" class="tab-pane" id="cdetails">
                             <div class="form-group col-md-6">
-                                <label for="municipality">Municipality</label>
+                                <label for="municipality">Municipality *</label>
                                 <input type="text" class="form-control" name="municipality" id="municipality" placeholder="Municipality" />
                                 <span class="help-inline"></span>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="wardNo">Ward. NO</label>
+                                <label for="wardNo">Ward. NO *</label>
                                 <input type="number" class="form-control" name="wardNo" id="wardNo" placeholder="Ward. NO" />
                                 <span class="help-inline"></span>
                             </div>
@@ -213,11 +217,6 @@
                             <div class="form-group col-md-6">
                                 <label for="telephoneNo">Telephone No</label>
                                 <input type="text" class="form-control" name="telephoneNo" id="telephoneNo" placeholder="Telephone No" />
-                                <span class="help-inline"></span>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="blockNo">Block No</label>
-                                <input type="text" class="form-control" name="blockNo" id="blockNo" placeholder="Block No" />
                                 <span class="help-inline"></span>
                             </div>
                             <div class="form-group col-md-6">

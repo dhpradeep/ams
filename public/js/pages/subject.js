@@ -64,8 +64,5 @@ $(document).on("click", ".remove-icon", function(e) {
 });
 
 $('#subjectTable tbody').on('click', '.edit-icon', function() {
-    //var tr = $(this).closest('tr');
-    //var row = table.row(tr);
-    //create_program(row.data());
     create_subject();
 });

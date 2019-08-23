@@ -2,19 +2,127 @@ $('#addStudent').on('hidden.bs.modal', function(e) {
     resetFields();
 });
 
+$(".next").click(function() { $('#tabList li.active').next('li').find('a').trigger('click') });
+$(".previous").click(function() { $('#tabList li.active').prev('li').find('a').trigger('click') });
+
+$("#programId").change(function () {
+    semesterAddFunction($(this));
+    sectionAddFunction();
+});
+
+
+$("#filterDataProgram").change(function () {
+    semesterAddFunction($(this), 1);
+    sectionAddFunction(null, 1);
+    getAllData();
+});
+
+$("#filterDataSemester").change(function () {
+    sectionAddFunction($(this), 1);
+    getAllData();
+});
+
+$("#filterDataSection").change(function () {
+    getAllData();
+});
+
+$("#yearOrSemester").change(function () {
+    sectionAddFunction($(this));
+});
+
+function semesterAddFunction(data = null, mode = 0) {
+    var source, destination;
+    if(mode == 0) {
+        source = "#programId";
+        destination = "#yearOrSemester";
+    }else {
+        source = "#filterDataProgram";
+        destination = "#filterDataSemester";
+    }
+
+    if(data == null) {
+        data = $(source);
+    }
+    var totals = data.find(':selected').data("no");
+     var html = '<option data-value="-1" value="-1">None</option>';
+     if(totals > 0) {
+        for (var i = 1; i <= totals; i++) {
+            html += '<option data-value="'+i+'" value="'+i+'">'+i+'</option>';
+        }
+     }
+     $(destination).html(html);
+}
+
+function sectionAddFunction(data = null, mode = 0) {
+    var source, destination, root;
+    if(mode == 0) {
+        root = "#programId";
+        source = "#yearOrSemester";
+        destination = "#sectionId";
+    }else {
+        root = "#filterDataProgram";
+        source = "#filterDataSemester";
+        destination = "#filterDataSection";
+    }
+    if(data == null) {
+        data = $(source);
+    }
+    var programId = $(root).find(':selected').data("value");
+    var yearOrSemester = data.find(':selected').data("value");
+     if(yearOrSemester > 0 && programId > 0) {
+        $.ajax({
+            url: '../student/all/getSections',
+            async: true,
+            type: 'POST',
+            data: {
+                programId: programId,
+                yearOrSemester: yearOrSemester 
+            } ,
+            success: function(response) {
+                var decode = JSON.parse(response);
+                if (decode.success == true) {
+                    var html = '<option value="-1">None</option>'; 
+                    if(decode.sections.length >= 1) {
+                        for (var i = 0; i < decode.sections.length; i++) {
+                            html += '<option value="'+decode.sections[i].id+'">'+decode.sections[i].name+'</option>';
+                        }
+                    }else {                       
+                        $.notify("Problem fetching sections for this program and semester/year.");
+                    }
+                    $(destination).html(html);
+                } else if (decode.success === false) {
+                    var html = '<option value="-1">None</option>'; 
+                    if(decode.error != undefined) {
+                        $.notify(decode.error[0], "error");
+                    }else {
+                        $.notify("Problem fetching sections for this program and semester/year.", "error");
+                    }                 
+                    $(destination).html(html);
+                    return;
+                }
+            }
+        });
+     }else {
+        var html = '<option value="-1">None</option>';
+        $(destination).html(html);            
+     }
+}
+
 function resetFields() {
-    $("#nestedForm").empty();
     $("#studentId").data('id', '-1');
-    $("#counter").data("id", '0');
+    $('#tabList li').first().find('a').trigger('click');
 
     $('#fname').val('');
     $('#mname').val('');
     $('#lname').val('');
-    $('#programId').val('');
-    //$('#doa').val('2019-08-09');
+    $('#programId').val('-1');
+    semesterAddFunction();
+    $('#yearOrSemester').val('-1');
+    sectionAddFunction();
+    $('#sectionId').val('-1');
     $('#dobAd').val('');
-    $('#gender').val('');
-    //$('#nationality').val('');
+    $('#gender').val('-1');
+    $('#nationality').val('Nepali');
     $('#fatherName').val('');
     $('#municipality').val('');
     $('#wardNo').val('');
@@ -23,39 +131,29 @@ function resetFields() {
     $('#zone').val('');
     $('#mobileNo').val('');
     $('#telephoneNo').val('');
-    $('#blockNo').val('');
     $('#email').val('');
     $('#guardianName').val('');
     $('#guardianRelation').val('');
     $('#guardianContact').val('');
-    $('#formNo').val('');
-    $('#entranceNo').val('');
+    $('#level').val('1');
+    $('#board').val('');
+    $('#faculty').val('');
+    $('#yearOfCompletion').val('');
+    $('#percent').val('');
+    $('#institution').val('');
 
-    $("#eligible").prop("checked", false);
-    $("#marksheet_see").prop("checked", false);
-    $("#marksheet_11").prop("checked", false);
-    $("#marksheet_12").prop("checked", false);
-    $("#transcript").prop("checked", false);
-    $("#characterCertificate_see").prop("checked", false);
-    $("#characterCertificate_12").prop("checked", false);
-    $("#citizenship").prop("checked", false);
-    $("#photo").prop("checked", false);
-
-    $("#remarks").val('');
-}
-
-function isTrue(str) {
-    return (str == "true");
 }
 
 function setFields(data) {
-    $("#nestedForm").empty();
     $("#studentId").data('id', data.id);
     $('#fname').val(data.fname);
     $('#mname').val(data.mname);
     $('#lname').val(data.lname);
     $('#programId').val(data.programId);
-    $('#doa').val(data.doa);
+    semesterAddFunction();
+    $('#yearOrSemester').val(data.yearOrSemester);
+    sectionAddFunction();
+    $('#sectionId').val(data.sectionId);
     $('#dobAd').val(data.dobAd);
     $('#gender').val(data.gender);
     $('#nationality').val(data.nationality);
@@ -67,34 +165,16 @@ function setFields(data) {
     $('#zone').val(data.zone);
     $('#mobileNo').val(data.mobileNo);
     $('#telephoneNo').val(data.telephoneNo);
-    $('#blockNo').val(data.blockNo);
     $('#email').val(data.email);
     $('#guardianName').val(data.guardianName);
     $('#guardianRelation').val(data.guardianRelation);
     $('#guardianContact').val(data.guardianContact);
-    $('#formNo').val(data.formNo);
-    $('#entranceNo').val(data.entranceNo);
-
-    $("#eligible").prop("checked", isTrue(data.eligible));
-    $("#marksheet_see").prop("checked", isTrue(data.marksheet_see));
-    $("#marksheet_11").prop("checked", isTrue(data.marksheet_11));
-    $("#marksheet_12").prop("checked", isTrue(data.marksheet_12));
-    $("#transcript").prop("checked", isTrue(data.transcript));
-    $("#characterCertificate_see").prop("checked", isTrue(data.characterCertificate_see));
-    $("#characterCertificate_12").prop("checked", isTrue(data.characterCertificate_12));
-    $("#citizenship").prop("checked", isTrue(data.citizenship));
-    $("#photo").prop("checked", isTrue(data.photo));
-
-    $("#remarks").val(data.remarks);
-    for (var i = 0; i < data.edu.length; i++) {
-        educationFormMaker();
-        $("#level" + i).val(data.edu[i].level);
-        $("#board" + i).val(data.edu[i].board);
-        $("#faculty" + i).val(data.edu[i].faculty);
-        $("#yearOfCompletion" + i).val(data.edu[i].yearOfCompletion);
-        $("#percent" + i).val(data.edu[i].percent);
-        $("#institution" + i).val(data.edu[i].institution);
-    }
+    $("#level").val(data.level);
+    $("#board").val(data.board);
+    $("#faculty").val(data.faculty);
+    $("#yearOfCompletion").val(data.yearOfCompletion);
+    $("#percent").val(data.percent);
+    $("#institution").val(data.institution);
 }
 
 function create_student(data = null) {
@@ -155,7 +235,8 @@ function prepareData(id = 0) {
     data.mname = $('#mname').val();
     data.lname = $('#lname').val();
     data.programId = $('#programId').val();
-    data.doa = $('#doa').val();
+    data.yearOrSemester = $('#yearOrSemester').val();
+    data.sectionId = $('#sectionId').val();
     data.dobAd = $('#dobAd').val();
     data.gender = $('#gender').val();
     data.nationality = $('#nationality').val();
@@ -167,40 +248,16 @@ function prepareData(id = 0) {
     data.zone = $('#zone').val();
     data.mobileNo = $('#mobileNo').val();
     data.telephoneNo = $('#telephoneNo').val();
-    data.blockNo = $('#blockNo').val();
     data.email = $('#email').val();
     data.guardianName = $('#guardianName').val();
     data.guardianRelation = $('#guardianRelation').val();
     data.guardianContact = $('#guardianContact').val();
-    data.formNo = $('#formNo').val();
-    data.entranceNo = $('#entranceNo').val();
-
-    data.eligible = $("#eligible").prop("checked");
-    data.marksheet_see = $("#marksheet_see").prop("checked");
-    data.marksheet_11 = $("#marksheet_11").prop("checked");
-    data.marksheet_12 = $("#marksheet_12").prop("checked");
-    data.transcript = $("#transcript").prop("checked");
-    data.characterCertificate_see = $("#characterCertificate_see").prop("checked");
-    data.characterCertificate_12 = $("#characterCertificate_12").prop("checked");
-    data.citizenship = $("#citizenship").prop("checked");
-    data.photo = $("#photo").prop("checked");
-
-    data.remarks = $("#remarks").val();
-
-    data.edu = [];
-
-    var counter = $("#counter").data("id");
-
-    for (var i = 0; i < counter; i++) {
-        var obj = {};
-        obj.level = $("#level" + i).val();
-        obj.board = $("#board" + i).val();
-        obj.faculty = $("#faculty" + i).val();
-        obj.yearOfCompletion = $("#yearOfCompletion" + i).val();
-        obj.percent = $("#percent" + i).val();
-        obj.institution = $("#institution" + i).val();
-        data.edu.push(obj);
-    }
+    data.level=$('#level').val();
+    data.board=$('#board').val();
+    data.faculty=$('#faculty').val();
+    data.yearOfCompletion=$('#yearOfCompletion').val();
+    data.percent=$('#percent').val();
+    data.institution=$('#institution').val();
 
     return data;
 }
@@ -334,7 +391,7 @@ function animate(sec) {
     }).spin(target);
 
     sleep(sec).then(() => {
-        $.notify("All records display", "info");
+        //$.notify("All records display", "info");
         spinner.stop();
     });
     return;
@@ -346,14 +403,6 @@ function refresh() {
     animate(500);
 }
 
-function returnIcon(str) {
-    if (isTrue(str)) {
-        return "<a class='btn btn-success btn-xs'><i class='fa fa-check'></i></a>";
-    } else {
-        return "<a class='btn btn-warning btn-xs'><i class='fa fa-remove'></i></a>";
-    }
-}
-
 /* Formatting function for row details*/
 function format(d) {
     var start = '<tr>' +
@@ -361,78 +410,34 @@ function format(d) {
         '<td class = "answers"></td>' +
         '</tr>';
     var end = "";
-    for (var i = 0; i < d.edu.length; i++) {
         end += '<tr>' +
             '<td class = "choices">Level:</td>' +
-            '<td class = "answers"><i>' + d.edu[i].levelName + '</i></td>' +
+            '<td class = "answers"><i>' + d.levelName + '</i></td>' +
             '<td class = "choices">Board</td>' +
-            '<td class = "answers">' + d.edu[i].board + '</td>' +
+            '<td class = "answers">' + d.board + '</td>' +
             '<td class = "choices">Faculty:</td>' +
-            '<td class = "answers"><i>' + d.edu[i].faculty + '</i></td>' +
+            '<td class = "answers"><i>' + d.faculty + '</i></td>' +
             '</tr>' +
             '<tr>' +
             '<td class = "choices">Year of Completion:</td>' +
-            '<td class = "answers">' + d.edu[i].yearOfCompletion + '</td>' +
+            '<td class = "answers">' + d.yearOfCompletion + '</td>' +
             '<td class = "choices">Percent/GPA:</td>' +
-            '<td class = "answers">' + d.edu[i].percent + '</td>' +
+            '<td class = "answers">' + d.percent + '</td>' +
             '<td class = "choices">Institute:</td>' +
-            '<td class = "answers">' + d.edu[i].institution + '</td>' +
+            '<td class = "answers">' + d.institution + '</td>' +
             '</tr>';
-    }
     var education = start + end;
 
-    var documents = '<tr>' +
-        '<td class = "choices">Eligible:</td>' +
-        '<td class = "answers">' + returnIcon(d.eligible) + '</td>' +
-        '<td class = "choices">Marksheet SEE/SLC:</td>' +
-        '<td class = "answers">' + returnIcon(d.marksheet_see) + '</td>' +
-        '<td class = "choices">Marksheet 11:</td>' +
-        '<td class = "answers">' + returnIcon(d.marksheet_11) + '</td>' +
-        '<td class = "choices">Marksheet 12:</td>' +
-        '<td class = "answers">' + returnIcon(d.marksheet_12) + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td class = "choices">Transcript:</td>' +
-        '<td class = "answers">' + returnIcon(d.transcript) + '</td>' +
-        '<td class = "choices">Character Certificate SEE/SLC:</td>' +
-        '<td class = "answers">' + returnIcon(d.characterCertificate_see) + '</td>' +
-        '<td class = "choices">Character Certificate (+2):</td>' +
-        '<td class = "answers">' + returnIcon(d.characterCertificate_12) + '</td>' +
-        '<td class = "choices">Citizenship:</td>' +
-        '<td class = "answers">' + returnIcon(d.citizenship) + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td class = "choices">Photo:</td>' +
-        '<td class = "answers">' + returnIcon(d.photo) + '</td>' +
-        '</tr>';
     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
         '<tr>' +
-        '<td class = "choices">Password:</td>' +
-        '<td class = "answers"><i>' + d.password + '</i></td>' +
-        '<td class = "choices"></td>' +
-        '<td class = "answers"></td>' +
-        '<td class = "choices">Form Number:</td>' +
-        '<td class = "answers"><i>' + d.formNo + '</i></td>' +
-        '<td class = "choices">Program:</td>' +
-        '<td class = "answers">' + d.programName + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td class = "choices"></td>' +
-        '<td class = "answers"></td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td class = "choices">Date of application:</td>' +
-        '<td class = "answers">' + d.doa + '</td>' +
         '<td class = "choices">Date of Birth (AD):</td>' +
         '<td class = "answers">' + d.dobAd + '</td>' +
-        '<td class = "choices">Date of Birth (BS):</td>' +
-        '<td class = "answers">' + d.dobBs + '</td>' +
         '<td class = "choices">Gender:</td>' +
         '<td class = "answers">' + d.genderName + '</td>' +
-        '</tr>' +
-        '<tr>' +
         '<td class = "choices">Nationality:</td>' +
         '<td class = "answers">' + d.nationality + '</td>' +
+        '</tr>' +
+        '<tr>' +
         '<td class = "choices">Father\'s name:</td>' +
         '<td class = "answers">' + d.fatherName + '</td>' +
         '<td class = "choices">Municipality:</td>' +
@@ -447,40 +452,124 @@ function format(d) {
         '<td class = "answers">' + d.district + '</td>' +
         '<td class = "choices">Zone:</td>' +
         '<td class = "answers">' + d.zone + '</td>' +
-        '<td class = "choices">Mobile No:</td>' +
-        '<td class = "answers">' + d.mobileNo + '</td>' +
         '</tr>' +
         '<tr>' +
+        '<td class = "choices">Mobile No:</td>' +
+        '<td class = "answers">' + d.mobileNo + '</td>' +
         '<td class = "choices">Telephone No:</td>' +
         '<td class = "answers">' + d.telephoneNo + '</td>' +
-        '<td class = "choices">Block No.:</td>' +
-        '<td class = "answers">' + d.blockNo + '</td>' +
+        '</tr>' +
+        '<tr>' +
         '<td class = "choices">Guardian Name:</td>' +
         '<td class = "answers">' + d.guardianName + '</td>' +
         '<td class = "choices">Guardian Relation:</td>' +
         '<td class = "answers">' + d.guardianRelation + '</td>' +
-        '</tr>' +
-        '<tr>' +
         '<td class = "choices">Guardian Contact:</td>' +
         '<td class = "answers">' + d.guardianContact + '</td>' +
         '</tr>' + education +
-        documents +
         '<tr>' +
-        '<td class = "choices">Remarks:</td>' +
-        '<td class = "answers">' + d.remarks + '</td>' +
-        '</tr>' +
         '</table>';
 }
 
-function getAllData() {
+function get_keys(data) {
+    var arr = [];
+    for (var i in data) {
+        arr.push(i);
+    }
+    return arr;
+}
+
+function export_format(data) {
+    var index;
+    if (data.length > 0) {
+        index = get_keys(data[0]);
+    } else {
+        $.notify("No data to export!");
+        return;
+    }
+    var doc = "<table border='1'><tr>";
+    for (i = 0; i < index.length; i++) {
+        doc += "<th>" + index[i] + "</th>";
+    }
+    doc += "</tr>";
+    for (i = 0; i < data.length; i++) {
+        doc += "<tr>";
+        for (j = 0; j < index.length; j++) {
+            if (data[i][index[j]] == undefined) {
+                doc += "<td></td>";
+            } else {
+                doc += "<td>" + data[i][index[j]] + "</td>";
+            }
+        }
+        doc += "</tr>";
+    }
+
+    doc += "</table>";
+
+    exportTableToExcel(doc, "studentData");
+
+}
+
+
+function exportTableToExcel(doc, filename = null) {
+    var downloadLink;
+    var dataType = 'application/vnd.ms-excel';
+    var tableHTML = doc.replace(/ /g, '%20');
+
+    // Specify file name
+    filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+    // Create download link element
+    downloadLink = document.createElement("a");
+
+    document.body.appendChild(downloadLink);
+
+    if (navigator.msSaveOrOpenBlob) {
+        var blob = new Blob(['\ufeff', tableHTML], {
+            type: dataType
+        });
+        navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+        // Create a link to the file
+        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+        // Setting the file name
+        downloadLink.download = filename;
+
+        //triggering the function
+        downloadLink.click();
+    }
+}
+
+function print_to_excel(data) {
+    var data = data.json.data;
+    export_format(data);
+}
+
+function getAllData(trigger = null) {
     $("#studentTable").dataTable().fnDestroy();
     var table = $('#studentTable').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
             "url": "../student/all/get",
-            "type": "POST"
+            "type": "POST",
+            "data": {
+                filterDataProgram: $("#filterDataProgram").val(),
+                filterDataSemester: $("#filterDataSemester").val(),              
+                filterDataSection: $("#filterDataSection").val()              
+            }
         },
+        "drawCallback": function(data) {
+            if (trigger != null) {
+                trigger = null;
+                print_to_excel(data);
+            }
+        },
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
         "columns": [{
                 "className": 'details-control',
                 "orderable": false,
@@ -490,9 +579,13 @@ function getAllData() {
             {
                 "data": "name"
             },
-            { "data": "entranceNo" },
-            { "data": "username" },
-            { "data": "email" },
+            { "data": "programName",
+                sortable: false
+            },
+            { "data": "yearOrSemester", 
+                sortable: false
+            },
+            { "data": "sectionName" },
             {
                 sortable: false,
                 "render": function(data, type, row, meta) {
