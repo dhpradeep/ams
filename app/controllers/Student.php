@@ -11,8 +11,7 @@ class Student extends Controller {
 	}
 
 	public function all($name = "") {
-		$this->model->setTable('userlogin');
-		if(($name == "export" || $name == "add" || $name == "update" || $name == "delete" || $name == "get") && Session::isLoggedIn(1)) {
+		if(($name == "add" || $name == "update" || $name == "delete" || $name == "get") && Session::isLoggedIn(1)) {
 			$result = array('status' => 0);	
 			if(isset($_POST) && count($_POST) > 0) {
 				if($name == "get") {
@@ -27,17 +26,13 @@ class Student extends Controller {
 				if($name == "add") {
 					return $this->addStudent($result);
 				}
-				if($name == "export") {
-					return $this->exportStudent($result);
-				}
 			}else{
 				header("Location: ".SITE_URL."/home/dashboard");
 			}		
 
 		} else if($name == ''){	
 			if(Session::isLoggedIn(1)) {
-				$this->model->setTable('program');
-				$all = $this->model->getAllStudent();
+				$all = $this->model->getAllData('program');
 				$this->model->data['program'] = $all;
 				$this->model->template = VIEWS_DIR.DS."students".DS."students.php";
 				$this->view->render();
@@ -68,8 +63,7 @@ class Student extends Controller {
 		if(isset($_POST["search"]["value"])) {
 			$stringToSearch = Sanitize::escape($_POST["search"]["value"]);
 		}
-		$this->model->setTable('userlogin');
-		$result2 = $this->model->getAllStudentConditions($stringToSearch,$fieldToSearch,$columnToSort,$sortDir);
+		$result2 = $this->model->getAllDataConditions('userlogin' ,$stringToSearch,$fieldToSearch,$columnToSort,$sortDir);
 		$onlyStudent = array();
 		$index = 0;
 		$i = 0;
@@ -178,21 +172,21 @@ class Student extends Controller {
 		$tableName = array("personaldata", "documents","contactdetails");
 		foreach ($idArray as $id) {
 			$one = array();
-			$res = $this->searchDataFromTable("userlogin", array("id" => $id));
+			$res = $this->model->searchData("userlogin", array("id" => $id));
 			if(count($res) > 0) {
 				foreach ($res[0] as $key => $value) {
 					$one[$key] = $value;
 				}
 			}
 			foreach ($tableName as $table) {
-				$result = $this->searchDataFromTable($table, array("userId" => $id));
+				$result = $this->model->searchData($table, array("userId" => $id));
 				if(count($result) > 0) {
 					foreach ($result[0] as $key => $value) {
 						$one[$key] = $value;
 					}
 				}				
 			}
-			$res = $this->searchDataFromTable("education", array("userId" => $id));
+			$res = $this->model->searchData("education", array("userId" => $id));
 			$one["edu"] = $res;
 			array_push($total, $one);
 		}
@@ -206,30 +200,23 @@ class Student extends Controller {
 		}else {
 			$idToDel = Input::get('id');
 			$dataToSearch = array('id' => $idToDel);
-			$res = $this->model->searchStudent($dataToSearch);
+			$res = $this->model->searchData('userlogin',$dataToSearch);
 			if(count($res) >= 1) {
-				$out = $this->deleteDataFromTable("userlogin", $idToDel);
-				$pk = $this->getPKFromTable("personaldata",array('userId' => $idToDel));
-				if($pk != 0) $this->deleteDataFromTable("personaldata", $pk);
-				$pk = $this->getPKFromTable("documents",array('userId' => $idToDel));
-				if($pk != 0) $this->deleteDataFromTable("documents", $pk);
-				$pk = $this->getPKFromTable("contactdetails",array('userId' => $idToDel));
-				if($pk != 0) $this->deleteDataFromTable("contactdetails", $pk);
-				$pk = $this->getPKFromTable("education",array('userId' => $idToDel));
+				$out = $this->model->deleteData("userlogin", $idToDel);
+				$pk = $this->model->getDataId("personaldata",array('userId' => $idToDel));
+				if($pk != 0) $this->model->deleteData("personaldata", $pk);
+				$pk = $this->model->getDataId("contactdetails",array('userId' => $idToDel));
+				if($pk != 0) $this->model->deleteData("contactdetails", $pk);
+				$pk = $this->model->getDataId("education",array('userId' => $idToDel));
 				do {
-					if($pk != 0) $this->deleteDataFromTable("education", $pk);
-					$pk = $this->getPKFromTable("education",array('userId' => $idToDel));
+					if($pk != 0) $this->model->deleteData("education", $pk);
+					$pk = $this->model->getDataId("education",array('userId' => $idToDel));
 				}while($pk != 0);
-				$pk = $this->getPKFromTable("timetrack",array('userId' => $idToDel));
+				$pk = $this->model->getDataId("attendance",array('userId' => $idToDel));
 				do {
-					if($pk != 0) $this->deleteDataFromTable("timetrack", $pk);
-					$pk = $this->getPKFromTable("timetrack",array('userId' => $idToDel));
+					if($pk != 0) $this->model->deleteData("attendance", $pk);
+					$pk = $this->model->getDataId("attendance",array('userId' => $idToDel));
 				}while($pk != 0);
-				$pk = $this->getPKFromTable("record",array('userId' => $idToDel));
-				do {
-					if($pk != 0) $this->deleteDataFromTable("record", $pk);
-					$pk = $this->getPKFromTable("record",array('userId' => $idToDel));
-				}while($pk != 0);	
 				$result['status'] = 1;		
 			}else {
 				$result['error'] = array("No such student found.");
@@ -246,7 +233,7 @@ class Student extends Controller {
 		$validation = $validate->check($_POST, array());
 		if($validate->passed()){
 			$dataForSearch = array('id' => $_POST['id']);
-			$res = $this->model->searchStudent($dataForSearch);
+			$res = $this->model->searchData('userlogin', $dataForSearch);
 			if(count($res) >= 1) {
 				$idToUpdate = $_POST['id'];
 				$data = array();
@@ -263,7 +250,7 @@ class Student extends Controller {
 							strtolower(trim(str_replace(' ', '', Input::get('entranceNo'))));
 				$dataToSearch = array("username" => $username);
 				$isEmailRegistered = array();
-				$userdata3 = $this->searchDataFromTable("userlogin", $dataToSearch);
+				$userdata3 = $this->model->searchData("userlogin", $dataToSearch);
 				$cnn = 0;
 				$userdata = array();
 				$isEmailRegistered = array();
@@ -273,7 +260,7 @@ class Student extends Controller {
 				}	
 				if(isset($data['email']) && !empty($data['email'])) {
 					$dataToSearch = array("email" => $data['email']);
-					$isEmailRegistered3 = $this->searchDataFromTable("userlogin", $dataToSearch);
+					$isEmailRegistered3 = $this->model->searchData("userlogin", $dataToSearch);
 					$cnn = 0;
 					for ($i = 0; $i < count($isEmailRegistered3); $i++) { 
 						if($isEmailRegistered3[$i]['id'] != $idToUpdate)
@@ -291,9 +278,9 @@ class Student extends Controller {
 						"passwordHash" => md5($data['password']),
 						"role" => "3" // for student
 					);
-					$output = $this->updateDataToTable("userlogin", $idToUpdate, $toRegister);
+					$output = $this->model->updateData("userlogin", $idToUpdate, $toRegister);
 					array_push($updates, $output);
-					$pk = $this->getPKFromTable("personaldata",array('userId' => $idToUpdate));
+					$pk = $this->model->getDataId("personaldata",array('userId' => $idToUpdate));
 					$toRegister = array(
 						"userId" => $idToUpdate,
 						"password" => $data['password'],
@@ -305,9 +292,9 @@ class Student extends Controller {
 						"nationality" => $data['nationality'],
 						"fatherName" => $data['fatherName']
 					);
-					$output = $this->updateDataToTable("personaldata", $pk, $toRegister);
+					$output = $this->model->updateData("personaldata", $pk, $toRegister);
 					array_push($updates, $output);	
-					$pk = $this->getPKFromTable("contactdetails",array('userId' => $idToUpdate));
+					$pk = $this->model->getDataId("contactdetails",array('userId' => $idToUpdate));
 					$toRegister = array(
 						"userId" => $idToUpdate,
 						"municipality" => $data['municipality'],
@@ -322,9 +309,9 @@ class Student extends Controller {
 						"guardianRelation" => $data['guardianRelation'],
 						"guardianContact" => $data['guardianContact']
 					);
-					$output = $this->updateDataToTable("contactdetails", $pk, $toRegister);
+					$output = $this->model->updateData("contactdetails", $pk, $toRegister);
 					array_push($updates, $output);			
-					$pk = $this->getPKFromTable("documents",array('userId' => $idToUpdate));
+					$pk = $this->model->getDataId("documents",array('userId' => $idToUpdate));
 					$toRegister = array(
 						"userId" => $idToUpdate,
 						"formNo" => $data['formNo'],
@@ -340,13 +327,13 @@ class Student extends Controller {
 						"citizenship" => $data['citizenship'],
 						"photo" => $data['photo']
 					);
-					$output = $this->updateDataToTable("documents", $pk, $toRegister);
+					$output = $this->model->updateData("documents", $pk, $toRegister);
 					array_push($updates, $output);
 					$isChanged = in_array(1, $updates);				
-					$pk = $this->getPKFromTable("education",array('userId' => $idToUpdate));
+					$pk = $this->model->getDataId("education",array('userId' => $idToUpdate));
 					do {
-						if($pk != 0) $this->deleteDataFromTable("education", $pk);
-						$pk = $this->getPKFromTable("education",array('userId' => $idToUpdate));
+						if($pk != 0) $this->model->deleteData("education", $pk);
+						$pk = $this->model->getDataId("education",array('userId' => $idToUpdate));
 					}while($pk != 0);
 					$registeredId = array();
 					if(isset($_POST['edu'])) {
@@ -361,7 +348,7 @@ class Student extends Controller {
 								"yearOfCompletion" => Sanitize::escape(trim($value['yearOfCompletion'], " ")),
 								"percent" => Sanitize::escape(trim($value['percent'], " "))
 							);
-							$educationId = $this->setDataToTable("education", $toRegister);
+							$educationId = $this->model->registerData("education", $toRegister);
 							if($educationId != 0) array_push($registeredId, $educationId);				
 						}
 						if($count == count($registeredId) || isChanged) {
@@ -490,10 +477,10 @@ class Student extends Controller {
 						strtolower(trim(str_replace(' ', '', Input::get('entranceNo'))));
 			$dataToSearch = array("username" => $username);
 			$isEmailRegistered = array();
-			$userdata = $this->searchDataFromTable("userlogin", $dataToSearch);
+			$userdata = $this->model->searchData("userlogin", $dataToSearch);
 			if(isset($data['email']) && !empty($data['email'])) {
 				$dataToSearch = array("email" => $data['email']);
-				$isEmailRegistered = $this->searchDataFromTable("userlogin", $dataToSearch);
+				$isEmailRegistered = $this->model->searchData("userlogin", $dataToSearch);
 			}
 			if(count($userdata) == 0 && count($isEmailRegistered) == 0) {
 				$toRegister = array(
@@ -505,7 +492,7 @@ class Student extends Controller {
 					"passwordHash" => md5($data['password']),
 					"role" => "3" // for student
 				);
-				$userId = $this->setDataToTable("userlogin", $toRegister);
+				$userId = $this->model->registerData("userlogin", $toRegister);
 				if($userId != 0) {
 					$toRegister = array(
 						"userId" => $userId,
@@ -518,7 +505,7 @@ class Student extends Controller {
 						"nationality" => $data['nationality'],
 						"fatherName" => $data['fatherName']
 					);
-					$personalId = $this->setDataToTable("personaldata", $toRegister);
+					$personalId = $this->model->registerData("personaldata", $toRegister);
 						if($personalId != 0) {
 							$toRegister = array(
 								"userId" => $userId,
@@ -534,7 +521,7 @@ class Student extends Controller {
 								"guardianRelation" => $data['guardianRelation'],
 								"guardianContact" => $data['guardianContact']
 							);
-							$contactId = $this->setDataToTable("contactdetails", $toRegister);
+							$contactId = $this->model->registerData("contactdetails", $toRegister);
 							if($contactId != 0) {
 								$toRegister = array(
 									"userId" => $userId,
@@ -551,7 +538,7 @@ class Student extends Controller {
 									"citizenship" => $data['citizenship'],
 									"photo" => $data['photo']
 								);
-								$documentId = $this->setDataToTable("documents", $toRegister);
+								$documentId = $this->model->registerData("documents", $toRegister);
 								if($documentId != 0) {
 									$registeredId = array();
 									if(isset($_POST['edu'])) {
@@ -566,7 +553,7 @@ class Student extends Controller {
 												"yearOfCompletion" => Sanitize::escape(trim($value['yearOfCompletion'], " ")),
 												"percent" => Sanitize::escape(trim($value['percent'], " "))
 											);
-											$educationId = $this->setDataToTable("education", $toRegister);
+											$educationId = $this->model->registerData("education", $toRegister);
 											if($educationId != 0) array_push($registeredId, $educationId);				
 										}
 										if($count == count($registeredId)) {
@@ -574,32 +561,32 @@ class Student extends Controller {
 											$result['success'] = true;
 										} else {
 											foreach ($registeredId as $value) {
-												$this->deleteDataFromTable("education", $value);
+												$this->model->deleteData("education", $value);
 											}
-											$this->deleteDataFromTable("userlogin", $userId);
-											$this->deleteDataFromTable("personaldata", $personalId);
-											$this->deleteDataFromTable("contactdetails", $contactId);
-											$this->deleteDataFromTable("documents", $documentId);
+											$this->model->deleteData("userlogin", $userId);
+											$this->model->deleteData("personaldata", $personalId);
+											$this->model->deleteData("contactdetails", $contactId);
+											$this->model->deleteData("documents", $documentId);
 											$result['status'] = 0;
 											$validate->addError("Can't add to education table.");		
 										}
 										
 									}
 								}else {
-									$this->deleteDataFromTable("userlogin", $userId);
-									$this->deleteDataFromTable("personaldata", $personalId);
-									$this->deleteDataFromTable("contactdetails", $contactId);
+									$this->model->deleteData("userlogin", $userId);
+									$this->model->deleteData("personaldata", $personalId);
+									$this->model->deleteData("contactdetails", $contactId);
 									$result['status'] = 0;
 									$validate->addError("Can't add to document table.");
 								}
 							} else {
-								$this->deleteDataFromTable("userlogin", $userId);
-								$this->deleteDataFromTable("personaldata", $personalId);
+								$this->model->deleteData("userlogin", $userId);
+								$this->model->deleteData("personaldata", $personalId);
 								$result['status'] = 0;
 								$validate->addError("Can't add to contact table.");
 							}
 						}else {
-							$this->deleteDataFromTable("userlogin", $userId);
+							$this->model->deleteData("userlogin", $userId);
 							$result['status'] = 0;
 							$validate->addError("Can't add to personaldata table.");
 						}
@@ -630,40 +617,6 @@ class Student extends Controller {
 		} 
 		unset($_POST);
 		return print json_encode($result);	
-	}
-
-	private function setDataToTable($tableName, $data) {
-		$this->setForeignModel("StudentModel");
-		$this->foreignModel->setTable($tableName);
-		return $this->foreignModel->registerStudent($data);
-	}
-
-	private function updateDataToTable($tableName, $id, $data) {
-		$this->setForeignModel("StudentModel");
-		$this->foreignModel->setTable($tableName);
-		return $this->foreignModel->updateStudent($id, $data);
-	}
-
-	private function deleteDataFromTable($tableName, $id) {
-		$this->setForeignModel("StudentModel");
-		$this->foreignModel->setTable($tableName);
-		return $this->foreignModel->deleteStudent($id);
-	}
-
-	private function searchDataFromTable($tableName, $data) {
-		$this->setForeignModel("StudentModel");
-		$this->foreignModel->setTable($tableName);
-		return $this->foreignModel->searchStudent($data);
-	} 
-
-	private function getPKFromTable($tableName, $data) {
-		$this->setForeignModel("StudentModel");
-		$this->foreignModel->setTable($tableName);
-		return $this->foreignModel->getStudentId($data);
-	} 
-
-	private function exportStudent($result) {
-		var_dump($this->model->searchStudent(array("role" => 3)));
 	}
 }
 

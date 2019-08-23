@@ -8,7 +8,7 @@
                 <div class="modal-body col-md-12">
                     <input type="hidden" name="id" id="id"/>
                     <div class="form-group col-md-6">
-                        <label>First Name</label>
+                        <label>First Name*</label>
                         <input type="text" class="form-control" name="fname" id="fname" placeholder="Firstname" required/>
                         <span class="help-inline"></span>
                     </div>
@@ -18,34 +18,34 @@
                         <span class="help-inline"></span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Last Name</label>
+                        <label>Last Name*</label>
                         <input type="text" class="form-control" name="lname" id="lname" placeholder="Lastname" required/>
                         <span class="help-inline"></span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Email Address</label>
+                        <label>Email Address*</label>
                         <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required/>
                         <span class="help-inline"></span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Username</label>
+                        <label>Username*</label>
                         <input type="text" class="form-control" name="username" id="username" placeholder="Username" required/>
                         <span class="help-inline"></span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Password</label>
+                        <label>Password*</label>
                         <input type="password" class="form-control" name="passwordHash" id="passwordHash"
                             placeholder="Password" required />
                         <span class="help-inline"></span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Confirm Password</label>
+                        <label>Confirm Password*</label>
                         <input type="password" class="form-control" name="cpasswordHash" id="cpasswordHash"
                             placeholder="Confirm Password" required />
                         <span class="help-inline"></span>
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Role</label>
+                        <label>Role*</label>
                         <select class="form-control" id="role" name="role">
                             <option value="Admin">Admin</option>
                             <option value="Teacher">Teacher</option>

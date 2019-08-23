@@ -10,7 +10,7 @@ $(document).on("click", ".remove-icon", function(e) {
     var id = $(this).data('id');
     BootstrapDialog.show({
         title: 'Delete',
-        message: 'Are you sure to delete this record?\n <strong>Deleting a student will delete all the Student related Data</strong>',
+        message: 'Are you sure to delete this record?',
         buttons: [{
             label: 'Yes',
             cssClass: 'btn-primary',
@@ -154,6 +154,11 @@ function deletedata(id) {
     });
 }
 
+$(document).on("change", "#filterData", function(e) {
+    e.preventDefault();
+    getAllData();
+});
+
 function sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
@@ -168,7 +173,7 @@ function animate(sec) {
     }).spin(target);
 
     sleep(sec).then(() => {
-        $.notify("All records display", "info");
+       // $.notify("All records display", "info");
         spinner.stop();
     });
     return;
@@ -187,8 +192,12 @@ function getAllData(){
                                 "serverSide": true,
                                 "ajax": {
                                     "url": "../user/users/get",
-                                    "type": "POST"
+                                    "type": "POST",
+                                    "data": {
+                                        filterData : $("#filterData").val()
+                                    }
                                 },
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                                 "columns": [
                                     { "data": "name" },
                                     { "data": "username" },
@@ -199,7 +208,6 @@ function getAllData(){
                                              return "<select style = 'width:80%' class='form-control change-role' data-id="+ row.id +">"+
                                                 "<option"+(row.role == 1 ? ' selected' : '')+" value='1'>Admin</option>"+
                                                 "<option"+(row.role == 2 ? ' selected' : '')+" value='2'>Teacher</option>"+
-                                                "<option"+(row.role == 3 ? ' selected' : '')+" value='3'>Student</option>"+
                                             "</select>";
                                          }
                                     },

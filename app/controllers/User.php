@@ -46,10 +46,10 @@ class User extends Controller
 			if ($validate->passed()) {
 				$data1 = ['username' => Input::get('username'), 'passwordHash' => md5(Input::get('passwordHash'))];
 				$data2 = ['email' => Input::get('username'), 'passwordHash' => md5(Input::get('passwordHash'))];
-				$id1 = $this->model->login($data1);
-				$id = ($id1 == 0) ? $this->model->login($data2) : $id1;
+				$id1 = $this->model->login('userlogin',$data1);
+				$id = ($id1 == 0) ? $this->model->login('userlogin',$data2) : $id1;
 				if ($id != 0) {
-					$inf = $this->model->searchUser(array('id'=>$id));
+					$inf = $this->model->searchData('userlogin',array('id'=>$id));
 					$nameOfUser = $inf[0]['fname']." ".$inf[0]['mname']." ".$inf[0]['lname'];
 						Session::setSession('loggedIn', true);
 						Session::setSession('uid', $id);
@@ -75,7 +75,7 @@ class User extends Controller
 
 	public function profile() 
 	{
-		if(!Session::isLoggedIn(1)) {
+		if(!(Session::isLoggedIn(1) || Session::isLoggedIn(2))) {
 			header("Location: ".SITE_URL."/user/login");
 		}else {
 			$this->model->data['activeTab'] = "profile";
@@ -117,12 +117,12 @@ class User extends Controller
 							$data[$key] = Input::get($key);
 						}
 						$checkEmail = array('email' => $data['email']);
-						$checkId = $this->model->getUserID($checkEmail);
+						$checkId = $this->model->getDataID('userlogin',$checkEmail);
 						if(!($checkId == 0 || $checkId == $id)) {
 							$validate->addError("Email already exists.");
 							$result['status'] = 0;
 						} else {
-							$id = $this->model->updateUser($id, $data);
+							$id = $this->model->updateData('userlogin',$id, $data);
 							if($id == 1){
 								$result['status'] = 1;
 							}else{
@@ -166,12 +166,12 @@ class User extends Controller
 							$data[$key] = Input::get($key);
 						}
 						$checkUsername = array('username' => $data['username']);
-						$checkId = $this->model->getUserID($checkUsername);
+						$checkId = $this->model->getDataID('userlogin',$checkUsername);
 						if(!($checkId == 0 || $checkId == $id)) {
 							$validate->addError("Username already exists.");
 							$result['status'] = 0;
 						} else {
-							$id = $this->model->updateUser($id, $data);
+							$id = $this->model->updateData('userlogin',$id, $data);
 							if($id == 1){
 								$result['status'] = 1;
 							}else{
@@ -193,7 +193,7 @@ class User extends Controller
 			}
 			$dataToSearch = array("id" => Session::getSession('uid'),
 			"role" => Session::getSession("role"));
-			$userdata = $this->model->searchUser($dataToSearch);
+			$userdata = $this->model->searchData('userlogin',$dataToSearch);
 			if(count($userdata[0]) > 0) {
 				unset($userdata[0]['passwordHash']);
 				$this->model->data['profile'] = $userdata[0];
@@ -237,6 +237,7 @@ class User extends Controller
 	private function getUser($result) {
 		$startIndex = $_POST['start'];
 		$totalCount = $_POST['length'];
+		$startIndex = ($totalCount == -1) ? 0 : $startIndex;
 		$columnToSort = null;
 		$sortDir = null;
 		$stringToSearch = null;
@@ -252,17 +253,32 @@ class User extends Controller
 		if(isset($_POST["search"]["value"])) {
 			$stringToSearch = Sanitize::escape($_POST["search"]["value"]);
 		}
-		$finalArray = $this->model->getAllUserConditions($stringToSearch,$fieldToSearch,$columnToSort,$sortDir);
+		$finalArray = $this->model->getAllDataConditions('userlogin',$stringToSearch,$fieldToSearch,$columnToSort,$sortDir);
 		$res = array();
 		$countA = 0;
 		foreach ($finalArray as $value) {					
-			if(!($value['id'] == Session::getSession('uid'))) {
+			if(!($value['id'] == Session::getSession('uid')) && !($value['role'] == 3)) {
 				$res[$countA++] = $value;
 			}
 		}
+
+		$totalWithoutFilter = count($res);
+
+		if(isset($_POST['filterData']) && $_POST['filterData'] > 0) {
+			$i = 0;
+			foreach ($res as $value) {
+				if($value['role'] != $_POST['filterData']) {
+					array_splice($res, $i, 1);
+					$i--;
+				}
+				$i++;
+			}
+		}
+
 		$total = count($res);
 		$index = 0;
 		$arr = array();
+		$totalCount = ($totalCount == -1) ? $total : $totalCount;
 		for ($i = $startIndex; $i < $startIndex + $totalCount && $i < $total; $i++){			
 			$res[$i]['name'] = $res[$i]['fname']." ".$res[$i]['mname']. " " .$res[$i]['lname'];
 			unset($res[$i]['passwordHash']);
@@ -278,9 +294,8 @@ class User extends Controller
 		$result['data'] = $arr;
 		$result['success'] = ($result['status'] == 1) ? true : false;
 			$result['draw'] = $_POST['draw'];
-			$totalUsers = count($this->model->getAllUser());
-			$result['recordsTotal'] = ($totalUsers >= $total) ? $totalUsers - 1 : $total;
-			$result['recordsFiltered'] = $total;
+			$result['recordsTotal'] = $totalWithoutFilter;
+			$result['recordsFiltered'] = $index;
 		unset($_POST);
 		return print json_encode($result);
 	} 
@@ -292,10 +307,9 @@ class User extends Controller
 		}else {
 			$idToDel = Input::get('id');
 			$dataToSearch = array('id' => $idToDel);
-			$res = $this->model->searchUser($dataToSearch);
+			$res = $this->model->searchData('userlogin',$dataToSearch);
 			if(count($res) >= 1) {
-				if($res[0]['role'] == 3) return $this->deleteStudent($result);
-				$out = $this->model->deleteUser($idToDel);
+				$out = $this->model->deleteData('userlogin', $idToDel);
 				if($out == 1) {
 					$result['status'] = 1;
 				}else {
@@ -318,7 +332,7 @@ class User extends Controller
 			$data[$key] = Input::get($key);
 		}
 		$dataForSearch = array('id' => $data['id']);
-		$res = $this->model->searchUser($dataForSearch);
+		$res = $this->model->searchData('userlogin',$dataForSearch);
 		if(count($res) >= 1) {
 			$idToChange = $data['id'];
 			if(!($data['role'] == 1 || $data['role'] == 2 || $data['role'] == 3))
@@ -326,7 +340,7 @@ class User extends Controller
 				$result['status'] = 0;
 			}else {
 				unset($data['id']);
-				$ret = $this->model->updateUser($idToChange, $data);
+				$ret = $this->model->updateData('userlogin',$idToChange, $data);
 				if($ret == 1) {
 					$result['status'] = 1;
 					$result['success'] = true;
@@ -403,14 +417,14 @@ class User extends Controller
 			}
 			$checkUsername = array('username' => $data['username']);
 			$checkEmail = array('email' => $data['email']);
-			if ($this->model->getUserID($checkUsername) != 0) {
+			if ($this->model->getDataID('userlogin',$checkUsername) != 0) {
 				$validate->addError("Username already exists.");
 				$result['status'] = 0;
-			} else if($this->model->getUserID($checkEmail) != 0) {
+			} else if($this->model->getDataID('userlogin',$checkEmail) != 0) {
 				$validate->addError("Email already exists.");
 				$result['status'] = 0;
 			} else {
-				$id = $this->model->registerUser($data);
+				$id = $this->model->registerData('userlogin',$data);
 				if($id != 0){
 					$result['status'] = 1;
 					$result['success'] = true;
@@ -428,50 +442,6 @@ class User extends Controller
 		} 
 		unset($_POST);
 		return print json_encode($result);			
-	}	
-
-	private function deleteStudent($result) {
-		if(!isset($_POST['id'])) {
-			$result['error'] = array("Invalid selection.");
-			$result['status'] = 0;
-		}else {
-			$idToDel = Input::get('id');
-			$dataToSearch = array('id' => $idToDel);
-			$res = $this->model->searchUser($dataToSearch);
-			if(count($res) >= 1) {
-				$out = $this->deleteDataFromTable("userlogin", $idToDel);
-				$pk = $this->getPKFromTable("personaldata",array('userId' => $idToDel));
-				if($pk != 0) $this->deleteDataFromTable("personaldata", $pk);
-				$pk = $this->getPKFromTable("documents",array('userId' => $idToDel));
-				if($pk != 0) $this->deleteDataFromTable("documents", $pk);
-				$pk = $this->getPKFromTable("contactdetails",array('userId' => $idToDel));
-				if($pk != 0) $this->deleteDataFromTable("contactdetails", $pk);
-				$pk = $this->getPKFromTable("education",array('userId' => $idToDel));
-				do {
-					if($pk != 0) $this->deleteDataFromTable("education", $pk);
-					$pk = $this->getPKFromTable("education",array('userId' => $idToDel));
-				}while($pk != 0);	
-				$result['status'] = 1;		
-			}else {
-				$result['error'] = array("No such student found.");
-				$result['status'] = 0;
-			}
-		}
-		$result['success'] = ($result['status'] == 1) ? true : false;
-		unset($_POST);
-		return print json_encode($result);
 	}
-
-	private function deleteDataFromTable($tableName, $id) {
-		$this->setForeignModel("StudentModel");
-		$this->foreignModel->setTable($tableName);
-		return $this->foreignModel->deleteStudent($id);
-	}
-
-	private function getPKFromTable($tableName, $data) {
-		$this->setForeignModel("StudentModel");
-		$this->foreignModel->setTable($tableName);
-		return $this->foreignModel->getStudentId($data);
-	} 
 }
  

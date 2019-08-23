@@ -6,6 +6,7 @@
             </div>
             <div class="modal-body col-md-12">
                 <form role="form">
+                    <input id="sid" type="hidden"/>
                     <div class="form-group col-md-6">
                         <label class="control-label" for="name">Name *</label>
                         <input type="text" class="form-control" id="name" name="name" required>
@@ -14,30 +15,25 @@
                     <div class="form-group col-md-6">
                         <label for="programId">Program *</label>
                         <select class="form-control" id="programId" name="programId">
-                            <option value="1">BCA</option>
-                            <option value="2">BBA</option>
-                            <option value="3">BPH</option>
+                            <option data-no="-1" value="-1"> Please Select </option>
+                            <?php
+                                foreach ($this->program as $value) {
+                            ?>
+                                    <option data-no="<?= $value['noOfYearOrSemester'] ?>" value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
+                            <?php
+                                 } 
+                            ?>
                         </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="semesterOrYear">Semester/Year *</label>
-                        <select class="form-control" id="semesterOrYear" name="semesterOrYear">
-                            <option value="1">1st</option>
-                            <option value="2">2nd</option>
-                            <option value="3">3rd</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="subjectId">Subject *</label>
-                        <select class="form-control" id="subjectId" name="subjectId">
-                            <option value="1">Data science</option>
-                            <option value="2">Machine Learning</option>
-                            <option value="3">Neural Network</option>
+                        <label for="yearOrSemester">Semester/Year *</label>
+                        <select class="form-control" id="yearOrSemester" name="yearOrSemester">
+                            <option value="-1">None</option>
                         </select>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="control-label" for="details">Details</label>
-                        <textarea name="details" class="form-control" id="details" required></textarea>
+                        <textarea name="details" class="form-control" id="details"></textarea>
                     </div>
                 </form>
             </div>

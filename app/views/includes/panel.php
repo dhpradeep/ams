@@ -38,6 +38,9 @@
                     </li>
                 </ul>
             </li>
+            <?php
+                if(Session::isLoggedIn(1)) {
+            ?>
             <li>
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Settings<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -50,6 +53,7 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            <?php } ?>
             <li>
                 <a href="#"><i class="fa fa-files-o fa-fw"></i> Reports<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">

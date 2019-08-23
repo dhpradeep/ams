@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 22, 2019 at 09:03 PM
--- Server version: 10.3.16-MariaDB
--- PHP Version: 7.1.30
+-- Erstellungszeit: 23. Aug 2019 um 16:55
+-- Server-Version: 10.1.38-MariaDB
+-- PHP-Version: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ams`
+-- Datenbank: `ams`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attendance`
+-- Tabellenstruktur für Tabelle `attendance`
 --
 
 CREATE TABLE `attendance` (
@@ -39,7 +39,7 @@ CREATE TABLE `attendance` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contactdetails`
+-- Tabellenstruktur für Tabelle `contactdetails`
 --
 
 CREATE TABLE `contactdetails` (
@@ -60,7 +60,7 @@ CREATE TABLE `contactdetails` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `education`
+-- Tabellenstruktur für Tabelle `education`
 --
 
 CREATE TABLE `education` (
@@ -77,7 +77,7 @@ CREATE TABLE `education` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `personaldata`
+-- Tabellenstruktur für Tabelle `personaldata`
 --
 
 CREATE TABLE `personaldata` (
@@ -98,44 +98,69 @@ CREATE TABLE `personaldata` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `program`
+-- Tabellenstruktur für Tabelle `program`
 --
 
 CREATE TABLE `program` (
   `id` int(11) NOT NULL,
-  `programId` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `details` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `yearOrSemester` tinyint(1) NOT NULL,
   `noOfYearOrSemester` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Daten für Tabelle `program`
+--
+
+INSERT INTO `program` (`id`, `name`, `details`, `yearOrSemester`, `noOfYearOrSemester`) VALUES
+(1, 'Science', 'Science Stream', 0, 2),
+(2, 'BCA', '', 1, 8);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `section`
+-- Tabellenstruktur für Tabelle `section`
 --
 
 CREATE TABLE `section` (
   `id` int(11) NOT NULL,
   `programId` int(11) NOT NULL,
-  `subjectId` int(11) NOT NULL,
-  `semesterOrYear` int(11) NOT NULL,
+  `yearOrSemester` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `details` int(11) NOT NULL
+  `details` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `section`
+--
+
+INSERT INTO `section` (`id`, `programId`, `yearOrSemester`, `name`, `details`) VALUES
+(1, 1, 2, 'Section A', 'Hello Section'),
+(2, 2, 5, 'Section C', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `subjects`
+-- Tabellenstruktur für Tabelle `subjectassign`
+--
+
+CREATE TABLE `subjectassign` (
+  `id` int(11) NOT NULL,
+  `subjectId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `subjects`
 --
 
 CREATE TABLE `subjects` (
   `id` int(11) NOT NULL,
   `programId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
-  `semesterOrYear` tinyint(4) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `creditHr` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `details` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -145,7 +170,7 @@ CREATE TABLE `subjects` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `userlogin`
+-- Tabellenstruktur für Tabelle `userlogin`
 --
 
 CREATE TABLE `userlogin` (
@@ -160,115 +185,116 @@ CREATE TABLE `userlogin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `userlogin`
+-- Daten für Tabelle `userlogin`
 --
 
 INSERT INTO `userlogin` (`id`, `username`, `fname`, `mname`, `lname`, `email`, `passwordHash`, `role`) VALUES
-(60, 'admin', 'Pradip', NULL, 'Dhakal', 'dhpradeep25@gmail.com', '7488e331b8b64e5794da3fa4eb10ad5d', 1);
+(60, 'admin', 'Pradip', NULL, 'Dhakal', 'dhpradeep25@gmail.com', '7488e331b8b64e5794da3fa4eb10ad5d', 1),
+(61, 'teacher', 'Pradeep', '', 'Poudel', 'teacher@teacher.com', '41c8949aa55b8cb5dbec662f34b62df3', 2);
 
 --
--- Indexes for dumped tables
+-- Indizes der exportierten Tabellen
 --
 
 --
--- Indexes for table `attendance`
+-- Indizes für die Tabelle `attendance`
 --
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `contactdetails`
+-- Indizes für die Tabelle `contactdetails`
 --
 ALTER TABLE `contactdetails`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `education`
+-- Indizes für die Tabelle `education`
 --
 ALTER TABLE `education`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `personaldata`
+-- Indizes für die Tabelle `personaldata`
 --
 ALTER TABLE `personaldata`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `program`
+-- Indizes für die Tabelle `program`
 --
 ALTER TABLE `program`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `section`
+-- Indizes für die Tabelle `section`
 --
 ALTER TABLE `section`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `subjects`
+-- Indizes für die Tabelle `subjects`
 --
 ALTER TABLE `subjects`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `userlogin`
+-- Indizes für die Tabelle `userlogin`
 --
 ALTER TABLE `userlogin`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT für exportierte Tabellen
 --
 
 --
--- AUTO_INCREMENT for table `attendance`
+-- AUTO_INCREMENT für Tabelle `attendance`
 --
 ALTER TABLE `attendance`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `contactdetails`
+-- AUTO_INCREMENT für Tabelle `contactdetails`
 --
 ALTER TABLE `contactdetails`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT for table `education`
+-- AUTO_INCREMENT für Tabelle `education`
 --
 ALTER TABLE `education`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
--- AUTO_INCREMENT for table `personaldata`
+-- AUTO_INCREMENT für Tabelle `personaldata`
 --
 ALTER TABLE `personaldata`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
--- AUTO_INCREMENT for table `program`
+-- AUTO_INCREMENT für Tabelle `program`
 --
 ALTER TABLE `program`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `section`
+-- AUTO_INCREMENT für Tabelle `section`
 --
 ALTER TABLE `section`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `subjects`
+-- AUTO_INCREMENT für Tabelle `subjects`
 --
 ALTER TABLE `subjects`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `userlogin`
+-- AUTO_INCREMENT für Tabelle `userlogin`
 --
 ALTER TABLE `userlogin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'userID for others', AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'userID for others', AUTO_INCREMENT=62;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

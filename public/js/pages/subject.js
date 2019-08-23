@@ -1,7 +1,3 @@
-jQuery.fn.CKEditorValFor = function(element_id) {
-    return CKEDITOR.instances[element_id].getData();
-}
-
 function create_subject(data = null) {
     $('#addSubject').modal('show');
 }
@@ -9,6 +5,10 @@ function create_subject(data = null) {
 $('#addSubject').on('hidden.bs.modal', function(e) {
     resetFields();
 });
+
+function resetFields() {
+    return;
+}
 
 function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));

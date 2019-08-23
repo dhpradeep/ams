@@ -57,7 +57,6 @@
                                     <option value="0" name="None"> None </option>
                                     <option value="1" name="None"> Admin </option>
                                     <option value="2" name="None"> Teacher </option>
-                                    <option value="3" name="None"> Student </option>
                                 </select>
                             </div>
                         </form>

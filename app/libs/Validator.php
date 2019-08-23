@@ -44,6 +44,16 @@ class Validator {
                                 $this->addError("{$itemName} must be a maximum of {$rule_value} characters.");
                             }
                             break;
+                        case 'minLevel':
+                            if($value < $rule_value) {
+                                $this->addError("{$itemName} must be a greater than {$rule_value}.");
+                            }
+                            break;
+                        case 'maxLevel':
+                            if($value > $rule_value) {
+                                $this->addError("{$itemName} must be a smaller than {$rule_value}.");
+                            }
+                            break;
                         case 'matches':
                             if($value != $source[$rule_value]) {
                                 $this->addError($matchName." must match {$itemName}.");

@@ -74,6 +74,7 @@
                                             <th >
                                                 Program Name
                                             </th>
+                                            <th>Year / Semester</th>
                                             <th>
                                                 Total Year/Semester
                                             </th>
@@ -81,23 +82,6 @@
                                                 Details
                                             </th>
                                             <th style="min-width: 150px">Action</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr role="row">
-                                            <td>
-                                                Diploma In hotem Management
-                                            </td>
-                                            <td>
-                                                6 semester
-                                            </td>
-                                            <td>
-                                                Total 6 semesters 3 years.
-                                            </td>
-                                            <td style="min-width: 150px">
-                                                <a data-id="1" class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i></a>
-                                                <a data-id="1" class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>
-                                            </td>
                                       </tr>
                                   </thead>
                               </table>

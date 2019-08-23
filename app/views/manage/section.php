@@ -59,6 +59,18 @@
                         <form id="frmSearch" role="form">
                             <a onclick="create_section()" class="btn btn-primary">Add Section</a>
                             <a onclick="refresh()" class="btn btn-info">Refresh</a>
+                            <div class="input-group"> <span class="input-group-addon">Program: </span>
+                                <select class="form-control" id="filterData" name="filterResult" style="width: 100px">
+                                    <option data-no="-1" value="-1"> All </option>
+                                     <?php
+                                            foreach ($this->program as $value) {
+                                        ?>
+                                                <option data-no="<?= $value['noOfYearOrSemester'] ?>" value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
+                                        <?php
+                                             } 
+                                        ?>
+                                </select>
+                            </div>
                         </form>
                     </div>
                     <br>
@@ -81,29 +93,9 @@
                                                 Semester
                                             </th>
                                             <th>
-                                                Subject
+                                                Details
                                             </th>
                                             <th style="min-width: 150px">Action</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr role="row">
-                                            <td>
-                                               Section A
-                                            </td>
-                                            <td>
-                                                BCA
-                                            </td>
-                                            <td>
-                                                3rd Semester
-                                            </td>
-                                            <td>
-                                                Data science
-                                            </td>
-                                            <td style="min-width: 150px">
-                                                <a data-id="1" class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i></a>
-                                                <a data-id="1" class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>
-                                            </td>
                                       </tr>
                                   </thead>
                               </table>

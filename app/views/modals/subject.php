@@ -22,10 +22,14 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label" for="userId">Assign Teacher *</label>
-                        <select class="form-control" id="userId" name="userId" required>
-                            <option value="1" name="raju">Raju Lamsal</option>
-                            <option value="2" name="arjun">Arjun Subedi</option>
-                            <option value="3" name="prabhu">Prabhu Gurung</option>
+                        <select class="form-control" id="userId" name="userId" multiple required>
+                            <?php
+                                foreach ($this->teachers as $value) {
+                            ?>
+                                    <option data-id="<?= $value['userId'] ?>" value="<?= $value['userId'] ?>"><?= $value['name'] ?></option>
+                            <?php
+                                 } 
+                            ?>
                         </select>
                         <span class="help-inline"></span>
                     </div>

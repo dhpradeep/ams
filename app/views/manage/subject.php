@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?= WEBSITE_TITLE ?> | Model</title>
+    <title><?= WEBSITE_TITLE ?> | Subjects</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?= BOWER_DIR ?>/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
