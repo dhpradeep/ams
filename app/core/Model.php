@@ -264,7 +264,7 @@ abstract class Model {
 	* @return returns number of affected rows for UPDATE, INSERT and DELETE
 	* @return returns array (mode : ASSOC) for SELECT and SHOW
 	*/
-	private function exec($sql, $array = null) {
+	protected function exec($sql, $array = null) {
 		
 		if($array !== null) {
 			$result =  $this->db->query($sql, $array);	

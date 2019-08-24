@@ -117,6 +117,30 @@ class CommonModel extends Model{
 		$this->setTable($table);
 		return $this->allConditions($search,$searchFields,$sort,$sortType);
 	}
+
+	/**
+	* This method return data with range and conditions
+	* @param $compareField : the field to be compared;
+	* @param $startRange : minimum range;
+	* @param $endRange : maximum range;
+	* @param $field : conditional fields;
+	* @return whole data meeting the conditions and range.  
+	*/
+	public function rangeData($table, $compareField, $startRange, $endRange, $fields = null){
+		$this->setTable($table);
+		$sql = "SELECT * FROM " . $this->table;
+			$sql .= " WHERE ".$compareField. " BETWEEN '".$startRange."' AND '".$endRange."' ";
+		if (!empty($fields)) {
+			$fieldsvals = array();
+			$columns = array_keys($fields);
+			foreach($columns as $column) {
+				array_push($fieldsvals, $column . " = :". $column);
+			}
+			$sql .= " AND " . implode(" AND ", $fieldsvals);
+		}
+		return $this->exec($sql, $fields);
+	}
+
 }
 
 ?>

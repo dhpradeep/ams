@@ -52,7 +52,7 @@
                                     <i class="fa fa-users fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">500</div>
+                                    <div class="huge"><?= $this->noOfStudents ?></div>
                                     <div>Total Students</div>
                                 </div>
                             </div>
@@ -73,7 +73,7 @@
                                     <i class="fa fa-user fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">50</div>
+                                    <div class="huge"><?= $this->noOfTeachers ?></div>
                                     <div>Total Teachers</div>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                                     <i class="fa fa-cube fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">3</div>
+                                    <div class="huge"><?= $this->noOfPrograms ?></div>
                                     <div>Total Program</div>
                                 </div>
                             </div>
@@ -115,7 +115,7 @@
                                     <i class="fa fa-book fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">45</div>
+                                    <div class="huge"><?= $this->noOfSubjects ?></div>
                                     <div>Total Subjects</div>
                                 </div>
                             </div>
@@ -150,6 +150,13 @@
                                         <div class="input-group"> <span class="input-group-addon">Program: </span>
                                             <select class="form-control" id="filterDataProgram" name="filterResultProgram" style="width: 100px">
                                                 <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
+                                                <?php
+                                                    foreach ($this->program as $value) {
+                                                ?>
+                                                        <option data-no='<?= $value['noOfYearOrSemester'] ?>' data-value='<?= $value['id'] ?>' value="<?= $value['id'] ?>" name="<?= $value['name'] ?>"><?= $value['name'] ?></option>
+                                                <?php
+                                                     } 
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
@@ -169,14 +176,31 @@
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-6">
                                         <div class="input-group"> <span class="input-group-addon">Date: </span>
-                                            <input class="form-control" type="text" name="daterange" value="" />
+                                            <input class="form-control" id="filterDataDate" type="text" name="daterange" value="" />
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col col-md-12 m-3">
+                                    <div class="col-md-3 col-sm-6 col-xs-6" style="margin-top: 10px">
+                                        <input class="btn btn-primary" type="button" name="filter" value="Filter" id="filterOverview" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="panel-body">
-                            <div id="morris-bar-chart"></div>
+                            <div class="row">
+                                <div class="col col-md-6" style="max-height: 400px; overflow-y: scroll;">
+                                    <ul class="list-group">
+                                    <div class="row" id="studentList">                                     
+                                        
+                                    </div>
+                                    </ul>
+                                </div>
+                                <div class="col col-md-6">
+                                    <div id="morris-bar-chart"></div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -204,73 +228,49 @@
 
                                 <div class="col-md-3 col-sm-6 col-xs-6">
                                         <div class="input-group"> <span class="input-group-addon">Program: </span>
-                                            <select class="form-control" id="filterDataProgram" name="filterResultProgram" style="width: 100px">
+                                            <select class="form-control" id="filterDataProgram1" name="filterResultProgram1" style="width: 100px">
                                                 <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
+                                                <?php
+                                                    foreach ($this->program as $value) {
+                                                ?>
+                                                        <option data-no='<?= $value['noOfYearOrSemester'] ?>' data-value='<?= $value['id'] ?>' value="<?= $value['id'] ?>" name="<?= $value['name'] ?>"><?= $value['name'] ?></option>
+                                                <?php
+                                                     } 
+                                                ?>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-6">
                                         <div class="input-group"> <span class="input-group-addon" style="width: 100px">Semester: </span>
-                                            <select class="form-control" id="filterDataSemester" name="filterResultSemester">
+                                            <select class="form-control" id="filterDataSemester1" name="filterResultSemester1">
                                                 <option value="-1" name="None"> None </option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-6">
                                         <div class="input-group"> <span class="input-group-addon" style="width: 100px">Section: </span>
-                                            <select class="form-control" id="filterDataSection" name="filterResultSection">
+                                            <select class="form-control" id="filterDataSection1" name="filterResultSection1">
                                                 <option value="-1" name="None"> None </option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-6">
                                         <div class="input-group"> <span class="input-group-addon">Date: </span>
-                                            <input class="form-control" type="text" name="daterange" value="" />
+                                            <input id="filterDataDate1" class="form-control" type="text" name="daterange" value="" />
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col col-md-12 m-3">
+                                    <div class="col-md-3 col-sm-6 col-xs-6" style="margin-top: 10px">
+                                        <input class="btn btn-primary" type="button" name="filter" value="Filter" id="filterOverview1" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="toExport">
                                 <table id="studentTable" class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Math</th>
-                                            <th>Science</th>
-                                            <th>English</th>
-                                            <th>Data Science</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Pradip Dhakal</td>
-                                            <td>12</td>
-                                            <td>13</td>
-                                            <td>14</td>
-                                            <td>15</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Pradip Dhakal</td>
-                                            <td>12</td>
-                                            <td>13</td>
-                                            <td>14</td>
-                                            <td>15</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Pradip Dhakal</td>
-                                            <td>12</td>
-                                            <td>13</td>
-                                            <td>14</td>
-                                            <td>15</td>
-                                        </tr>
-                                    </tbody>
                                 </table>
                             </div>
                             <!-- /.table-responsive -->
