@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 23. Aug 2019 um 22:41
+-- Erstellungszeit: 24. Aug 2019 um 02:40
 -- Server-Version: 10.1.38-MariaDB
 -- PHP-Version: 7.3.2
 
@@ -114,7 +114,7 @@ CREATE TABLE `personaldata` (
 --
 
 INSERT INTO `personaldata` (`id`, `userId`, `password`, `programId`, `yearOrSemester`, `sectionId`, `dobAd`, `gender`, `nationality`, `fatherName`) VALUES
-(29, 68, 'studentPass', '1', 2, 1, '2019-08-21', 1, 'Nepali', ''),
+(29, 68, 'studentPass', '1', 2, 6, '2019-08-21', 1, 'Nepali', ''),
 (31, 70, 'studentPass', '2', 5, 2, '2019-08-22', 1, 'Nepali', '');
 
 -- --------------------------------------------------------
@@ -173,9 +173,19 @@ INSERT INTO `section` (`id`, `programId`, `yearOrSemester`, `name`, `details`) V
 
 CREATE TABLE `subjectassign` (
   `id` int(11) NOT NULL,
-  `subjectId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL
+  `userId` int(11) NOT NULL,
+  `subjectId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `subjectassign`
+--
+
+INSERT INTO `subjectassign` (`id`, `userId`, `subjectId`) VALUES
+(5, 61, 5),
+(6, 60, 4),
+(7, 61, 4),
+(8, 72, 4);
 
 -- --------------------------------------------------------
 
@@ -188,8 +198,17 @@ CREATE TABLE `subjects` (
   `programId` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `details` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `sectionId` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+  `sectionId` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `yearOrSemester` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `subjects`
+--
+
+INSERT INTO `subjects` (`id`, `programId`, `name`, `details`, `sectionId`, `yearOrSemester`) VALUES
+(4, 1, 'Mathematics', 'Fundamentals of Mathematics', '6', 2),
+(5, 1, 'Physics', 'Electronics', '7', 1);
 
 -- --------------------------------------------------------
 
@@ -215,8 +234,9 @@ CREATE TABLE `userlogin` (
 INSERT INTO `userlogin` (`id`, `username`, `fname`, `mname`, `lname`, `email`, `passwordHash`, `role`) VALUES
 (60, 'admin', 'Pradip', NULL, 'Dhakal', 'dhpradeep25@gmail.com', '7488e331b8b64e5794da3fa4eb10ad5d', 1),
 (61, 'teacher', 'Pradeep', '', 'Poudel', 'teacher@teacher.com', '41c8949aa55b8cb5dbec662f34b62df3', 2),
-(68, 'SarojTripathi1120190821', 'Saroj', '', 'Tripathi', 'saroj@eversoftgroup.com', '9743084ab5d4fd710558290e466fbe57', 3),
-(70, 'PradeepPoudel2220190822', 'Pradeep', '', 'Poudel', 'pradeep@eversoftgroup.com', '9743084ab5d4fd710558290e466fbe57', 3);
+(68, 'SarojTripathi1620190821', 'Saroj', '', 'Tripathi', 'saroj@eversoftgroup.com', '9743084ab5d4fd710558290e466fbe57', 3),
+(70, 'PradeepPoudel2220190822', 'Pradeep', '', 'Poudel', 'pradeep@eversoftgroup.com', '9743084ab5d4fd710558290e466fbe57', 3),
+(72, 'admin1', 'Saroj', 'Raj', 'Tripathi', 'saroj1@eversoftgroup.com', 'e00cf25ad42683b3df678c61f42c6bda', 1);
 
 --
 -- Indizes der exportierten Tabellen
@@ -256,6 +276,12 @@ ALTER TABLE `program`
 -- Indizes für die Tabelle `section`
 --
 ALTER TABLE `section`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `subjectassign`
+--
+ALTER TABLE `subjectassign`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -311,16 +337,22 @@ ALTER TABLE `section`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT für Tabelle `subjectassign`
+--
+ALTER TABLE `subjectassign`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT für Tabelle `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT für Tabelle `userlogin`
 --
 ALTER TABLE `userlogin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'userID for others', AUTO_INCREMENT=72;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'userID for others', AUTO_INCREMENT=73;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

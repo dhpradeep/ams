@@ -68,7 +68,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                                <table id="userTable" class="table table-bordered table-striped paginated tablesorter" style="margin-bottom:0;">
+                                <table id="userTable" class="table table-bordered table-striped paginated tablesorter">
                                     <thead>
                                         <tr>
                                             <th>

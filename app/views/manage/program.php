@@ -97,8 +97,7 @@
 
      <!-- modals -->
      <?php include(MODALS_DIR.DS.'program.php'); ?>
-
-    <!-- jQuery -->
+         <!-- jQuery -->
     <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>
 
      <!-- jQuery tablesorter-->

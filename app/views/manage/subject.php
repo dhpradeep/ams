@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?= WEBSITE_TITLE ?> | Subjects</title>
+    <title><?= WEBSITE_TITLE ?> | Model</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?= BOWER_DIR ?>/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +26,6 @@
 
     <!-- Custom Fonts -->
     <link href="<?= BOWER_DIR ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
 </head>
 
 <body>
@@ -60,20 +59,25 @@
                             <a onclick="create_subject()" class="btn btn-primary">Add Subject</a>
                             <a onclick="refresh()" class="btn btn-info">Refresh</a>
                             <div class="input-group"> <span class="input-group-addon">Program: </span>
-                                <select class="form-control" id="filterData" name="filterResult" style="width: 100px">
-                                    <option value="0" name="None"> None </option>
-                                    <option value="1" name="None">Diploma In Hotem Management</option>
-                                    <option value="2" name="None"> PCL </option>
-                                    <option value="3" name="None"> TSL </option>
+                                <select class="form-control" id="filterDataProgram" name="filterResultProgram" style="width: 100px">
+                                    <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
+                                    <?php
+                                        foreach ($this->program as $value) {
+                                    ?>
+                                            <option data-no='<?= $value['noOfYearOrSemester'] ?>' data-value='<?= $value['id'] ?>' value="<?= $value['id'] ?>" name="<?= $value['name'] ?>"><?= $value['name'] ?></option>
+                                    <?php
+                                         } 
+                                    ?>
                                 </select>
                             </div>
-                            <div class="input-group"> <span class="input-group-addon">Semester: </span>
-                                <select class="form-control" id="filterData" name="filterResult">
-                                    <option value="0" name="None"> None </option>
-                                    <option value="1" name="None"> 1st </option>
-                                    <option value="2" name="None"> 2nd </option>
-                                    <option value="3" name="None"> 3rd </option>
-                                    <option value="4" name="None"> 4th </option>
+                            <div class="input-group"> <span class="input-group-addon">Semester/Year: </span>
+                                <select class="form-control" id="filterDataSemester" name="filterResultSemester">
+                                    <option value="-1" name="None"> None </option>
+                                </select>
+                            </div>
+                            <div class="input-group"> <span class="input-group-addon">Section: </span>
+                                <select class="form-control" id="filterDataSection" name="filterResultSection">
+                                    <option value="-1" name="None"> None </option>
                                 </select>
                             </div>
                         </form>
@@ -98,27 +102,17 @@
                                                 Semester/Year
                                             </th>
                                             <th>
-                                                Assign Teacher
+                                                Assigned Teachers
                                             </th>
                                             <th>
                                               Section
                                             </th>
+                                            <th>
+                                              Details
+                                            </th>
                                             <th style="min-width: 150px">Action</th>
                                       </tr>
                                   </thead>
-                                  <tbody>
-                                        <tr role="row">
-                                            <td>Math</td>
-                                            <td title="Diploma In hotel Management">Diploma In hotel Management</td>
-                                            <td>3rd semester</td>
-                                            <td>Raju Lamsal</td>
-                                            <td>Morning</td>
-                                            <td style="min-width: 150px">
-                                                <a data-id="1" class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i></a>
-                                                <a data-id="1" class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>
-                                            </td>
-                                        </tr>
-                                  </tbody>
                               </table>
                             </div>
                         </div>

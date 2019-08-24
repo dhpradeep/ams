@@ -53,7 +53,7 @@ function semesterAddFunction(data = null, mode = 0) {
      $(destination).html(html);
 }
 
-function sectionAddFunction(data = null, mode = 0) {
+function sectionAddFunction(data = null, mode = 0, value = 0) {
     var source, destination, root;
     if(mode == 0) {
         root = "#programId";
@@ -90,6 +90,9 @@ function sectionAddFunction(data = null, mode = 0) {
                         $.notify("Problem fetching sections for this program and semester/year.");
                     }
                     $(destination).html(html);
+                    if(value != 0) {
+                        $(destination).val(value);
+                    }
                 } else if (decode.success === false) {
                     var html = '<option value="-1">None</option>'; 
                     if(decode.error != undefined) {
@@ -152,8 +155,8 @@ function setFields(data) {
     $('#programId').val(data.programId);
     semesterAddFunction();
     $('#yearOrSemester').val(data.yearOrSemester);
-    sectionAddFunction();
-    $('#sectionId').val(data.sectionId);
+    sectionAddFunction(null,0,data.sectionId);
+    //$('#sectionId').val(data.sectionId);
     $('#dobAd').val(data.dobAd);
     $('#gender').val(data.gender);
     $('#nationality').val(data.nationality);
