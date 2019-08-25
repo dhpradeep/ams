@@ -15,6 +15,11 @@ $(".filter_table").click(function() {
     $(".filter_table_val").slideToggle();
 });
 
+$(".filter_donut_val").hide();
+$(".filter_donut").click(function() {
+    $(".filter_donut_val").slideToggle();
+});
+
 $(document).on("click", "#export_excel", function(e) {
     var id = $(this).data('id');
     BootstrapDialog.show({
@@ -42,7 +47,7 @@ function downloadCSV(csv, filename) {
     var downloadLink;
 
     // CSV file
-    csvFile = new Blob([csv], {type: "text/csv"});
+    csvFile = new Blob([csv], { type: "text/csv" });
 
     // Download link
     downloadLink = document.createElement("a");
@@ -67,14 +72,15 @@ function downloadCSV(csv, filename) {
 function exportTableToCSV(filename) {
     var csv = [];
     var rows = document.querySelectorAll("#toExport table tr");
-    
+
     for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td, th");
-        
-        for (var j = 0; j < cols.length; j++) 
+        var row = [],
+            cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++)
             row.push(cols[j].innerText);
-        
-        csv.push(row.join(","));        
+
+        csv.push(row.join(","));
     }
 
     // Download CSV file
@@ -83,51 +89,71 @@ function exportTableToCSV(filename) {
 
 
 
-$("#filterDataProgram").change(function () {
+$("#filterDataProgram").change(function() {
     semesterAddFunction($(this), 0);
     sectionAddFunction(null, 0);
 });
 
-$("#filterDataSemester").change(function () {
+$("#filterDataSemester").change(function() {
     sectionAddFunction($(this), 0);
 });
 
-$("#filterDataProgram1").change(function () {
+$("#filterDataProgram1").change(function() {
     semesterAddFunction($(this), 1);
     sectionAddFunction(null, 1);
 });
 
-$("#filterDataSemester1").change(function () {
+$("#filterDataSemester1").change(function() {
     sectionAddFunction($(this), 1);
 });
 
-$("#filterOverview1").click(function (){
+$("#filterOverview1").click(function() {
     getAllData(-1);
 });
 
-$("#filterOverview").click(function (){
+$("#filterOverview").click(function() {
     getAllData(0);
 });
 
+percent("default");
+$("#filterOverview2").click(function() {
+    program = $("#filterDataProgram2").val();
+    semester = $("#filterDataSemester2").val();
+    section = $("#filterDataSection2").val();
+    $('#morris-donut-chart').empty();
+
+    if ($("#filterDataProgram2").val() == "-1") {
+        percent();
+    } else {
+        if ($("#filterDataSemester2").val() == "-1") {
+            percent("program")
+        } else {
+            if ($("#filterDataSection2").val() == "-1") {
+                percent("semester")
+            } else {
+                percent("section")
+            }
+        }
+    }
+})
+
 function dateDiff(dt1, dt2) {
     return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) -
-     Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate()) ) /(1000 * 60 * 60 * 24));
+        Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
 }
 
 function dateFormater(today) {
     var dd = today.getDate();
 
-    var mm = today.getMonth()+1; 
+    var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
-    if(dd<10) 
-    {
-        dd='0'+dd;
-    } 
-    if(mm<10) 
-    {
-        mm='0'+mm;
-    } 
-    today = yyyy+'-'+mm+'-'+dd;
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    today = yyyy + '-' + mm + '-' + dd;
     return today;
 }
 
@@ -136,14 +162,14 @@ function validate(mode = 0) {
     var semester = $("#filterDataSemester").val();
     var sectionId = $("#filterDataSection").val();
     var dateRange = $("#filterDataDate").val();
-    if(mode == -1) {
+    if (mode == -1) {
         programId = $("#filterDataProgram1").val();
         semester = $("#filterDataSemester1").val();
         sectionId = $("#filterDataSection1").val();
         dateRange = $("#filterDataDate1").val();
     }
-    var dates,startDate,endDate;
-    if(dateRange.length > 0) {
+    var dates, startDate, endDate;
+    if (dateRange.length > 0) {
         dates = dateRange.split("-");
         startDate = dates[0].trim();
         endDate = dates[1].trim();
@@ -156,76 +182,76 @@ function validate(mode = 0) {
         dates[4] = sectionId;
         return (dateDiff(startDate, endDate) >= 0 && programId > 0 && semester > 0 && sectionId > 0) ? dates : null;
     }
-    return null;    
+    return null;
 }
 
 function semesterAddFunction(data = null, mode = 0) {
     var source, destination;
-    if(mode == 0) {
+    if (mode == 0) {
         source = "#filterDataProgram";
         destination = "#filterDataSemester";
-    }else {
+    } else {
         source = "#filterDataProgram1";
         destination = "#filterDataSemester1";
     }
 
-    if(data == null) {
+    if (data == null) {
         data = $(source);
     }
     var totals = data.find(':selected').data("no");
-     var html = '<option data-value="-1" value="-1">None</option>';
-     if(totals > 0) {
+    var html = '<option data-value="-1" value="-1">None</option>';
+    if (totals > 0) {
         for (var i = 1; i <= totals; i++) {
-            html += '<option data-value="'+i+'" value="'+i+'">'+i+'</option>';
+            html += '<option data-value="' + i + '" value="' + i + '">' + i + '</option>';
         }
-     }
-     $(destination).html(html);
+    }
+    $(destination).html(html);
 }
 
 function sectionAddFunction(data = null, mode = 0) {
     var source, destination, root;
-    if(mode == 0) {
+    if (mode == 0) {
         root = "#filterDataProgram";
         source = "#filterDataSemester";
         destination = "#filterDataSection";
-    }else {
+    } else {
         root = "#filterDataProgram1";
         source = "#filterDataSemester1";
         destination = "#filterDataSection1";
     }
-    if(data == null) {
+    if (data == null) {
         data = $(source);
     }
     var programId = $(root).find(':selected').data("value");
     var yearOrSemester = data.find(':selected').data("value");
-     if(yearOrSemester > 0 && programId > 0) {
+    if (yearOrSemester > 0 && programId > 0) {
         $.ajax({
             url: '../student/all/getSections',
             async: true,
             type: 'POST',
             data: {
                 programId: programId,
-                yearOrSemester: yearOrSemester 
-            } ,
+                yearOrSemester: yearOrSemester
+            },
             success: function(response) {
                 var decode = JSON.parse(response);
                 if (decode.success == true) {
-                    var html = '<option value="-1">None</option>'; 
-                    if(decode.sections.length >= 1) {
+                    var html = '<option value="-1">None</option>';
+                    if (decode.sections.length >= 1) {
                         for (var i = 0; i < decode.sections.length; i++) {
-                            html += '<option value="'+decode.sections[i].id+'">'+decode.sections[i].name+'</option>';
+                            html += '<option value="' + decode.sections[i].id + '">' + decode.sections[i].name + '</option>';
                         }
-                    }else {                       
+                    } else {
                         $.notify("Problem fetching sections for this program and semester/year.");
                     }
                     $(destination).html(html);
                 } else if (decode.success === false) {
-                    var html = '<option value="-1">None</option>'; 
-                    if(decode.error != undefined) {
+                    var html = '<option value="-1">None</option>';
+                    if (decode.error != undefined) {
                         $.notify(decode.error[0], "error");
-                    }else {
+                    } else {
                         $.notify("Problem fetching sections for this program and semester/year.", "error");
-                    }                 
+                    }
                     $(destination).html(html);
                     return;
                 }
@@ -238,25 +264,25 @@ function sectionAddFunction(data = null, mode = 0) {
                 return;
             }
         });
-     }else {
+    } else {
         var html = '<option value="-1">None</option>';
-        $(destination).html(html);            
-     }
+        $(destination).html(html);
+    }
 }
 
 
 function getTable(subjectNames, studentNames, records) {
     var key, html = "<thead><tr><th>#</th><th>Name</th>";
-    for(key in subjectNames) {
-        html += "<th>"+ subjectNames[key] +"</th>"; 
+    for (key in subjectNames) {
+        html += "<th>" + subjectNames[key] + "</th>";
     }
     html += "</tr></thead><tbody>";
 
-    for(key in studentNames) {
-        html += "<tr><td></td><td>"+ studentNames[key] +"</td>";
+    for (key in studentNames) {
+        html += "<tr><td></td><td>" + studentNames[key] + "</td>";
         var subkey;
-        for(subkey in subjectNames) {
-            html += "<td>"+ records[key][subkey] +"</td>";
+        for (subkey in subjectNames) {
+            html += "<td>" + records[key][subkey] + "</td>";
         }
         html += "</tr>";
     }
@@ -266,15 +292,15 @@ function getTable(subjectNames, studentNames, records) {
 
 function getList(studentNames) {
     var key, html = "";
-    for(key in studentNames) {
-        html += '<div class="col col-md-6"><a href="#" data-id="'+key+'" id="student'
-            +key+'" class="fetchData list-group-item list-group-item-action" style= "padding: 10px 15px;">'+studentNames[key]+'</a></div>';
+    for (key in studentNames) {
+        html += '<div class="col col-md-6"><a href="#" data-id="' + key + '" id="student' +
+            key + '" class="fetchData list-group-item list-group-item-action" style= "padding: 10px 15px;">' + studentNames[key] + '</a></div>';
     }
     return html;
 }
 
-$('#studentList').on('click', '.fetchData', function(e){
-    e.preventDefault(); 
+$('#studentList').on('click', '.fetchData', function(e) {
+    e.preventDefault();
     getAllData($(this).data('id'));
 });
 
@@ -284,69 +310,69 @@ function checkObjectSize(obj) {
 }
 
 
-function getAllData(mode = 0){
+function getAllData(mode = 0) {
 
     var destination;
-    if(mode == -1) {
+    if (mode == -1) {
         destination = $('#studentTable');
-    }else if(mode == 0) {
+    } else if (mode == 0) {
         destination = $('#studentList');
-    }else {
+    } else {
         destination = $('#morris-bar-chart');
         destination.html("");
     }
 
     var data = validate(mode);
-    if(data == null) {
+    if (data == null) {
         $.notify("Filter Selection error", "error");
         destination.hide();
         return;
     }
 
     $.ajax({
-            "url": "../report/view/get1",
-            async: true,
-            type: 'POST',
-            data: {
-                programId : data[2],
-                semester: data[3],              
-                sectionId : data[4],
-                startDate : data[0],
-                endDate : data[1]
-            } ,
-            success: function(response) {
-                var decode = JSON.parse(response);
-                if (decode.success == true) {
-                        var html = 'Nothing to show'; 
-                        if(checkObjectSize(decode.data.records) >= 1 && checkObjectSize(decode.data.subjectNames) >= 1 && checkObjectSize(decode.data.studentNames) >= 1) {
-                            if(mode == -1) html = getTable(decode.data.subjectNames, decode.data.studentNames, decode.data.records);
-                            else if(mode == 0) html = getList(decode.data.studentNames);
-                            else morrisChart(decode.data, mode);
-                        }else {                       
-                            $.notify("Problem fetching data.", "error");
-                        }
-                        if(mode == -1 || mode == 0) {
-                            destination.html(html);
-                        }
-                        destination.show();
-                        return;   
-                } else if (decode.success == false) {
-                    var html = 'Error occured!'; 
-                    if(decode.error != undefined) {
-                        $.notify(decode.error, "error");
-                    }else {
-                        $.notify("Problem fetching informations.", "error");
-                    }                 
+        "url": "../report/view/get1",
+        async: true,
+        type: 'POST',
+        data: {
+            programId: data[2],
+            semester: data[3],
+            sectionId: data[4],
+            startDate: data[0],
+            endDate: data[1]
+        },
+        success: function(response) {
+            var decode = JSON.parse(response);
+            if (decode.success == true) {
+                var html = 'Nothing to show';
+                if (checkObjectSize(decode.data.records) >= 1 && checkObjectSize(decode.data.subjectNames) >= 1 && checkObjectSize(decode.data.studentNames) >= 1) {
+                    if (mode == -1) html = getTable(decode.data.subjectNames, decode.data.studentNames, decode.data.records);
+                    else if (mode == 0) html = getList(decode.data.studentNames);
+                    else morrisChart(decode.data, mode);
+                } else {
+                    $.notify("Problem fetching data.", "error");
+                }
+                if (mode == -1 || mode == 0) {
                     destination.html(html);
-                    return;
                 }
-            },
-            error: function(error) {
-                if (error.responseText) {
-                    var msg = JSON.parse(error.responseText)
-                    $.notify(msg.msg, "error");
+                destination.show();
+                return;
+            } else if (decode.success == false) {
+                var html = 'Error occured!';
+                if (decode.error != undefined) {
+                    $.notify(decode.error, "error");
+                } else {
+                    $.notify("Problem fetching informations.", "error");
                 }
+                destination.html(html);
                 return;
             }
-        });
+        },
+        error: function(error) {
+            if (error.responseText) {
+                var msg = JSON.parse(error.responseText)
+                $.notify(msg.msg, "error");
+            }
+            return;
+        }
+    });
 }

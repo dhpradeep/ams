@@ -278,7 +278,7 @@ class Manage extends Controller {
 			}
 			$searchForProgram = $this->model->getData('program',array(
 				'name' => $data['name'],
-				'programId' => $data['programId'],
+				//'programId' => $data['programId'],
 				'noOfYearOrSemester' => $data['noOfYearOrSemester']
 			));
 			if($searchForProgram == null) {

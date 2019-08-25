@@ -279,6 +279,69 @@
                     </div>
                     <!-- /.panel -->
                 </div>
+
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Present Student Percent
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="filter_donut btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                        Filter
+                                        <span class="caret"></span>
+                                    </button>
+                                </div>
+                            </div>
+                             <!-- expandable filter view -->
+                             <div class="row filter_donut_val" style="padding-top:20px;">
+                                <div class="col col-md-12">
+
+                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                        <div class="input-group"> <span class="input-group-addon">Program: </span>
+                                            <select class="form-control" id="filterDataProgram2" name="filterResultProgram" style="width: 100px">
+                                                <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
+                                                <?php
+                                                    foreach ($this->program as $value) {
+                                                ?>
+                                                        <option data-no='<?= $value['noOfYearOrSemester'] ?>' data-value='<?= $value['id'] ?>' value="<?= $value['id'] ?>" name="<?= $value['name'] ?>"><?= $value['name'] ?></option>
+                                                <?php
+                                                     } 
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                        <div class="input-group"> <span class="input-group-addon" style="width: 100px">Semester: </span>
+                                            <select class="form-control" id="filterDataSemester2" name="filterResultSemester">
+                                                <option value="-1" name="None"> None </option>
+                                                <option value="2" name="None"> Sem 1 </option>
+                                                <option value="3" name="None"> Sem 2 </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                        <div class="input-group"> <span class="input-group-addon" style="width: 100px">Section: </span>
+                                            <select class="form-control" id="filterDataSection2" name="filterResultSection">
+                                                <option value="-1" name="None"> None </option>
+                                                <option value="2" name="None"> Section A </option>
+                                                <option value="3" name="None"> Section B </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6 col-xs-6 m-3">
+                                    <div class="col-md-3 col-sm-6 col-xs-6" style="margin-top: 10px">
+                                        <input class="btn btn-primary" type="button" name="filter" value="Filter" id="filterOverview2" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="morris-donut-chart"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
             </div>
             <br><br>
         </div>
