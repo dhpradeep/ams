@@ -8,14 +8,6 @@
                 <a href="<?= SITE_URL.DS.'home'.DS ?>dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
             <li>
-                <a href="#students"><i class="fa fa-table fa-fw"></i> Attendance<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                     <a href="<?= SITE_URL.DS.'attendance'.DS ?>attendance">Attendance System</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Manage<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>

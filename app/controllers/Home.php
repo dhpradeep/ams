@@ -13,14 +13,16 @@ class Home extends Controller {
 	public function dashboard() {
 		if(!Session::isloggedIn()) {
 			header("Location: ".SITE_URL."/user/login");
-		}else {
+		}else if(Session::isloggedIn(2)) {
+			header("Location: ".SITE_URL."/attendance/attendance");
+		} else {
 			$this->model->data['errors'] = array();
 			$userId = Session::getSession('uid');
 			$userRole = Session::getSession('role');
 			$userProgram = null;
 			if(!is_null($userId) && !is_null($userRole)) {
-				if($userRole == 1 || $userRole == 2) {
-					array_push($this->model->data['errors'], "Admin / Teacher View is under Construction");
+				if($userRole == 1 ) {
+					array_push($this->model->data['errors'], "<a href ='".SITE_URL."/attendance/attendance'> Click here to go to Attendance View</a>");
 				}else if($userRole == 3) {
 					header("Location: ".SITE_URL."/test");
 				}else {

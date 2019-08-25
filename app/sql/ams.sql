@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 24. Aug 2019 um 02:40
+-- Erstellungszeit: 25. Aug 2019 um 03:24
 -- Server-Version: 10.1.38-MariaDB
 -- PHP-Version: 7.3.2
 
@@ -35,6 +35,21 @@ CREATE TABLE `attendance` (
   `date` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `userId`, `subjectId`, `date`, `status`) VALUES
+(1, 68, 4, '2019-08-24', 1),
+(2, 70, 4, '2019-08-24', 1),
+(3, 70, 4, '2019-08-24', 1),
+(4, 4, 4, '2019-08-24', 1),
+(5, 5, 4, '2019-08-24', 1),
+(6, 70, 6, '2019-08-23', 1),
+(7, 4, 6, '2019-08-22', 1),
+(8, 68, 4, '2019-08-22', 0),
+(9, 70, 4, '2019-08-22', 1);
 
 -- --------------------------------------------------------
 
@@ -115,7 +130,7 @@ CREATE TABLE `personaldata` (
 
 INSERT INTO `personaldata` (`id`, `userId`, `password`, `programId`, `yearOrSemester`, `sectionId`, `dobAd`, `gender`, `nationality`, `fatherName`) VALUES
 (29, 68, 'studentPass', '1', 2, 6, '2019-08-21', 1, 'Nepali', ''),
-(31, 70, 'studentPass', '2', 5, 2, '2019-08-22', 1, 'Nepali', '');
+(31, 70, 'studentPass', '1', 2, 6, '2019-08-22', 1, 'Nepali', '');
 
 -- --------------------------------------------------------
 
@@ -183,9 +198,8 @@ CREATE TABLE `subjectassign` (
 
 INSERT INTO `subjectassign` (`id`, `userId`, `subjectId`) VALUES
 (5, 61, 5),
-(6, 60, 4),
-(7, 61, 4),
-(8, 72, 4);
+(16, 61, 4),
+(17, 72, 4);
 
 -- --------------------------------------------------------
 
@@ -208,7 +222,11 @@ CREATE TABLE `subjects` (
 
 INSERT INTO `subjects` (`id`, `programId`, `name`, `details`, `sectionId`, `yearOrSemester`) VALUES
 (4, 1, 'Mathematics', 'Fundamentals of Mathematics', '6', 2),
-(5, 1, 'Physics', 'Electronics', '7', 1);
+(5, 1, 'Physics', 'Electronics', '7', 1),
+(6, 1, 'Chemistry', 'Fundamentals of Chemistry', '6', 2),
+(7, 1, 'Physics', 'Fundamentals of Physics', '6', 2),
+(8, 1, 'Biology', 'Fundamentals of Biology', '6', 2),
+(9, 1, 'English', 'Basic English', '6', 2);
 
 -- --------------------------------------------------------
 
@@ -235,7 +253,7 @@ INSERT INTO `userlogin` (`id`, `username`, `fname`, `mname`, `lname`, `email`, `
 (60, 'admin', 'Pradip', NULL, 'Dhakal', 'dhpradeep25@gmail.com', '7488e331b8b64e5794da3fa4eb10ad5d', 1),
 (61, 'teacher', 'Pradeep', '', 'Poudel', 'teacher@teacher.com', '41c8949aa55b8cb5dbec662f34b62df3', 2),
 (68, 'SarojTripathi1620190821', 'Saroj', '', 'Tripathi', 'saroj@eversoftgroup.com', '9743084ab5d4fd710558290e466fbe57', 3),
-(70, 'PradeepPoudel2220190822', 'Pradeep', '', 'Poudel', 'pradeep@eversoftgroup.com', '9743084ab5d4fd710558290e466fbe57', 3),
+(70, 'PravhuGurung1620190822', 'Pravhu', '', 'Gurung', 'pradeep@eversoftgroup.com', '9743084ab5d4fd710558290e466fbe57', 3),
 (72, 'admin1', 'Saroj', 'Raj', 'Tripathi', 'saroj1@eversoftgroup.com', 'e00cf25ad42683b3df678c61f42c6bda', 1);
 
 --
@@ -304,7 +322,7 @@ ALTER TABLE `userlogin`
 -- AUTO_INCREMENT für Tabelle `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT für Tabelle `contactdetails`
@@ -340,13 +358,13 @@ ALTER TABLE `section`
 -- AUTO_INCREMENT für Tabelle `subjectassign`
 --
 ALTER TABLE `subjectassign`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT für Tabelle `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT für Tabelle `userlogin`

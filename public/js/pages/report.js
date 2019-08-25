@@ -229,6 +229,13 @@ function sectionAddFunction(data = null, mode = 0) {
                     $(destination).html(html);
                     return;
                 }
+            },
+            error: function(error) {
+                if (error.responseText) {
+                    var msg = JSON.parse(error.responseText)
+                    $.notify(msg.msg, "error");
+                }
+                return;
             }
         });
      }else {
@@ -318,7 +325,7 @@ function getAllData(mode = 0){
                             else if(mode == 0) html = getList(decode.data.studentNames);
                             else morrisChart(decode.data, mode);
                         }else {                       
-                            $.notify("Problem fetching data.");
+                            $.notify("Problem fetching data.", "error");
                         }
                         if(mode == -1 || mode == 0) {
                             destination.html(html);
@@ -335,6 +342,13 @@ function getAllData(mode = 0){
                     destination.html(html);
                     return;
                 }
+            },
+            error: function(error) {
+                if (error.responseText) {
+                    var msg = JSON.parse(error.responseText)
+                    $.notify(msg.msg, "error");
+                }
+                return;
             }
         });
 }

@@ -60,7 +60,7 @@
                             ?>
                             <div class="row">
                                 <div>
-                                    <span style="font-size:14px;"><strong><?= $value ?></strong></span>
+                                    <span style="font-size:18px; margin-left: 10px;"><strong><?= $value ?></strong></span>
                                 </div>
                             </div>
                         <?php
