@@ -124,6 +124,11 @@
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
+                                <label for="dobAd">Roll No *</label>
+                                <input type="text" class="form-control" name="rollNo" id="rollNo" placeholder="Roll No" />
+                                <span class="help-inline"></span>
+                            </div>
+                            <div class="form-group col-md-6">
                                 <label for="dobAd">Date of Birth (A.D) *</label>
                                 <input type="date" class="form-control" name="dobAd" id="dobAd" placeholder="Date of Birth" />
                                 <span class="help-inline"></span>

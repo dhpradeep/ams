@@ -50,7 +50,7 @@ class Report extends Controller {
 		$endDate = Sanitize::escape($_POST['endDate']);
 
 		$allSubjects = $this->model->searchData("subjects", array("sectionId" => Sanitize::escape($_POST['sectionId'])));
-		$allStudents = $this->model->searchData("personaldata", array("sectionId" => Sanitize::escape($_POST['sectionId'])));
+		$allStudents = $this->model->searchData("personaldata", array("sectionId" => Sanitize::escape($_POST['sectionId']), "yearOrSemester" => Sanitize::escape($_POST['yearOrSemester'])));
 
 		if(strlen($startDate) == 10 && strlen($endDate) == 10) {
 			if(count($allSubjects) != 0) {
@@ -69,6 +69,21 @@ class Report extends Controller {
 					$allStudents = $this->getNamesArray($allUsersId, "userlogin", 1);
 					asort($allStudents);
 					$allSubjects = $this->getNamesArray($allSubjectsId, "subjects", 0);
+
+					foreach ($allSubjectsId as $key => $value) {
+						$attendance = $this->model->rangeData("attendance" ,"date",$startDate,$endDate, array("subjectId" => $value, "status" => 1));
+						$finalOutput = 0;
+						if(count($attendance) > 0) {
+							$dates = array();
+							foreach ($attendance as $one) {
+								if(!(in_array($one['date'], $dates))) {
+									array_push($dates, $one['date']);
+									$finalOutput++;
+								}							
+							}
+						}
+						$allSubjects[$value]['totalAttendance'] = $finalOutput;
+					}
 
 					$arr = $records;
 					$result['data']['subjectNames'] = $allSubjects;
@@ -100,9 +115,15 @@ class Report extends Controller {
     			$oneRow = $this->model->getData($tableName, array('id' => $value));
     			$name = "";
     			if($mode == 1) {
-    				$name = ($oneRow != null) ? $oneRow['fname'].' '.$oneRow['mname'].' '.$oneRow['lname'] : "Unkown";
+    				$oneArr = array();
+    				$personalOne = $this->model->getData('personaldata', array('userId' => $value));
+    				$oneArr['rollNo'] = ($personalOne != null) ? $personalOne['rollNo'] : 'Unkown';
+    				$oneArr['name'] = ($oneRow != null) ? $oneRow['fname'].' '.$oneRow['mname'].' '.$oneRow['lname'] : "Unkown";
+    				$name = $oneArr;
     			}else {
-    				$name = ($oneRow != null) ? $oneRow['name'] : "Unkown";
+    				$oneArr = array();
+    				$oneArr['name'] = ($oneRow != null) ? $oneRow['name'] : "Unkown";
+    				$name = $oneArr;
     			}
     			$output[$value] = $name;
     		}

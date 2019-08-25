@@ -124,6 +124,7 @@ function resetFields() {
     sectionAddFunction();
     $('#sectionId').val('-1');
     $('#dobAd').val('');
+    $('#rollNo').val('');
     $('#gender').val('-1');
     $('#nationality').val('Nepali');
     $('#fatherName').val('');
@@ -158,6 +159,7 @@ function setFields(data) {
     sectionAddFunction(null,0,data.sectionId);
     //$('#sectionId').val(data.sectionId);
     $('#dobAd').val(data.dobAd);
+    $('#rollNo').val(data.rollNo);
     $('#gender').val(data.gender);
     $('#nationality').val(data.nationality);
     $('#fatherName').val(data.fatherName);
@@ -230,6 +232,69 @@ $(document).on("click", ".remove-icon", function(e) {
     });
 });
 
+$(document).on("click", "#upgradeProgramBtn", function(e) {
+    var id = $("#upgradeProgram").val();
+    console.log(id);
+    BootstrapDialog.show({
+        title: 'Delete',
+        message: '<b>Are you sure to upgrade all student in the final semester/year to passout?</b>',
+        buttons: [{
+            label: 'Yes',
+            cssClass: 'btn-primary',
+            action: function(dialog) {
+                upgradeProgram(id);
+                dialog.close();
+            }
+        }, {
+            label: 'No',
+            cssClass: 'btn-warning',
+            action: function(dialog) {
+                dialog.close();
+            }
+        }]
+    });
+});
+
+
+function upgradeProgram(id) {
+    if(!(id >= 1)){
+        $.notify("Please select valid program");
+        return;
+    }
+
+    $.ajax({
+        url: '../student/upgrade/program',
+        async: true,
+        type: 'POST',
+        data: {
+            programId : id
+        },
+        success: function(response) {
+            var decode = JSON.parse(response);
+            if (decode.success == true) {
+                refresh();
+                $.notify("Program upgraded successfully", "success");
+            } else if (decode.success === false) {
+                if(decode.error != undefined) {
+                    $.notify(decode.error, "error");
+                }
+                return;
+            }
+        },
+        error: function(error) {
+            console.log("Error:");
+            console.log(error.responseText);
+            console.log(error.message);
+            if (error.responseText) {
+                var msg = JSON.parse(error.responseText)
+                $.notify(msg.msg, "error");
+            }
+            return;
+        }
+    });
+
+}
+
 function prepareData(id = 0) {
     var data = {};
     if (id > 0) {
@@ -242,6 +307,7 @@ function prepareData(id = 0) {
     data.yearOrSemester = $('#yearOrSemester').val();
     data.sectionId = $('#sectionId').val();
     data.dobAd = $('#dobAd').val();
+    data.rollNo = $('#rollNo').val();
     data.gender = $('#gender').val();
     data.nationality = $('#nationality').val();
     data.fatherName = $('#fatherName').val();
@@ -477,6 +543,7 @@ function format(d) {
 
 function export_format(data) {
     var arr = {
+        rollNo : "Roll No",
         name : "Fullname",
         programName : "Program",
         yearOrSemester : "Semester / Year",
@@ -613,13 +680,19 @@ function getAllData(trigger = null) {
                 "defaultContent": ''
             },
             {
+                "data": "rollNo"
+            },
+            {
                 "data": "name"
             },
             { "data": "programName",
                 sortable: false
             },
-            { "data": "yearOrSemester", 
-                sortable: false
+            { 
+                "data" : "yearOrSemester",
+                "render": function(data, type, row, meta) {
+                    return (row.yearOrSemester == -2) ? "Graduated" : row.yearOrSemester;
+                }
             },
             { "data": "sectionName" },
             {

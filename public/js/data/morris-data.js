@@ -10,8 +10,9 @@ function morrisChart(data, userId) {
         if (key == userId) {
             for (subkey in subjectNames) {
                 var one = {
-                    y: subjectNames[subkey],
-                    a: records[userId][subkey]
+                    y: subjectNames[subkey]['name'],
+                    a: records[userId][subkey],
+                    b: subjectNames[subkey]['totalAttendance'] - records[userId][subkey]
                 }
                 data.push(one);
             }
@@ -23,7 +24,7 @@ function morrisChart(data, userId) {
         data: data,
         xkey: 'y',
 
-        ykeys: ['a'],
+        ykeys: ['a','b'],
         labels: ['Present', 'Absent'],
         hideHover: 'auto',
         resize: true,

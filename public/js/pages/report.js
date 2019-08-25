@@ -5,19 +5,13 @@ $(document).ready(function() {
     $('#morris-bar-chart').hide();
 });
 
-$(".filter_bar_val").hide();
 $(".filter_bar").click(function() {
     $(".filter_bar_val").slideToggle();
 });
 
-$(".filter_table_val").hide();
+
 $(".filter_table").click(function() {
     $(".filter_table_val").slideToggle();
-});
-
-$(".filter_donut_val").hide();
-$(".filter_donut").click(function() {
-    $(".filter_donut_val").slideToggle();
 });
 
 $(document).on("click", "#export_excel", function(e) {
@@ -158,7 +152,7 @@ function validate(mode = 0) {
         dates[2] = programId;
         dates[3] = semester;
         dates[4] = sectionId;
-        return (dateDiff(startDate, endDate) >= 0 && programId > 0 && semester > 0 && sectionId > 0) ? dates : null;
+        return (dateDiff(startDate, endDate) >= 0 && programId > 0 && (semester > 0 || semester == -2 ) && sectionId > 0) ? dates : null;
     }
     return null;
 }
@@ -183,6 +177,7 @@ function semesterAddFunction(data = null, mode = 0) {
             html += '<option data-value="' + i + '" value="' + i + '">' + i + '</option>';
         }
     }
+    html += '<option data-value="-2" value="-2">Graduated</option>';
     $(destination).html(html);
 }
 
@@ -202,7 +197,7 @@ function sectionAddFunction(data = null, mode = 0) {
     }
     var programId = $(root).find(':selected').data("value");
     var yearOrSemester = data.find(':selected').data("value");
-    if (yearOrSemester > 0 && programId > 0) {
+    if ((yearOrSemester > 0 || yearOrSemester == -2) && programId > 0) {
         $.ajax({
             url: '../student/all/getSections',
             async: true,
@@ -250,14 +245,14 @@ function sectionAddFunction(data = null, mode = 0) {
 
 
 function getTable(subjectNames, studentNames, records) {
-    var key, html = "<thead><tr><th>#</th><th>Name</th>";
+    var key, html = "<thead><tr><th>Roll No.</th><th>Name</th>";
     for (key in subjectNames) {
-        html += "<th>" + subjectNames[key] + "</th>";
+        html += "<th>" + subjectNames[key]['name'] + " ( " + subjectNames[key]['totalAttendance'] +" )</th>";
     }
     html += "</tr></thead><tbody>";
 
     for (key in studentNames) {
-        html += "<tr><td></td><td>" + studentNames[key] + "</td>";
+        html += "<tr><td>"+ studentNames[key]['rollNo'] +"</td><td>" + studentNames[key]['name'] + "</td>";
         var subkey;
         for (subkey in subjectNames) {
             html += "<td>" + records[key][subkey] + "</td>";
@@ -272,7 +267,7 @@ function getList(studentNames) {
     var key, html = "";
     for (key in studentNames) {
         html += '<div class="col col-md-6"><a href="#" data-id="' + key + '" id="student' +
-            key + '" class="fetchData list-group-item list-group-item-action" style= "padding: 10px 15px;">' + studentNames[key] + '</a></div>';
+            key + '" class="fetchData list-group-item list-group-item-action" style= "padding: 10px 15px;">' + studentNames[key]['name'] + '</a></div>';
     }
     return html;
 }
@@ -304,6 +299,9 @@ function getAllData(mode = 0) {
     if (data == null) {
         $.notify("Filter Selection error", "error");
         destination.hide();
+        if(mode == 0) {
+            $('#morris-bar-chart').html('');
+        }
         return;
     }
 
@@ -313,7 +311,7 @@ function getAllData(mode = 0) {
         type: 'POST',
         data: {
             programId: data[2],
-            semester: data[3],
+            yearOrSemester: data[3],
             sectionId: data[4],
             startDate: data[0],
             endDate: data[1]
@@ -330,18 +328,28 @@ function getAllData(mode = 0) {
                     $.notify("Problem fetching data.", "error");
                 }
                 if (mode == -1 || mode == 0) {
+                    if(mode == -1) {
+                        $(".filter_table_val").hide();
+                    }else {
+                        $(".filter_bar_val").hide();
+                    }
                     destination.html(html);
                 }
                 destination.show();
                 return;
             } else if (decode.success == false) {
-                var html = 'Error occured!';
+                var html = '<p style= "margin-left : 10px;">Error occured : ';
                 if (decode.error != undefined) {
                     $.notify(decode.error, "error");
+                    html += decode.error;
                 } else {
                     $.notify("Problem fetching informations.", "error");
                 }
+                html += '</p>';
                 destination.html(html);
+                if(mode == 0) {
+                    $('#morris-bar-chart').html('');
+                }
                 return;
             }
         },
