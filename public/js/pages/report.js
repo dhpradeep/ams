@@ -115,28 +115,6 @@ $("#filterOverview").click(function() {
     getAllData(0);
 });
 
-percent("default");
-$("#filterOverview2").click(function() {
-    program = $("#filterDataProgram2").val();
-    semester = $("#filterDataSemester2").val();
-    section = $("#filterDataSection2").val();
-    $('#morris-donut-chart').empty();
-
-    if ($("#filterDataProgram2").val() == "-1") {
-        percent();
-    } else {
-        if ($("#filterDataSemester2").val() == "-1") {
-            percent("program")
-        } else {
-            if ($("#filterDataSection2").val() == "-1") {
-                percent("semester")
-            } else {
-                percent("section")
-            }
-        }
-    }
-})
-
 function dateDiff(dt1, dt2) {
     return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) -
         Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
