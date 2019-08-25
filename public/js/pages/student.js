@@ -194,6 +194,7 @@ function create_student(data = null) {
 }
 
 $(document).ready(function() {
+    $('#toExport').hide();
     refresh();
 });
 
@@ -474,74 +475,106 @@ function format(d) {
         '</table>';
 }
 
-function get_keys(data) {
-    var arr = [];
-    for (var i in data) {
-        arr.push(i);
-    }
-    return arr;
-}
-
 function export_format(data) {
-    var index;
-    if (data.length > 0) {
-        index = get_keys(data[0]);
-    } else {
+    var arr = {
+        name : "Fullname",
+        programName : "Program",
+        yearOrSemester : "Semester / Year",
+        sectionName : "Section",
+        dobAd : "Date of Birth (AD)",
+        genderName : "Gender",
+        nationality : "Nationality",
+        fatherName : "Father's name",
+        municipality : "Municipality",
+        wardNo : "Ward No",
+        area : "Area",
+        district : "District",
+        zone : "Zone",
+        mobileNo : "Mobile",
+        telephoneNo : "Telephone",
+        guardianName : "Guardian Name",
+        guardianRelation : "Guardian Relation",
+        guardianContact : "Guardian Contact",
+        levelName : "Level",
+        board : "Board",
+        faculty : "Faculty",
+        yearOfCompletion : "Year",
+        percent : "Percent / GPA",
+        institution : "Institute"
+    };
+
+    if (data.length <= 0){
         $.notify("No data to export!");
         return;
     }
     var doc = "<table border='1'><tr>";
-    for (i = 0; i < index.length; i++) {
-        doc += "<th>" + index[i] + "</th>";
+    var key;
+    for (key in arr) {
+        doc += "<th>" + arr[key] + "</th>";
     }
     doc += "</tr>";
     for (i = 0; i < data.length; i++) {
         doc += "<tr>";
-        for (j = 0; j < index.length; j++) {
-            if (data[i][index[j]] == undefined) {
+
+        for(key in arr) {
+            if(data[i][key] == undefined) {
                 doc += "<td></td>";
             } else {
-                doc += "<td>" + data[i][index[j]] + "</td>";
+                doc += "<td>" + data[i][key] + "</td>";
             }
         }
         doc += "</tr>";
     }
 
     doc += "</table>";
-
-    exportTableToExcel(doc, "studentData");
+    $('#toExport').html(doc);
+    exportTableToCSV("studentData.csv");
 
 }
 
-
-function exportTableToExcel(doc, filename = null) {
+function downloadCSV(csv, filename) {
+    var csvFile;
     var downloadLink;
-    var dataType = 'application/vnd.ms-excel';
-    var tableHTML = doc.replace(/ /g, '%20');
 
-    // Specify file name
-    filename = filename ? filename + '.xls' : 'excel_data.xls';
+    // CSV file
+    csvFile = new Blob([csv], { type: "text/csv" });
 
-    // Create download link element
+    // Download link
     downloadLink = document.createElement("a");
 
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
     document.body.appendChild(downloadLink);
 
-    if (navigator.msSaveOrOpenBlob) {
-        var blob = new Blob(['\ufeff', tableHTML], {
-            type: dataType
-        });
-        navigator.msSaveOrOpenBlob(blob, filename);
-    } else {
-        // Create a link to the file
-        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+    // Click download link
+    downloadLink.click();
+}
 
-        // Setting the file name
-        downloadLink.download = filename;
 
-        //triggering the function
-        downloadLink.click();
+function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("#toExport table tr");
+
+    for (var i = 0; i < rows.length; i++) {
+        var row = [],
+            cols = rows[i].querySelectorAll("td, th");
+
+        for (var j = 0; j < cols.length; j++)
+            row.push(cols[j].innerText);
+
+        csv.push(row.join(","));
     }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
 }
 
 function print_to_excel(data) {

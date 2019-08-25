@@ -29,6 +29,9 @@
     <div id="page-wrapper" <?php if(!Session::isLoggedIn(1)) echo 'class = "page-wrapperUser"'?>>
       <div class="container-fluid">
         <div class="row" style="margin:20px auto;">
+          <div class="col-lg-12">
+                    <h2 class="page-header">Attendance</h2>
+          </div>
           <div class="col-md-2">
             <form role="form" class="form-group">
               <label for="currentdate">Current Date</label>
@@ -57,15 +60,17 @@
                           <h4 class="panel-title">
                               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?=$value['id']?>" aria-expanded="true" aria-controls="collapseOne">
                                   <i class="more-less glyphicon glyphicon-plus"></i>
-                                  <?= $value['name'] ?> 
+                                  <?= $value['name'] ?> | <b>Year/Semester :</b><?= $value['yearOrSemester'] ?> | <?= $value['sectionName'] ?>
                               </a>
                           </h4>
                       </div>
                       <div id="collapse<?=$value['id']?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                           <div class="panel-body"><p>
-                                Details : <?= $value['details'] ?>
+                                <b>Program :</b> <?= $value['programName'] ?>
+                                <br>
+                                <b>Details :</b> <?= $value['details'] ?>
 
-                                </p><a href="#" data-id='<?= $value['id'] ?>' class="btn btn-info text-center fetchAttendance" role="button">Select This</a>
+                                </p><a href="#" data-id='<?= $value['id'] ?>' class="btn btn-info text-center fetchAttendance" role="button">Select</a>
                           </div>
                       </div>
                   </div> 

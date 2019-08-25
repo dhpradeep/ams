@@ -30,6 +30,14 @@ class Attendance extends Controller {
 					foreach ($subjects as $key => $value) {
 						$one = $this->model->getData('subjects', array('id' => $value['subjectId']));
 						if($one != null) {
+							$programDetail = $this->model->getData('program', array('id' => $one['programId']));
+							if($programDetail != null) {
+								$one['programName'] = $programDetail['name'];
+							}
+							$sectionDetail = $this->model->getData('section', array('id' => $one['sectionId']));
+							if($sectionDetail != null) {
+								$one['sectionName'] = $sectionDetail['name'];
+							}
 							array_push($subjectsDetails, $one);
 						}
 					}

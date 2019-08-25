@@ -139,7 +139,7 @@
         </div>
         <!-- /#page-wrapper -->
 
-        <div id="mytable"></div>
+        <div id="toExport"></div>
 
         <!-- modals -->
      <?php include(MODALS_DIR.DS.'student.php'); ?>
