@@ -93,6 +93,8 @@ function sendData(status, subjectId, date) {
                 var decode = JSON.parse(response);
                 if (decode.success == true) {
                     $.notify("Successfully saved in database", "success");
+                    $("#tableToHide").html("");
+                    $("#tableToHide").hide();
                     return;   
                 } else if (decode.success == false) {
                     if(decode.error != undefined) {

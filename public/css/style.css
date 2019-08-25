@@ -86,6 +86,16 @@ input:checked + .slider:before {
   transform: translateX(18px);
 }
 
+#wrapper {
+    padding-bottom: 30px;
+}
+
+@media(min-width:768px) {
+    .page-wrapperUser {
+        margin: 0 0 0 0 !important;
+    }
+}
+
 /* Rounded sliders */
 .slider.round {
   border-radius: 34px;

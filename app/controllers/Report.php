@@ -60,7 +60,7 @@ class Report extends Controller {
 					$allUsersId = array();
 					foreach ($records as $userId => $subArray) {					
 						foreach ($subArray as $subjectId => $value) {
-							$records[$userId][$subjectId] = rand(15,30); //count($this->model->rangeData("attendance" ,"date",$startDate,$endDate, array('userId' => $userId, "subjectId" => $subjectId, "status" => 1)));
+							$records[$userId][$subjectId] = count($this->model->rangeData("attendance" ,"date",$startDate,$endDate, array('userId' => $userId, "subjectId" => $subjectId, "status" => 1)));
 							array_push($allSubjectsId, $subjectId);
 							array_push($allUsersId, $userId);
 						}

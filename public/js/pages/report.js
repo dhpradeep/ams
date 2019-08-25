@@ -267,10 +267,8 @@ function getTable(subjectNames, studentNames, records) {
 function getList(studentNames) {
     var key, html = "";
     for(key in studentNames) {
-        for (var i = 20; i >= 0; i--) {
-            html += '<div class="col col-md-6"><a href="#" data-id="'+key+'" id="student'
+        html += '<div class="col col-md-6"><a href="#" data-id="'+key+'" id="student'
             +key+'" class="fetchData list-group-item list-group-item-action" style= "padding: 10px 15px;">'+studentNames[key]+'</a></div>';
-        }
     }
     return html;
 }

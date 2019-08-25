@@ -1,6 +1,4 @@
-<?php
-    if(Session::isLoggedIn(1) || Session::isLoggedIn(2)) {
-?>
+
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
@@ -30,9 +28,6 @@
                     </li>
                 </ul>
             </li>
-            <?php
-                if(Session::isLoggedIn(1)) {
-            ?>
             <li>
                 <a href="#"><i class="fa fa-wrench fa-fw"></i> Settings<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -45,7 +40,6 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
-            <?php } ?>
             <li>
                 <a href="#"><i class="fa fa-files-o fa-fw"></i> Reports<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -55,10 +49,10 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            <li>
+                <a href="<?= SITE_URL?>/attendance"><i class="fa fa-table fa-fw"></i>Attendance</a>
+            </li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->
 </div>
-<?php
-    }
-?>

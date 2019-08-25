@@ -6,13 +6,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="<?=SITE_URL?>">
            <?= WEBSITE_TITLE ?>
         </a>
     </div>
     <!-- /.navbar-header -->
     <?php include(INCLUDES_DIR.DS.'navbar-top-links.php') ?>
     <!-- /.navbar-top-links -->
-    <?php include(INCLUDES_DIR.DS.'panel.php') ?>
+    <?php if(Session::isLoggedIn(1)) include(INCLUDES_DIR.DS.'panel.php'); ?>
     <!-- /.navbar-static-side -->
 </nav>

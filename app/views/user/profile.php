@@ -14,6 +14,7 @@
     <link href="<?= BOWER_DIR ?>/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?= CSS_DIR ?>/sb-admin-2.css" rel="stylesheet">
+    <link href="<?= CSS_DIR ?>/style.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="<?= BOWER_DIR ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
@@ -23,7 +24,7 @@
         <!-- Navigation -->
         <?php include(INCLUDES_DIR.DS.'nav-bar.php'); ?>
 
-        <div id="page-wrapper">
+        <div id="page-wrapper" <?php if(!Session::isLoggedIn(1)) echo 'class = "page-wrapperUser"'?>>
             <div class="row">
                 <div class="col-lg-12">
                     <h2 class="page-header">Profile</h2>

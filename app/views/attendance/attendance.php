@@ -24,15 +24,15 @@
 <body>
   <div id="wrapper">
     <!-- Navigation -->
-    <?php include(INCLUDES_DIR.DS.'navbar-top-links.php'); ?>
+    <?php include(INCLUDES_DIR.DS.'nav-bar.php'); ?>
     <!-- Page Wrapper -->
-    <div id="page-wrapper" style="margin: 0 auto;">
+    <div id="page-wrapper" <?php if(!Session::isLoggedIn(1)) echo 'class = "page-wrapperUser"'?>>
       <div class="container-fluid">
         <div class="row" style="margin:20px auto;">
           <div class="col-md-2">
             <form role="form" class="form-group">
               <label for="currentdate">Current Date</label>
-              <input type="date" id="currentdate" max="<?= date("Y-m-d") ?>" name="currentdate"   class="form-control"/>
+              <input type="date" id="currentdate" min="2019-01-01" max="<?= date("Y-m-d") ?>" name="currentdate" value="<?= date("Y-m-d") ?>" class="form-control"/>
             </form>
           </div>
           <div class="col-md-6"></div>
@@ -84,15 +84,6 @@
           </div>
           <div class="col-md-6">
           </div>
-        </div>
-        <div>
-            <?php
-              if(Session::isloggedIn(1)) {
-              ?>
-              <span style="font-size:18px; margin-left: 20px 10px;"><a href="<?= SITE_URL ?>/home/dashboard"> Click here for Admin View </a></span>
-              <?php
-              }
-             ?>
         </div>
       </div>
     </div>
