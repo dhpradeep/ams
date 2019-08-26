@@ -19,16 +19,12 @@ class Validator {
         }
     */
     public function check($source, $items = array()) { 
-        $errorMessage = "";
-        foreach($items as $item => $rules) { 
+        foreach($items as $item => $rules) {
             foreach($rules as $rule => $rule_value) {
                 $value = htmlentities(trim($source[$item]," "), ENT_QUOTES, 'UTF-8');
 
                 if($rule === 'name') {
                     $itemName = $rule_value;
-                }
-                if($rule == 'userDefinedError') {
-                    $errorMessage = $rule_value;
                 }
 
                 if($rule == 'matchName') {
@@ -40,57 +36,50 @@ class Validator {
                     switch($rule) {
                         case 'min':
                             if(strlen($value) < $rule_value) {
-                                $errorMessage = ($errorMessage == "") ? "{$itemName} must be a minimum of {$rule_value} characters." : $errorMessage;
-                                $this->addError($errorMessage);
+                                $this->addError("{$itemName} must be a minimum of {$rule_value} characters.");
                             }
                             break;
                         case 'max':
                             if(strlen($value) > $rule_value) {
-                                $errorMessage = ($errorMessage == "") ? "{$itemName} must be a maximum of {$rule_value} characters." : $errorMessage;
-                                $this->addError($errorMessage);
+                                $this->addError("{$itemName} must be a maximum of {$rule_value} characters.");
                             }
                             break;
                         case 'minLevel':
                             if($value < $rule_value) {
-                                $errorMessage = ($errorMessage == "") ? "{$itemName} must be a greater than {$rule_value}." : $errorMessage;
-                                $this->addError($errorMessage);
+                                $this->addError("{$itemName} must be a greater than {$rule_value}.");
                             }
                             break;
                         case 'maxLevel':
                             if($value > $rule_value) {
-                                $errorMessage = ($errorMessage == "") ? "{$itemName} must be a smaller than {$rule_value}." : $errorMessage;
-                                $this->addError($errorMessage);
+                                $this->addError("{$itemName} must be a smaller than {$rule_value}.");
                             }
                             break;
                         case 'matches':
                             if($value != $source[$rule_value]) {
-                                $errorMessage = ($errorMessage == "") ? $matchName." must match {$itemName}." : $errorMessage;
-                                $this->addError($errorMessage);
+                                $this->addError($matchName." must match {$itemName}.");
                             }
                             break;
                         case 'type':
                             if($rule_value == 'email') {
                                 if (!filter_var($source[$item], FILTER_VALIDATE_EMAIL)) {
-                                    $errorMessage = ($errorMessage == "") ? "Invalid {$itemName} format" : $errorMessage;
-                                    $this->addError($errorMessage);
+                                    $this->addError("Invalid {$itemName} format"); 
                                   }
                             }
                             else if ($rule_value == 'number') {
+                                // validate number
                                 if (!is_numeric($source[$item])) {
-                                    $errorMessage = ($errorMessage == "") ? "{$itemName} should be numeric value." : $errorMessage;
-                                    $this->addError($errorMessage);
+                                    $this->addError("{$itemName} should be numeric value.");
                                 }
                             }
                             else if($rule_value == 'date') {
+                                // validate date
                                 $test_arr  = explode('-', $source[$item]);
                                 if (count($test_arr) == 3) {
                                     if (checkdate($test_arr[0], $test_arr[1], $test_arr[2])) {
-                                        $errorMessage = ($errorMessage == "") ? "{$itemName} should be date." : $errorMessage;
-                                        $this->addError($errorMessage);
+                                        $this->addError("{$itemName} should be date.");
                                     }
                                 }else{
-                                    $errorMessage = ($errorMessage == "") ? "{$itemName} should be date." : $errorMessage;
-                                    $this->addError($errorMessage);
+                                     $this->addError("{$itemName} should be date.");
                              }
                         }
                     }
