@@ -3,27 +3,27 @@ $('#addProgram').on('hidden.bs.modal', function(e) {
 });
 
 function create_program(data = null) {
-    if(data != null) {
-        $("#pid").data('id',data.id);
+    if (data != null) {
+        $("#pid").data('id', data.id);
         $('#name').val(data.name);
         $('#details').val(data.details);
         $("#noOfYearOrSemester").val(data.noOfYearOrSemester);
-        if(data.yearOrSemester == 1) {
+        if (data.yearOrSemester == 1) {
             $("#semesterSelected").prop("checked", true);
-        }else {
+        } else {
             $("#yearSelected").prop("checked", true);
         }
         $("#saveBtn")[0].innerHTML = "Update";
         $('#addProgram').modal('show');
-    }else{
+    } else {
         $("#saveBtn")[0].innerHTML = "Add";
-               
+
         $('#addProgram').modal('show');
     }
 }
 
 function resetFields() {
-    $("#pid").data('id','-1');
+    $("#pid").data('id', '-1');
     $("#yearSelected").prop("checked", true);
     $("#noOfYearOrSemester").val('2');
     $('#name').val('');
@@ -37,7 +37,7 @@ $(document).ready(function() {
 $(document).on("click", "#saveBtn", function(e) {
     e.preventDefault();
     var btn = $('#saveBtn')[0].innerHTML;
-    if(btn == "Update") {
+    if (btn == "Update") {
         updateProgram();
     } else {
         addProgram();
@@ -92,18 +92,18 @@ $(document).on("click", ".remove-icon", function(e) {
 });
 
 function updateProgram() {
-     $('input[type="text"]').each(function() {
+    $('input[type="text"]').each(function() {
         $(this).val($(this).val().trim());
     });
-    if($("#yearSelected").prop("checked") == true){
+    if ($("#yearSelected").prop("checked") == true) {
         yearOrSemester = 0;
-    }else {
+    } else {
         yearOrSemester = 1;
     }
 
 
     var id = $('#pid').data('id');
-    if(id > 0) {
+    if (id > 0) {
         $.ajax({
             url: '../manage/program/update',
             async: true,
@@ -124,9 +124,9 @@ function updateProgram() {
                     $.notify("Record successfully updated", "success");
                 } else if (decode.success === false) {
                     decode.errors.forEach(function(element) {
-                      $.notify(element, "error");
+                        $.notify(element, "error");
                     });
-                    if(decode.status === -1) $('#addProgram').modal('hide');
+                    if (decode.status === -1) $('#addProgram').modal('hide');
                     return;
                 }
             },
@@ -142,18 +142,18 @@ function updateProgram() {
             }
         });
     }
-    
+
 }
 
-function addProgram(){
+function addProgram() {
 
     $('input[type="text"]').each(function() {
         $(this).val($(this).val().trim());
     });
 
-    if($("#yearSelected").prop("checked") == true){
+    if ($("#yearSelected").prop("checked") == true) {
         yearOrSemester = 0;
-    }else {
+    } else {
         yearOrSemester = 1;
     }
 
@@ -162,10 +162,10 @@ function addProgram(){
         async: true,
         type: 'POST',
         data: {
-                name: $('#name').val(),
-                details: $('#details').val(),
-                noOfYearOrSemester: $('#noOfYearOrSemester').val(),
-                yearOrSemester: yearOrSemester
+            name: $('#name').val(),
+            details: $('#details').val(),
+            noOfYearOrSemester: $('#noOfYearOrSemester').val(),
+            yearOrSemester: yearOrSemester
         },
         success: function(response) {
             var decode = JSON.parse(response);
@@ -175,9 +175,9 @@ function addProgram(){
                 $.notify("Record successfully saved", "success");
             } else if (decode.success === false) {
                 decode.errors.forEach(function(element) {
-                  $.notify(element, "error");
+                    $.notify(element, "error");
                 });
-                if(decode.status == -1) $('#addProgram').modal('hide');
+                if (decode.status == -1) $('#addProgram').modal('hide');
                 return;
             }
         },
@@ -195,71 +195,79 @@ function addProgram(){
 }
 
 function deletedata(id) {
-     $.ajax({
-            url: '../manage/program/delete',
-            async: true,
-            type: 'POST',
-            data: {
-                id: id
-            },
-            success: function(response) {
-                var decode = JSON.parse(response);
-                if (decode.success == true) {
-                    refresh();
-                    $.notify("Record successfully updated", "success");
-                } else if (decode.success === false) {
-                    decode.errors.forEach(function(element) {
-                      $.notify(element, "error");
-                    });
-                    return;
-                }
-            },
-            error: function(error) {
-                console.log("Error:");
-                console.log(error.responseText);
-                console.log(error.message);
-                if (error.responseText) {
-                    var msg = JSON.parse(error.responseText)
-                    $.notify(msg.msg, "error");
-                }
+    $.ajax({
+        url: '../manage/program/delete',
+        async: true,
+        type: 'POST',
+        data: {
+            id: id
+        },
+        success: function(response) {
+            var decode = JSON.parse(response);
+            if (decode.success == true) {
+                refresh();
+                $.notify("Record successfully updated", "success");
+            } else if (decode.success === false) {
+                decode.errors.forEach(function(element) {
+                    $.notify(element, "error");
+                });
                 return;
             }
+        },
+        error: function(error) {
+            console.log("Error:");
+            console.log(error.responseText);
+            console.log(error.message);
+            if (error.responseText) {
+                var msg = JSON.parse(error.responseText)
+                $.notify(msg.msg, "error");
+            }
+            return;
+        }
     });
 }
 
-function getAllData(){
+function getAllData() {
     $("#programTable").dataTable().fnDestroy();
-    var table = $('#programTable').DataTable( {
+    var table = $('#programTable').DataTable({
+        rowReorder: {
+            selector: 'td:nth-child(2)'
+        },
         "processing": true,
         "serverSide": true,
         "ajax": {
             "url": "../manage/program/get",
             "type": "POST"
         },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
         "columns": [
             { "data": "name" },
-            {   
-                 sortable: false,
-                 "render": function ( data, type, row, meta ) {
+            {
+                sortable: false,
+                "render": function(data, type, row, meta) {
                     return (row.yearOrSemester == 1) ? "Semester" : "Year";
-                 }
+                }
             },
             { "data": "noOfYearOrSemester" },
             { "data": "details" },
-            {   
-                 sortable: false,
-                 "render": function ( data, type, row, meta ) {
-                    return "<a data-id="+ row.id +" class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i> </a><a data-id="+ row.id +" class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
-                 }
+            {
+                sortable: false,
+                "render": function(data, type, row, meta) {
+                    return "<a data-id=" + row.id + " class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i> </a><a data-id=" + row.id + " class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
+                }
             }
         ],
-        "order": [[1, 'asc']]
-    } );
+        "order": [
+            [1, 'asc']
+        ]
+    });
 
-    $('#programTable tbody').on('click', '.edit-icon', function () {
+    $('#programTable tbody').on('click', '.edit-icon', function() {
         var tr = $(this).closest('tr');
-        var row = table.row( tr );
+        var row = table.row(tr);
         create_program(row.data());
-    } );
+    });
 }

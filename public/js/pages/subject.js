@@ -2,135 +2,138 @@ $('#addSubject').on('hidden.bs.modal', function(e) {
     resetFields();
 });
 
-$("#programId").change(function () {
+$("#programId").change(function() {
     semesterAddFunction($(this));
     sectionAddFunction();
 });
 
 
-$("#filterDataProgram").change(function () {
+$("#filterDataProgram").change(function() {
     semesterAddFunction($(this), 1);
     sectionAddFunction(null, 1);
     getAllData();
 });
 
-$("#filterDataSemester").change(function () {
+$("#filterDataSemester").change(function() {
     sectionAddFunction($(this), 1);
     getAllData();
 });
 
-$("#filterDataSection").change(function () {
+$("#filterDataSection").change(function() {
     getAllData();
 });
 
-$("#yearOrSemester").change(function () {
+$("#yearOrSemester").change(function() {
     sectionAddFunction($(this));
 });
 
 function semesterAddFunction(data = null, mode = 0) {
     var source, destination;
-    if(mode == 0) {
+    if (mode == 0) {
         source = "#programId";
         destination = "#yearOrSemester";
-    }else {
+    } else {
         source = "#filterDataProgram";
         destination = "#filterDataSemester";
     }
 
-    if(data == null) {
+    if (data == null) {
         data = $(source);
     }
     var totals = data.find(':selected').data("no");
-     var html = '<option data-value="-1" value="-1">None</option>';
-     if(totals > 0) {
+    var html = '<option data-value="-1" value="-1">None</option>';
+    if (totals > 0) {
         for (var i = 1; i <= totals; i++) {
-            html += '<option data-value="'+i+'" value="'+i+'">'+i+'</option>';
+            html += '<option data-value="' + i + '" value="' + i + '">' + i + '</option>';
         }
-     }
-     $(destination).html(html);
+    }
+    $(destination).html(html);
 }
 
 function sectionAddFunction(data = null, mode = 0, value = 0) {
     var source, destination, root;
-    if(mode == 0) {
+    if (mode == 0) {
         root = "#programId";
         source = "#yearOrSemester";
         destination = "#sectionId";
-    }else {
+    } else {
         root = "#filterDataProgram";
         source = "#filterDataSemester";
         destination = "#filterDataSection";
     }
-    if(data == null) {
+    if (data == null) {
         data = $(source);
     }
     var programId = $(root).find(':selected').data("value");
     var yearOrSemester = data.find(':selected').data("value");
-     if(yearOrSemester > 0 && programId > 0) {
+    if (yearOrSemester > 0 && programId > 0) {
         $.ajax({
             url: '../student/all/getSections',
             async: true,
             type: 'POST',
             data: {
                 programId: programId,
-                yearOrSemester: yearOrSemester 
-            } ,
+                yearOrSemester: yearOrSemester
+            },
             success: function(response) {
                 var decode = JSON.parse(response);
                 if (decode.success == true) {
-                    var html = '<option value="-1">None</option>'; 
-                    if(decode.sections.length >= 1) {
+                    var html = '<option value="-1">None</option>';
+                    if (decode.sections.length >= 1) {
                         for (var i = 0; i < decode.sections.length; i++) {
-                            html += '<option value="'+decode.sections[i].id+'">'+decode.sections[i].name+'</option>';
+                            html += '<option value="' + decode.sections[i].id + '">' + decode.sections[i].name + '</option>';
                         }
-                    }else {                       
+                    } else {
                         $.notify("Problem fetching sections for this program and semester/year.");
                     }
                     $(destination).html(html);
-                    if(value != 0) {
+                    if (value != 0) {
                         $(destination).val(value);
                     }
                 } else if (decode.success === false) {
-                    var html = '<option value="-1">None</option>'; 
-                    if(decode.error != undefined) {
+                    var html = '<option value="-1">None</option>';
+                    if (decode.error != undefined) {
                         $.notify(decode.error[0], "error");
-                    }else {
+                    } else {
                         $.notify("Problem fetching sections for this program and semester/year.", "error");
-                    }                 
+                    }
                     $(destination).html(html);
                     return;
                 }
             }
         });
-     }else {
+    } else {
         var html = '<option value="-1">None</option>';
-        $(destination).html(html);            
-     }
+        $(destination).html(html);
+    }
 }
 
 function create_subject(data = null) {
-    if(data != null) {
-        $("#subjectId").data('id',data.id);
+    if (data != null) {
+        $("#subjectId").data('id', data.id);
         $('#name').val(data.name);
         $('#details').val(data.details);
         $("#userId").val(data.userId);
+        $('#userId option:selected').each(function() {
+            $(this).prop('selected', true);
+        });
         $('#programId').val(data.programId);
         semesterAddFunction();
         $('#yearOrSemester').val(data.yearOrSemester);
-        sectionAddFunction(null,0,data.sectionId);
+        sectionAddFunction(null, 0, data.sectionId);
         //$('#sectionId').val(data.sectionId);
 
         $("#saveBtn")[0].innerHTML = "Update";
         $('#addSubject').modal('show');
-    }else{
+    } else {
         $("#saveBtn")[0].innerHTML = "Add";
-               
+
         $('#addSubject').modal('show');
     }
 }
 
 function resetFields() {
-    $("#subjectId").data('id','-1');
+    $("#subjectId").data('id', '-1');
     $('#programId').val('-1');
     semesterAddFunction();
     $('#yearOrSemester').val('-1');
@@ -143,12 +146,18 @@ function resetFields() {
 
 $(document).ready(function() {
     refresh();
+    $('#userId').multiselect({
+        nonSelectedText: 'Select Teacher',
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        buttonWidth: '100px'
+    });
 });
 
 $(document).on("click", "#saveBtn", function(e) {
     e.preventDefault();
     var btn = $('#saveBtn')[0].innerHTML;
-    if(btn == "Update") {
+    if (btn == "Update") {
         updateSubject();
     } else {
         addSubject();
@@ -203,12 +212,12 @@ $(document).on("click", ".remove-icon", function(e) {
 });
 
 function updateSubject() {
-     $('input[type="text"]').each(function() {
+    $('input[type="text"]').each(function() {
         $(this).val($(this).val().trim());
     });
 
     var id = $('#subjectId').data('id');
-    if(id > 0) {
+    if (id > 0) {
         $.ajax({
             url: '../manage/subject/update',
             async: true,
@@ -231,9 +240,9 @@ function updateSubject() {
                     $.notify("Record successfully updated", "success");
                 } else if (decode.success === false) {
                     decode.errors.forEach(function(element) {
-                      $.notify(element, "error");
+                        $.notify(element, "error");
                     });
-                    if(decode.status === -1) $('#addSubject').modal('hide');
+                    if (decode.status === -1) $('#addSubject').modal('hide');
                     return;
                 }
             },
@@ -249,10 +258,10 @@ function updateSubject() {
             }
         });
     }
-    
+
 }
 
-function addSubject(){
+function addSubject() {
 
     $('input[type="text"]').each(function() {
         $(this).val($(this).val().trim());
@@ -278,9 +287,9 @@ function addSubject(){
                 $.notify("Record successfully saved", "success");
             } else if (decode.success === false) {
                 decode.errors.forEach(function(element) {
-                  $.notify(element, "error");
+                    $.notify(element, "error");
                 });
-                if(decode.status == -1) $('#addSubject').modal('hide');
+                if (decode.status == -1) $('#addSubject').modal('hide');
                 return;
             }
         },
@@ -298,41 +307,41 @@ function addSubject(){
 }
 
 function deletedata(id) {
-     $.ajax({
-            url: '../manage/subject/delete',
-            async: true,
-            type: 'POST',
-            data: {
-                id: id
-            },
-            success: function(response) {
-                var decode = JSON.parse(response);
-                if (decode.success == true) {
-                    refresh();
-                    $.notify("Record successfully updated", "success");
-                } else if (decode.success === false) {
-                    decode.errors.forEach(function(element) {
-                      $.notify(element, "error");
-                    });
-                    return;
-                }
-            },
-            error: function(error) {
-                console.log("Error:");
-                console.log(error.responseText);
-                console.log(error.message);
-                if (error.responseText) {
-                    var msg = JSON.parse(error.responseText)
-                    $.notify(msg.msg, "error");
-                }
+    $.ajax({
+        url: '../manage/subject/delete',
+        async: true,
+        type: 'POST',
+        data: {
+            id: id
+        },
+        success: function(response) {
+            var decode = JSON.parse(response);
+            if (decode.success == true) {
+                refresh();
+                $.notify("Record successfully updated", "success");
+            } else if (decode.success === false) {
+                decode.errors.forEach(function(element) {
+                    $.notify(element, "error");
+                });
                 return;
             }
+        },
+        error: function(error) {
+            console.log("Error:");
+            console.log(error.responseText);
+            console.log(error.message);
+            if (error.responseText) {
+                var msg = JSON.parse(error.responseText)
+                $.notify(msg.msg, "error");
+            }
+            return;
+        }
     });
 }
 
-function getAllData(){
+function getAllData() {
     $("#subjectTable").dataTable().fnDestroy();
-    var table = $('#subjectTable').DataTable( {
+    var table = $('#subjectTable').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -340,31 +349,37 @@ function getAllData(){
             "type": "POST",
             "data": {
                 filterDataProgram: $("#filterDataProgram").val(),
-                filterDataSemester: $("#filterDataSemester").val(),              
-                filterDataSection: $("#filterDataSection").val()              
+                filterDataSemester: $("#filterDataSemester").val(),
+                filterDataSection: $("#filterDataSection").val()
             }
         },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
         "columns": [
             { "data": "name" },
-            { "data": "programName", sortable: false},
-            { "data": "yearOrSemester"},
-            { "data": "teachers", sortable: false},
-            { "data": "sectionName", sortable: false},
+            { "data": "programName", sortable: false },
+            { "data": "yearOrSemester" },
+            { "data": "teachers", sortable: false },
+            { "data": "sectionName", sortable: false },
             { "data": "details" },
-            {   
-                 sortable: false,
-                 "render": function ( data, type, row, meta ) {
-                    return "<a data-id="+ row.id +" class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i> </a><a data-id="+ row.id +" class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
-                 }
+            {
+                sortable: false,
+                "render": function(data, type, row, meta) {
+                    return "<a data-id=" + row.id + " class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i> </a><a data-id=" + row.id + " class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
+                }
             }
         ],
-        "order": [[1, 'asc']]
-    } );
+        "order": [
+            [1, 'asc']
+        ]
+    });
 
-    $('#subjectTable tbody').on('click', '.edit-icon', function () {
+
+    $('#subjectTable tbody').on('click', '.edit-icon', function() {
         var tr = $(this).closest('tr');
-        var row = table.row( tr );
+        var row = table.row(tr);
         create_subject(row.data());
-    } );
+    });
 }

@@ -1,6 +1,5 @@
 {
   "name": "datatables",
-  "version": "1.10.7",
   "main": [
     "media/js/jquery.dataTables.js",
     "media/css/jquery.dataTables.css",
@@ -30,13 +29,14 @@
     "package.json"
   ],
   "homepage": "https://github.com/DataTables/DataTables",
-  "_release": "1.10.7",
+  "version": "1.10.19",
+  "_release": "1.10.19",
   "_resolution": {
     "type": "version",
-    "tag": "1.10.7",
-    "commit": "a869e7ef07d924559b01bd3960b542e77173dabb"
+    "tag": "1.10.19",
+    "commit": "cedff8828e4507e36de9dc58e22edff5b8d37dfe"
   },
-  "_source": "git://github.com/DataTables/DataTables.git",
-  "_target": "~1.10.4",
+  "_source": "https://github.com/DataTables/DataTables.git",
+  "_target": ">=1.10.1",
   "_originalSource": "datatables"
 }

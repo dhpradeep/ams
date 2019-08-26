@@ -5,20 +5,14 @@ $(document).ready(function() {
     $('#morris-bar-chart').hide();
 });
 
-$(".filter_bar_val").hide();
 $(".filter_bar").click(function() {
     $(".filter_bar_val").slideToggle();
 });
 
-$(".filter_table_val").hide();
 $(".filter_table").click(function() {
     $(".filter_table_val").slideToggle();
 });
 
-$(".filter_donut_val").hide();
-$(".filter_donut").click(function() {
-    $(".filter_donut_val").slideToggle();
-});
 
 $(document).on("click", "#export_excel", function(e) {
     var id = $(this).data('id');

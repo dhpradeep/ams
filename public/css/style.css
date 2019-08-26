@@ -6,84 +6,91 @@
 
 #page-wrapper {
     padding-top: 10px;
+}
 
-}
 .attFrm {
-  background: #4db6ac!important; 
-  min-height: 80px;
+    background: #4db6ac!important;
+    min-height: 80px;
 }
+
 .attFrm label {
-  font-size: 18px;
-  color:#fff;
+    font-size: 18px;
+    color: #fff;
 }
+
 .attTable thead {
     font-size: 14px;
     font-weight: bold;
     text-transform: uppercase;
     background-color: #4db6ac;
-    color:#fff;  
+    color: #fff;
 }
+
 .attTable th {
     text-align: left;
 }
+
 .attTable td {
     font-size: 14px;
-    color:#337ab7;
+    color: #337ab7;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: left;
 }
+
+
 /*Inputs Css*/
+
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 20px;
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
 }
 
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 15px;
-  width: 15px;
-  left: 4px;
-  top: 2px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    left: 4px;
+    top: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
-input:checked + .slider {
-  background-color: #2196F3;
+input:checked+.slider {
+    background-color: #2196F3;
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(18px);
-  -ms-transform: translateX(18px);
-  transform: translateX(18px);
+input:checked+.slider:before {
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
 }
 
 #wrapper {
@@ -96,44 +103,70 @@ input:checked + .slider:before {
     }
 }
 
+
 /* Rounded sliders */
+
 .slider.round {
-  border-radius: 34px;
+    border-radius: 34px;
 }
 
 .slider.round:before {
-  border-radius: 50%;
+    border-radius: 50%;
 }
+
+
 /* Attendance Panel */
-    .panel-group .panel {
-        border-radius: 0;
-        box-shadow: none;
-        border-color:#EEEEEE;
-    }
 
-    .panel-default > .panel-heading {
-        padding: 0;
-        border-radius: 0;
-        color: #212121;
-        background-color: #FAFAFA;
-        border-color: #EEEEEE;
-    }
+.panel-group .panel {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #EEEEEE;
+}
 
-    .panel-title {
-        font-size: 14px;
-    }
+.panel-default>.panel-heading {
+    padding: 0;
+    border-radius: 0;
+    color: #212121;
+    background-color: #FAFAFA;
+    border-color: #EEEEEE;
+}
 
-    .panel-title > a {
-        display: block;
-        padding: 15px;
-        text-decoration: none;
-    }
+.panel-title {
+    font-size: 14px;
+}
 
-    .more-less {
-        float: right;
-        color: #212121;
-    }
+.panel-title>a {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+}
 
-    .panel-default > .panel-heading + .panel-collapse > .panel-body {
-        border-top-color: #EEEEEE;
+.more-less {
+    float: right;
+    color: #212121;
+}
+
+.panel-default>.panel-heading+.panel-collapse>.panel-body {
+    border-top-color: #EEEEEE;
+}
+
+@media (max-width: 1077px) {
+    .col-sm-4 {
+        margin-top: 5px;
     }
+    .report-small-device {
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 770px) {
+    .role-small-device {
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .subject-small-device {
+        width: 80%;
+    }
+}
