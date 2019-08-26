@@ -1,10 +1,13 @@
 $('#addSection').on('hidden.bs.modal', function(e) {
     resetFields();
 });
+$('body').on('shown.bs.modal', '#addSection', function() {
+    $('input:visible:enabled:first', this).focus();
+})
 
 function create_section(data = null) {
-    if(data != null) {
-        $("#sid").data('id',data.id);
+    if (data != null) {
+        $("#sid").data('id', data.id);
         $('#name').val(data.name);
         $('#details').val(data.details);
         $("#programId").val(data.programId);
@@ -12,15 +15,15 @@ function create_section(data = null) {
         $("#yearOrSemester").val(data.yearOrSemester);
         $("#saveBtn")[0].innerHTML = "Update";
         $('#addSection').modal('show');
-    }else{
+    } else {
         $("#saveBtn")[0].innerHTML = "Add";
-               
+
         $('#addSection').modal('show');
     }
 }
 
 function resetFields() {
-    $("#sid").data('id','-1');
+    $("#sid").data('id', '-1');
     $("#programId").val('-1');
     semesterAddFunction();
     $("#yearOrSemester").val('-1');
@@ -32,7 +35,7 @@ $(document).ready(function() {
     refresh();
 });
 
-$("#programId").change(function () {
+$("#programId").change(function() {
     semesterAddFunction($(this));
 });
 
@@ -49,33 +52,33 @@ $(document).on("change", "#filterDataSemester", function(e) {
 
 function semesterAddFunction(data = null, mode = 0) {
     var source, destination;
-    if(mode == 0) {
+    if (mode == 0) {
         source = $('#programId');
         destination = $('#yearOrSemester');
-    }else if(mode == 1) {
+    } else if (mode == 1) {
         source = $('#filterData');
         destination = $('#filterDataSemester');
     }
-     if(data == null) {
+    if (data == null) {
         data = source;
     }
     var totals = data.find(':selected').data("no");
-     var html;
-     if(totals <= 0) {
+    var html;
+    if (totals <= 0) {
         html = '<option value="-1">None</option>';
-     }else {
+    } else {
         html = '<option value="-1">None</option>';
         for (var i = 1; i <= totals; i++) {
-            html += '<option value="'+i+'">'+i+'</option>';
+            html += '<option value="' + i + '">' + i + '</option>';
         }
-     }
-     destination.html(html);
+    }
+    destination.html(html);
 }
 
 $(document).on("click", "#saveBtn", function(e) {
     e.preventDefault();
     var btn = $('#saveBtn')[0].innerHTML;
-    if(btn == "Update") {
+    if (btn == "Update") {
         updateSection();
     } else {
         addSection();
@@ -130,12 +133,12 @@ $(document).on("click", ".remove-icon", function(e) {
 });
 
 function updateSection() {
-     $('input[type="text"]').each(function() {
+    $('input[type="text"]').each(function() {
         $(this).val($(this).val().trim());
     });
 
     var id = $('#sid').data('id');
-    if(id > 0) {
+    if (id > 0) {
         $.ajax({
             url: '../manage/section/update',
             async: true,
@@ -156,9 +159,9 @@ function updateSection() {
                     $.notify("Record successfully updated", "success");
                 } else if (decode.success === false) {
                     decode.errors.forEach(function(element) {
-                      $.notify(element, "error");
+                        $.notify(element, "error");
                     });
-                    if(decode.status === -1) $('#addSection').modal('hide');
+                    if (decode.status === -1) $('#addSection').modal('hide');
                     return;
                 }
             },
@@ -174,10 +177,10 @@ function updateSection() {
             }
         });
     }
-    
+
 }
 
-function addSection(){
+function addSection() {
 
     $('input[type="text"]').each(function() {
         $(this).val($(this).val().trim());
@@ -201,9 +204,9 @@ function addSection(){
                 $.notify("Record successfully saved", "success");
             } else if (decode.success === false) {
                 decode.errors.forEach(function(element) {
-                  $.notify(element, "error");
+                    $.notify(element, "error");
                 });
-                if(decode.status == -1) $('#addSection').modal('hide');
+                if (decode.status == -1) $('#addSection').modal('hide');
                 return;
             }
         },
@@ -221,41 +224,41 @@ function addSection(){
 }
 
 function deletedata(id) {
-     $.ajax({
-            url: '../manage/section/delete',
-            async: true,
-            type: 'POST',
-            data: {
-                id: id
-            },
-            success: function(response) {
-                var decode = JSON.parse(response);
-                if (decode.success == true) {
-                    refresh();
-                    $.notify("Record successfully updated", "success");
-                } else if (decode.success === false) {
-                    decode.errors.forEach(function(element) {
-                      $.notify(element, "error");
-                    });
-                    return;
-                }
-            },
-            error: function(error) {
-                console.log("Error:");
-                console.log(error.responseText);
-                console.log(error.message);
-                if (error.responseText) {
-                    var msg = JSON.parse(error.responseText)
-                    $.notify(msg.msg, "error");
-                }
+    $.ajax({
+        url: '../manage/section/delete',
+        async: true,
+        type: 'POST',
+        data: {
+            id: id
+        },
+        success: function(response) {
+            var decode = JSON.parse(response);
+            if (decode.success == true) {
+                refresh();
+                $.notify("Record successfully updated", "success");
+            } else if (decode.success === false) {
+                decode.errors.forEach(function(element) {
+                    $.notify(element, "error");
+                });
                 return;
             }
+        },
+        error: function(error) {
+            console.log("Error:");
+            console.log(error.responseText);
+            console.log(error.message);
+            if (error.responseText) {
+                var msg = JSON.parse(error.responseText)
+                $.notify(msg.msg, "error");
+            }
+            return;
+        }
     });
 }
 
-function getAllData(){
+function getAllData() {
     $("#sectionTable").dataTable().fnDestroy();
-    var table = $('#sectionTable').DataTable( {
+    var table = $('#sectionTable').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -266,27 +269,33 @@ function getAllData(){
                 filterDataSemester: $("#filterDataSemester").val()
             }
         },
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
         "columns": [
             { "data": "name" },
-            { "data": "programName" ,
+            {
+                "data": "programName",
                 sortable: false
             },
             { "data": "yearOrSemester" },
             { "data": "details" },
-            {   
-                 sortable: false,
-                 "render": function ( data, type, row, meta ) {
-                    return "<a data-id="+ row.id +" class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i> </a><a data-id="+ row.id +" class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
-                 }
+            {
+                sortable: false,
+                "render": function(data, type, row, meta) {
+                    return "<a data-id=" + row.id + " class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i> </a><a data-id=" + row.id + " class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
+                }
             }
         ],
-        "order": [[1, 'asc']]
-    } );
+        "order": [
+            [1, 'asc']
+        ]
+    });
 
-    $('#sectionTable tbody').on('click', '.edit-icon', function () {
+    $('#sectionTable tbody').on('click', '.edit-icon', function() {
         var tr = $(this).closest('tr');
-        var row = table.row( tr );
+        var row = table.row(tr);
         create_section(row.data());
-    } );
+    });
 }

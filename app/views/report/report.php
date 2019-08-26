@@ -177,7 +177,7 @@
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-xs-12 report-small-device">
                                         <div class="input-group"> <span class="input-group-addon">Date: </span>
-                                            <input onfocus="blur();" class="form-control" id="filterDataDate" type="text" name="daterange" value="" />
+                                            <input class="form-control" id="filterDataDate" type="text" name="daterange" value="" />
                                         </div>
                                     </div>
                                 </div>

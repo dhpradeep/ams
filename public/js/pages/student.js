@@ -1,6 +1,9 @@
 $('#addStudent').on('hidden.bs.modal', function(e) {
     resetFields();
 });
+$('body').on('shown.bs.modal', '#addStudent', function() {
+    $('input:visible:enabled:first', this).focus();
+})
 
 $(".next").click(function() { $('#tabList li.active').next('li').find('a').trigger('click') });
 $(".previous").click(function() { $('#tabList li.active').prev('li').find('a').trigger('click') });

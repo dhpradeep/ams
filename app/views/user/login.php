@@ -33,8 +33,11 @@
 </head>
 
 <body>
-
-    <div class="container">
+    <noscript>
+        <center>Please enable Javascript to use this system.</center>
+    </noscript>
+    
+    <div id="login-body" class="container" style="display: none">
         <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-primary">
                 <div class="panel-heading">
@@ -79,6 +82,10 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
+
+    <script>
+        document.getElementById("login-body").style.display = "block";
+    </script>
 
 </body>
 

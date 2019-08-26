@@ -1,6 +1,9 @@
 $('#addSubject').on('hidden.bs.modal', function(e) {
     resetFields();
 });
+$('body').on('shown.bs.modal', '#addSubject', function() {
+    $('input:visible:enabled:first', this).focus();
+})
 
 $("#programId").change(function() {
     semesterAddFunction($(this));

@@ -99,7 +99,7 @@
                                     <option value="-1" name="None"> None </option>
                                 </select>
                             </div>
-                            <div style="float:right" class="input-group col-md-2 col-sm-4 col-xs-12">
+                            <div class="input-group col-md-2 col-sm-4 col-xs-12 export-to-excel">
                             <a onclick="getAllData(2)" class="btn btn-success">Export to excel</a>
                             </div>
                         </form>
@@ -145,6 +145,9 @@
                             Student Settings
                         </div>
                         <div class="panel-body">
+                            <div class="col-md-12" style="padding-left: 0px;">
+                                <p class="text-info">Upgrade final semester students to graduate.</p>
+                            </div>
                             <form>
                                 <div class="form-group col-md-12 input-group"> <span class="input-group-addon">Program: </span>
                                     <select class="form-control" id="upgradeProgram" name="upgradeProgram" style="width: 100px">

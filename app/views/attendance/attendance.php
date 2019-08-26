@@ -58,7 +58,7 @@
 
                   <div class="panel panel-default attendance-panel-default">
                       <div class="panel-heading attendance-panel-heading" role="tab" id="headingOne">
-                          <h4 class="panel-title">
+                          <h4 class="panel-title attendance-panel-title">
                               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?=$value['id']?>" aria-expanded="true" aria-controls="collapseOne">
                                   <i class="more-less glyphicon glyphicon-plus"></i>
                                   <?= $value['name'] ?> | <b>Year/Semester :</b><?= $value['yearOrSemester'] ?> | <?= $value['sectionName'] ?>

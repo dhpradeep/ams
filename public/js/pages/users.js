@@ -2,7 +2,11 @@ function create_user(data = null) {
     $('#adduser').modal('show');
 }
 
-$( document ).ready(function() {
+$('body').on('shown.bs.modal', '#adduser', function() {
+    $('input:visible:enabled:first', this).focus();
+})
+
+$(document).ready(function() {
     refresh();
 });
 
@@ -34,47 +38,47 @@ $(document).on("change", ".change-role", function(e) {
     updateUser(id, role);
 });
 
-$(document).on("click", "#saveBtn", function(e){
+$(document).on("click", "#saveBtn", function(e) {
     e.preventDefault();
     addUser();
 });
 
 function updateUser(id, role) {
     $.ajax({
-            url: '../user/users/update',
-            async: true,
-            type: 'POST',
-            data: {
-                id: id,
-                role: role
-            },
-            success: function(response) {
-                animate(300);
-                var decode = JSON.parse(response);
-                if (decode.success == true) {
-                    $.notify("Record successfully updated", "success");
-                } else if (decode.success === false) {
-                    decode.errors.forEach(function(element) {
-                      $.notify(element, "error");
-                    });
-                    if(decode.status === -1) $('#adduser').modal('hide');
-                    return;
-                }
-            },
-            error: function(error) {
-                console.log("Error:");
-                console.log(error.responseText);
-                console.log(error.message);
-                if (error.responseText) {
-                    var msg = JSON.parse(error.responseText)
-                    $.notify(msg.msg, "error");
-                }
+        url: '../user/users/update',
+        async: true,
+        type: 'POST',
+        data: {
+            id: id,
+            role: role
+        },
+        success: function(response) {
+            animate(300);
+            var decode = JSON.parse(response);
+            if (decode.success == true) {
+                $.notify("Record successfully updated", "success");
+            } else if (decode.success === false) {
+                decode.errors.forEach(function(element) {
+                    $.notify(element, "error");
+                });
+                if (decode.status === -1) $('#adduser').modal('hide');
                 return;
             }
-        });
+        },
+        error: function(error) {
+            console.log("Error:");
+            console.log(error.responseText);
+            console.log(error.message);
+            if (error.responseText) {
+                var msg = JSON.parse(error.responseText)
+                $.notify(msg.msg, "error");
+            }
+            return;
+        }
+    });
 }
 
-function addUser(){
+function addUser() {
 
     $('input[type="text"]').each(function() {
         $(this).val($(this).val().trim());
@@ -102,9 +106,9 @@ function addUser(){
                 $.notify("Record successfully saved", "success");
             } else if (decode.success === false) {
                 decode.errors.forEach(function(element) {
-                  $.notify(element, "error");
+                    $.notify(element, "error");
                 });
-                if(decode.status == -1) $('#adduser').modal('hide');
+                if (decode.status == -1) $('#adduser').modal('hide');
                 return;
             }
         },
@@ -122,35 +126,35 @@ function addUser(){
 }
 
 function deletedata(id) {
-     $.ajax({
-            url: '../user/users/delete',
-            async: true,
-            type: 'POST',
-            data: {
-                id: id
-            },
-            success: function(response) {
-                var decode = JSON.parse(response);
-                if (decode.success == true) {
-                    refresh();
-                    $.notify("Record successfully updated", "success");
-                } else if (decode.success === false) {
-                    decode.errors.forEach(function(element) {
-                      $.notify(element, "error");
-                    });
-                    return;
-                }
-            },
-            error: function(error) {
-                console.log("Error:");
-                console.log(error.responseText);
-                console.log(error.message);
-                if (error.responseText) {
-                    var msg = JSON.parse(error.responseText)
-                    $.notify(msg.msg, "error");
-                }
+    $.ajax({
+        url: '../user/users/delete',
+        async: true,
+        type: 'POST',
+        data: {
+            id: id
+        },
+        success: function(response) {
+            var decode = JSON.parse(response);
+            if (decode.success == true) {
+                refresh();
+                $.notify("Record successfully updated", "success");
+            } else if (decode.success === false) {
+                decode.errors.forEach(function(element) {
+                    $.notify(element, "error");
+                });
                 return;
             }
+        },
+        error: function(error) {
+            console.log("Error:");
+            console.log(error.responseText);
+            console.log(error.message);
+            if (error.responseText) {
+                var msg = JSON.parse(error.responseText)
+                $.notify(msg.msg, "error");
+            }
+            return;
+        }
     });
 }
 
@@ -159,7 +163,7 @@ $(document).on("change", "#filterData", function(e) {
     getAllData();
 });
 
-function sleep (time) {
+function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
@@ -173,50 +177,54 @@ function animate(sec) {
     }).spin(target);
 
     sleep(sec).then(() => {
-       // $.notify("All records display", "info");
+        // $.notify("All records display", "info");
         spinner.stop();
     });
     return;
 }
 
 function refresh() {
-   getAllData();
-   animate(500);
+    getAllData();
+    animate(500);
 }
 
-function getAllData(){
-   
-                            $("#userTable").dataTable().fnDestroy();
-                             $('#userTable').DataTable( {
-                                "processing": true,
-                                "serverSide": true,
-                                "ajax": {
-                                    "url": "../user/users/get",
-                                    "type": "POST",
-                                    "data": {
-                                        filterData : $("#filterData").val()
-                                    }
-                                },
-                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                                "columns": [
-                                    { "data": "name" },
-                                    { "data": "username" },
-                                    { "data": "email" },
-                                    {  "data" : "role",
-                                         sortable: true,
-                                         "render": function ( data, type, row, meta ) {
-                                             return "<select style = 'width:80%' class='form-control change-role' data-id="+ row.id +">"+
-                                                "<option"+(row.role == 1 ? ' selected' : '')+" value='1'>Admin</option>"+
-                                                "<option"+(row.role == 2 ? ' selected' : '')+" value='2'>Teacher</option>"+
-                                            "</select>";
-                                         }
-                                    },
-                                    {   
-                                         sortable: false,
-                                         "render": function ( data, type, row, meta ) {
-                                             return "<a data-id="+ row.id +" class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
-                                         }
-                                    }
-                                ]
-                            } );
+function getAllData() {
+
+    $("#userTable").dataTable().fnDestroy();
+    $('#userTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "../user/users/get",
+            "type": "POST",
+            "data": {
+                filterData: $("#filterData").val()
+            }
+        },
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ],
+        "columns": [
+            { "data": "name" },
+            { "data": "username" },
+            { "data": "email" },
+            {
+                "data": "role",
+                sortable: true,
+                "render": function(data, type, row, meta) {
+                    return "<select style = 'width:80%' class='form-control change-role' data-id=" + row.id + ">" +
+                        "<option" + (row.role == 1 ? ' selected' : '') + " value='1'>Admin</option>" +
+                        "<option" + (row.role == 2 ? ' selected' : '') + " value='2'>Teacher</option>" +
+                        "</select>";
+                }
+            },
+            {
+                sortable: false,
+                "render": function(data, type, row, meta) {
+                    return "<a data-id=" + row.id + " class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
+                }
+            }
+        ]
+    });
 }

@@ -150,6 +150,17 @@ input:checked+.slider:before {
     border-top-color: #EEEEEE;
 }
 
+.export-to-excel {
+    float: "right";
+}
+
+@media (max-width: 1220px) {
+    .export-to-excel {
+        float: left;
+        margin-top: 5px;
+    }
+}
+
 @media (max-width: 1077px) {
     .col-sm-4 {
         margin-top: 5px;

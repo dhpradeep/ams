@@ -1,6 +1,9 @@
 $('#addProgram').on('hidden.bs.modal', function(e) {
     resetFields();
 });
+$('body').on('shown.bs.modal', '#addProgram', function() {
+    $('input:visible:enabled:first', this).focus();
+})
 
 function create_program(data = null) {
     if (data != null) {
