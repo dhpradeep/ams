@@ -210,7 +210,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Student Attendance Table
+                        <i class="fa fa-user fa-fw"></i> Student Attendance Table
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="filter_table btn btn-default btn-xs">

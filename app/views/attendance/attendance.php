@@ -46,7 +46,7 @@
         <div class="row" style="margin:0 auto;">
           <div class="col-md-6">
            
-              <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="panel-group attendance-panel-group" id="accordion" role="tablist" aria-multiselectable="true">
               <?php
                 if(!is_null($this->errors) ) {
                   echo $this->errors;
@@ -56,8 +56,8 @@
                   foreach ($this->subjects as $key => $value) {
                 ?>
 
-                  <div class="panel panel-default">
-                      <div class="panel-heading" role="tab" id="headingOne">
+                  <div class="panel panel-default attendance-panel-default">
+                      <div class="panel-heading attendance-panel-heading" role="tab" id="headingOne">
                           <h4 class="panel-title">
                               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?=$value['id']?>" aria-expanded="true" aria-controls="collapseOne">
                                   <i class="more-less glyphicon glyphicon-plus"></i>

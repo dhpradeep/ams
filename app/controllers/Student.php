@@ -557,16 +557,19 @@ class Student extends Controller {
 					'max' => 255
 				),
 				'programId' => array(
+					"userDefinedError" => "Program is not valid.",
 					'name' => 'Program',
 					'required' => true,
 					'minLevel' => 1
 				),
 				'yearOrSemester' => array(
+					"userDefinedError" => "Year/Semester is not valid.",
 					'name' => 'Year/Semester',
 					'required' => true,
 					'minLevel' => 1
 				),
 				'sectionId' => array(
+					"userDefinedError" => "Section is not valid.",
 					'name' => 'Section',
 					'required' => true,
 					'minLevel' => 1
@@ -581,6 +584,7 @@ class Student extends Controller {
 					'required' => true
 				),
 				'gender' => array(
+					"userDefinedError" => "Gender is not valid.",
 					'name' => 'Gender',
 					'required' => true,
 					'minLevel' => 1,
@@ -628,6 +632,7 @@ class Student extends Controller {
 					'type' => 'email'
 				),
 				'level' => array(
+					"userDefinedError" => "Education Level is not valid.",
 					'name' => 'Education Level',
 					'required' => true,
 					'minLevel' => 1

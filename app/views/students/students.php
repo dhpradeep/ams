@@ -117,6 +117,7 @@
                                     <thead>
                                         <tr>
                                             <th style="min-width: 60px">Details</th>
+                                            <th style="min-width: 60px">Roll No</th>
                                             <th style="min-width: 100px;">Fullname</th>
                                             <th style="min-width: 80px;">Program</th>
                                             <th style="min-width: 80px;">Semester/Year</th>
@@ -124,10 +125,10 @@
                                             <th style="min-width: 30px">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="searchable">
+                                    <tbody>
                                     </tbody>
                                 </table>
-                                        </div>
+                                </div>
                             </div>
                         </div>
                         <!-- /.panel-body -->
