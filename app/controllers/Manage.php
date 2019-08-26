@@ -410,13 +410,13 @@ class Manage extends Controller {
 				'max' => 255
 			),
 			'programId' => array(
-				"userDefinedError" => "Program is not valid.",
+				//"userDefinedError" => "Program is not valid.",
 				'name' => 'Program Id',
 				'required' => true,
 				'minLevel' => 1
 			),
 			'yearOrSemester' => array(
-				"userDefinedError" => "Year/Semester is not valid.",
+				//"userDefinedError" => "Year/Semester is not valid.",
 				'name' => 'Year / Semester',
 				'required' => true,
 				'minLevel' => 1,
@@ -467,13 +467,13 @@ class Manage extends Controller {
 				'max' => 255
 			),
 			'programId' => array(
-				"userDefinedError" => "Program is not valid.",
+				//"userDefinedError" => "Program is not valid.",
 				'name' => 'Program Id',
 				'required' => true,
 				'minLevel' => 1
 			),
 			'yearOrSemester' => array(
-				"userDefinedError" => "Year/Semester is not valid.",
+				//"userDefinedError" => "Year/Semester is not valid.",
 				'name' => 'Year / Semester',
 				'required' => true,
 				'minLevel' => 1,
@@ -675,19 +675,19 @@ class Manage extends Controller {
 					'max' => 1200
 				),
 				'programId' => array(
-					"userDefinedError" => "Program is not valid.",
+					//"userDefinedError" => "Program is not valid.",
 					'name' => 'Program',
 					'required' => true,
 					'minLevel' => 1
 				),
 				'yearOrSemester' => array(
-					"userDefinedError" => "Year/Semester is not valid.",
+					//"userDefinedError" => "Year/Semester is not valid.",
 					'name' => 'Year/Semester',
 					'required' => true,
 					'minLevel' => 1
 				),
 				'sectionId' => array(
-					"userDefinedError" => "Section is not valid.",
+					//"userDefinedError" => "Section is not valid.",
 					'name' => 'Section',
 					'required' => true,
 					'minLevel' => 1

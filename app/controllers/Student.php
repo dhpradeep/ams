@@ -419,7 +419,11 @@ class Student extends Controller {
 			$result['status'] = 0;
 		}
 		if($result['status'] == 0 || $result['status'] == -1) {
-			$result['errors'] = $validate->errors();
+			if(count($validate->errors()) >= 5){
+				$result['errors'] = array("Field(*) are required.");
+			}else{
+				$result['errors'] = $validate->errors();
+			}
 			$result['success'] = false;
 		} 
 		unset($_POST);
@@ -526,15 +530,14 @@ class Student extends Controller {
 			
 		} else {
 			$result['status'] = 0;
+		}
+		if($result['status'] == 0 || $result['status'] == -1) {
+			$result['success'] = false;
 			if(count($validate->errors()) >= 5){
 				$result['errors'] = array("Field(*) are required.");
 			}else{
 				$result['errors'] = $validate->errors();
 			}
-		}
-		if($result['status'] == 0 || $result['status'] == -1) {
-			$result['success'] = false;
-			$result['errors'] = $validate->errors();
 		} 
 		unset($_POST);
 		return print json_encode($result);	
@@ -557,19 +560,19 @@ class Student extends Controller {
 					'max' => 255
 				),
 				'programId' => array(
-					"userDefinedError" => "Program is not valid.",
+					//"userDefinedError" => "Program is not valid.",
 					'name' => 'Program',
 					'required' => true,
 					'minLevel' => 1
 				),
 				'yearOrSemester' => array(
-					"userDefinedError" => "Year/Semester is not valid.",
+					//"userDefinedError" => "Year/Semester is not valid.",
 					'name' => 'Year/Semester',
 					'required' => true,
 					'minLevel' => 1
 				),
 				'sectionId' => array(
-					"userDefinedError" => "Section is not valid.",
+					//"userDefinedError" => "Section is not valid.",
 					'name' => 'Section',
 					'required' => true,
 					'minLevel' => 1
@@ -584,7 +587,7 @@ class Student extends Controller {
 					'required' => true
 				),
 				'gender' => array(
-					"userDefinedError" => "Gender is not valid.",
+					//"userDefinedError" => "Gender is not valid.",
 					'name' => 'Gender',
 					'required' => true,
 					'minLevel' => 1,
@@ -632,7 +635,7 @@ class Student extends Controller {
 					'type' => 'email'
 				),
 				'level' => array(
-					"userDefinedError" => "Education Level is not valid.",
+					//"userDefinedError" => "Education Level is not valid.",
 					'name' => 'Education Level',
 					'required' => true,
 					'minLevel' => 1
