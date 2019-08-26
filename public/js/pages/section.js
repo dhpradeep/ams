@@ -36,21 +36,40 @@ $("#programId").change(function () {
     semesterAddFunction($(this));
 });
 
-function semesterAddFunction(data = null) {
-    if(data == null) {
-        data = $("#programId");
+
+$(document).on("change", "#filterData", function(e) {
+    e.preventDefault();
+    semesterAddFunction($(this), 1);
+    getAllData();
+});
+
+$(document).on("change", "#filterDataSemester", function(e) {
+    getAllData();
+});
+
+function semesterAddFunction(data = null, mode = 0) {
+    var source, destination;
+    if(mode == 0) {
+        source = $('#programId');
+        destination = $('#yearOrSemester');
+    }else if(mode == 1) {
+        source = $('#filterData');
+        destination = $('#filterDataSemester');
+    }
+     if(data == null) {
+        data = source;
     }
     var totals = data.find(':selected').data("no");
      var html;
      if(totals <= 0) {
         html = '<option value="-1">None</option>';
      }else {
-        html = '';
+        html = '<option value="-1">None</option>';
         for (var i = 1; i <= totals; i++) {
             html += '<option value="'+i+'">'+i+'</option>';
         }
      }
-     $('#yearOrSemester').html(html);
+     destination.html(html);
 }
 
 $(document).on("click", "#saveBtn", function(e) {
@@ -234,11 +253,6 @@ function deletedata(id) {
     });
 }
 
-$(document).on("change", "#filterData", function(e) {
-    e.preventDefault();
-    getAllData();
-});
-
 function getAllData(){
     $("#sectionTable").dataTable().fnDestroy();
     var table = $('#sectionTable').DataTable( {
@@ -248,7 +262,8 @@ function getAllData(){
             "url": "../manage/section/get",
             "type": "POST",
             "data": {
-                filterData: $("#filterData").val()
+                filterData: $("#filterData").val(),
+                filterDataSemester: $("#filterDataSemester").val()
             }
         },
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],

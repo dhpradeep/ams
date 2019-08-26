@@ -63,7 +63,7 @@ function getHTML(data, subjectId, date) {
                     '</thead>'+
                     '<tbody>';
 	for(key in data) {
-		html += '<tr><td></td><td>'+ data[key]['name'] + '</td>'+
+		html += '<tr><td>'+ data[key]['rollNo'] +'</td><td>'+ data[key]['name'] + '</td>'+
 				'<td>'+
                   '<label class="switch">'+
                     '<input class="attendanceStatus" type="checkbox" data-id="'+ data[key]['userId']+ '"';

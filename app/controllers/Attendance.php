@@ -67,6 +67,16 @@ class Attendance extends Controller {
 		if(strlen($date) == 10 && $string == true) {
 			if($section != null) {
 				$allStudents = $this->model->searchData("personaldata", array("sectionId" => $section['sectionId'] ));
+				//filter passed out
+				$i = 0;
+				foreach ($allStudents as $value) {
+					if($value['yearOrSemester'] == -2) {
+						array_splice($allStudents, $i, 1);
+						$i--;
+					}
+					$i++;
+				}
+				
 				if(count($allStudents) != 0) {
 					$toReturn = array();
 					$records = array();
@@ -74,6 +84,8 @@ class Attendance extends Controller {
 					foreach ($allStudents as $key => $value) {
 						$oneRow = $this->model->getData('userlogin', array('id' => $value['userId'])); 
 						$records['name'] = ($oneRow != null) ? $oneRow['fname'].' '.$oneRow['mname'].' '.$oneRow['lname'] : "Unkown";
+						$onePersonal = $this->model->getData('personaldata', array('userId' => $value['userId']));
+						$records['rollNo'] = ($onePersonal != null) ? $onePersonal['rollNo'] : "Unkown";
 						$records['userId'] = $value['userId'];
 						$recordRow = $this->model->getData('attendance', array(
 											'userId' => $value['userId'],

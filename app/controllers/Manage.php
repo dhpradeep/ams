@@ -337,6 +337,17 @@ class Manage extends Controller {
 			}
 		}
 
+		if(isset($_POST['filterDataSemester']) && $_POST['filterDataSemester'] > 0) {
+			$i = 0;
+			foreach ($res as $value) {
+				if($value['yearOrSemester'] != $_POST['filterDataSemester']) {
+					array_splice($res, $i, 1);
+					$i--;
+				}
+				$i++;
+			}
+		}
+
 		$total = count($res);
 		$index = 0;
 		$arr = array();
@@ -588,12 +599,16 @@ class Manage extends Controller {
 			$programs = $this->model->searchData('program', $toSearch);
 			if(count($programs) > 0) {
 				$arr[$index]['programName'] = $programs[0]['name'];
+			}else {
+				$arr[$index]['programName'] = "Unkown";
 			}
 
 			$toSearch = array("id" => $res[$i]['sectionId']);
 			$sections = $this->model->searchData('section', $toSearch);
 			if(count($sections) > 0) {
 				$arr[$index]['sectionName'] = $sections[0]['name'];
+			}else {
+				$arr[$index]['sectionName'] = "Unkown";
 			}
 
 			$index++;

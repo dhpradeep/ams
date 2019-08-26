@@ -10,6 +10,53 @@ class Student extends Controller {
 		header("Location: ".SITE_URL."/student/all");
 	}
 
+	public function upgrade($name = "") {
+		if($name == "program") {
+			if(Session::isLoggedIn(1) && isset($_POST) && count($_POST) > 0) {
+				$result = array('status' => 0);
+				$programId = Input::get("programId");
+				$details = $this->model->getData("program", array("id" => $programId));
+				if($details != null) {
+					$getAllStudents = $this->model->searchData('personaldata', array('programId' => $programId));
+					$count = 0; $changes = 0;
+					if(count($getAllStudents) > 0) {
+						foreach ($getAllStudents as $key => $value) {
+							$oldValue = $value['yearOrSemester'];
+							if($oldValue > 0) {// Not Passout
+								/*if($oldValue < $details['noOfYearOrSemester']) {
+									$newValue = $oldValue + 1;
+								}*/
+								if($oldValue == $details['noOfYearOrSemester']) {
+									$count++;
+									$newValue = -2;
+									$update = $this->model->updateData('personaldata', $value['id'] ,array('yearOrSemester' => $newValue));
+									if($update == 1 ) $changes++;
+								}
+							}
+							
+						}
+						if($count == $changes) {
+							$result['status'] = 1;
+						}else {
+							$result['error'] = "Problem with connection";
+						}
+					}else {
+						$result['error'] = "No student are enrolled !";
+					}	
+				}else {
+					$result['error'] = "Program not found !";
+				}
+				$result['success'] = ($result['status'] == 1) ? true : false;
+				unset($_POST);
+				return print json_encode($result);				
+			}else {
+				header("Location: ".SITE_URL."/home/message");
+			}
+		}else {
+			header("Location: ".SITE_URL."/home/message");
+		}
+	}
+
 	public function all($name = "") {
 		if(($name == "add" || $name == "update" || $name == "delete" || $name == "get" || $name == "getSections") && Session::isLoggedIn(1)) {
 			$result = array('status' => 0);	
@@ -59,6 +106,15 @@ class Student extends Controller {
 			if(count($res) > 0) {
 				$result['sections'] = $res;
 				$result['status'] = 1;
+			}else if($yearOrSemester == -2) {
+				$lastSem = $this->model->getData("program" , array('id' => $programId));
+				if($lastSem != null) {
+					$result['sections'] = $this->model->searchData("section", array('programId' => $programId ,
+											'yearOrSemester' => $lastSem['noOfYearOrSemester']));
+				}else {
+					$result['sections'] = array(array('id' => -2, 'name' => "Unknown"));
+				}			
+				$result['status'] = 1;
 			}else {
 				$result['error'] = array("Section not found for this program and semester/year.");
 				$result['status'] = 0;
@@ -77,14 +133,6 @@ class Student extends Controller {
 		$sortDir = null;
 		$stringToSearch = null;
 		$fieldToSearch = array("fname","username","email","lname");
-		/*if(isset($_POST["order"][0]["column"])){
-			$sortDir = Sanitize::escape($_POST["order"][0]["dir"]);
-
-			$columnToSort = $_POST["order"][0]["column"];
-
-			$columnToSort = (!isset($_POST["columns"][$columnToSort]["name"]) && $_POST["columns"][$columnToSort]["orderable"]) ? $_POST["columns"][$columnToSort]["name"] : "fname" ;
-			$columnToSort = Sanitize::escape($columnToSort);
-		}*/
 		if(isset($_POST["search"]["value"])) {
 			$stringToSearch = Sanitize::escape($_POST["search"]["value"]);
 		}
@@ -172,19 +220,25 @@ class Student extends Controller {
 			$programs = $this->model->searchData('program', $toSearch);
 			if(count($programs) > 0) {
 				$arr[$index]['programName'] = $programs[0]['name'];
+			}else {
+				$arr[$index]['programName'] = "Unkown";
 			}
 			$toSearch = array("id" => $res[$i]['sectionId']);
 			$sections = $this->model->searchData('section', $toSearch);
 			if(count($sections) > 0) {
 				$arr[$index]['sectionName'] = $sections[0]['name'];
-			}
+			}else {
+				$arr[$index]['sectionName'] = "Unkown";
+			}	
 			$index++;
 		}
 
 		$name  = array_column($arr, 'name');
 		$sectionName = array_column($arr, 'sectionName');
+		$yearOrSemester = array_column($arr, 'yearOrSemester');
+		$rollNo = array_column($arr, 'rollNo');
 		$toSort = (isset($_POST["order"][0]["column"])) ? $_POST["columns"][$_POST["order"][0]["column"]]["data"] : $name;
-		if(isset($_POST["order"][0]["dir"]) && ($toSort == "name" || $toSort == "sectionName")) {
+		if(isset($_POST["order"][0]["dir"]) && ($toSort == "name" || $toSort == "sectionName" || $toSort == "yearOrSemester" || $toSort == "rollNo")) {
 			if($_POST["order"][0]["dir"] == "asc")
 				array_multisort($$toSort, SORT_ASC, $arr);
 			else
@@ -312,7 +366,8 @@ class Student extends Controller {
 						"dobAd" => $data['dobAd'],
 						"gender" => $data['gender'],
 						"nationality" => $data['nationality'],
-						"fatherName" => $data['fatherName']
+						"fatherName" => $data['fatherName'],
+						"rollNo" => $data['rollNo']
 					);
 					$output = $this->model->updateData("personaldata", $pk, $toRegister);
 					array_push($updates, $output);	
@@ -409,7 +464,8 @@ class Student extends Controller {
 						"dobAd" => $data['dobAd'],
 						"gender" => $data['gender'],
 						"nationality" => $data['nationality'],
-						"fatherName" => $data['fatherName']
+						"fatherName" => $data['fatherName'],
+						"rollNo" => $data['rollNo']
 					);
 					$personalId = $this->model->registerData("personaldata", $toRegister);
 						if($personalId != 0) {
@@ -517,6 +573,11 @@ class Student extends Controller {
 				),
 				'dobAd' => array(
 					'name' => 'Date of Birth(A.D)',
+					'required' => true
+				),
+				'rollNo' => array(
+					'name' => 'Roll No',
+					'min' => 1,
 					'required' => true
 				),
 				'gender' => array(
