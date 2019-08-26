@@ -26,6 +26,10 @@
 
     <!-- Custom Fonts -->
     <link href="<?= BOWER_DIR ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap multiselect CSS -->
+    <link rel="stylesheet" href="<?= CSS_DIR ?>/bootstrap-multiselect.css" />
+    
 </head>
 
 <body>
@@ -58,7 +62,7 @@
                         <form id="frmSearch" role="form">
                             <a onclick="create_subject()" class="btn btn-primary">Add Subject</a>
                             <a onclick="refresh()" class="btn btn-info">Refresh</a>
-                            <div class="input-group"> <span class="input-group-addon">Program: </span>
+                            <div class="input-group col-md-3 col-sm-4 col-xs-4 subject-small-device"> <span class="input-group-addon">Program: </span>
                                 <select class="form-control" id="filterDataProgram" name="filterResultProgram" style="width: 100px">
                                     <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
                                     <?php
@@ -70,12 +74,12 @@
                                     ?>
                                 </select>
                             </div>
-                            <div class="input-group"> <span class="input-group-addon">Semester/Year: </span>
+                            <div class="input-group col-md-3 col-sm-4 col-xs-6 subject-small-device"> <span class="input-group-addon">Semester/Year: </span>
                                 <select class="form-control" id="filterDataSemester" name="filterResultSemester">
                                     <option value="-1" name="None"> None </option>
                                 </select>
                             </div>
-                            <div class="input-group"> <span class="input-group-addon">Section: </span>
+                            <div class="input-group col-md-3 col-sm-4 col-xs-4 subject-small-device"> <span class="input-group-addon">Section: </span>
                                 <select class="form-control" id="filterDataSection" name="filterResultSection">
                                     <option value="-1" name="None"> None </option>
                                 </select>
@@ -89,31 +93,33 @@
                         </div>
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                              <table id="subjectTable" class="table table-bordered table-striped paginated tablesorter">
+                                <div class="table-responsive">
+                              <table width="100%" id="subjectTable" class="table table-bordered table-striped">
                                   <thead>
                                       <tr role="row">
-                                            <th >
+                                            <th style="min-width: 150px;">
                                                 Subject Name
                                             </th>
-                                            <th>
+                                            <th style="min-width: 150px;">
                                                 Program Name
                                             </th>
-                                            <th>
+                                            <th style="min-width: 150px;">
                                                 Semester/Year
                                             </th>
-                                            <th>
+                                            <th style="min-width: 200px;">
                                                 Assigned Teachers
                                             </th>
-                                            <th>
+                                            <th style="min-width: 150px;">
                                               Section
                                             </th>
-                                            <th>
+                                            <th style="min-width: 150px;">
                                               Details
                                             </th>
-                                            <th style="min-width: 150px">Action</th>
+                                            <th style="min-width: 150px;">Action</th>
                                       </tr>
                                   </thead>
                               </table>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -130,10 +136,6 @@
     <!-- jQuery -->
     <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>
 
-     <!-- jQuery tablesorter-->
-    <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.js"></script>
-    <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.widgets.js"></script>
-
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= BOWER_DIR ?>/bootstrap/dist/js/bootstrap.min.js"></script>
 
@@ -144,20 +146,23 @@
     <script src="<?= BOWER_DIR ?>/datatables/media/js/jquery.dataTables.min.js"></script>
     <script src="<?= BOWER_DIR ?>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 
-    <!-- ckeditor -->
-    <script src="<?= BOWER_DIR ?>/ckeditor/ckeditor.js"></script>
-
     <!-- Notify -->
     <script src="<?= BOWER_DIR ?>/notifyjs/dist/notify.js"></script>
     <script src="<?= BOWER_DIR ?>/notifyjs/dist/styles/bootstrap/notify-bootstrap.js"></script>
     
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= BOWER_DIR ?>/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+
     <!-- spinJS -->
     <script src="<?= BOWER_DIR ?>/spin.js/spin.js"></script>
+
     <!-- Custom Theme JavaScript -->
     <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
     <script src="<?= JS_DIR ?>/pages/subject.js" type="text/javascript"></script>
-</body>
+
+    <!-- Bootstrap multiSelect JavaScript -->
+    <script src="<?= JS_DIR ?>/bootstrap-multiselect.js"></script>
+
+    </body>
 
 </html>

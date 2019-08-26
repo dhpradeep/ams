@@ -7,19 +7,20 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title><?= WEBSITE_TITLE ?> | Dashboard</title>
-    <!-- Bootstrap Core CSS -->
+
+    <!-- Bootstrap CSS -->
     <link href="<?= BOWER_DIR ?>/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- MetisMenu CSS -->
     <link href="<?= BOWER_DIR ?>/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-    <!-- Timeline CSS -->
-    <link href="<?= CSS_DIR ?>/timeline.css" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="<?= CSS_DIR ?>/sb-admin-2.css" rel="stylesheet">
     <link href="<?= CSS_DIR ?>/style.css" rel="stylesheet">
-    <!-- Morris Charts CSS -->
-    <link href="<?= BOWER_DIR ?>/morrisjs/morris.css" rel="stylesheet">
-    <!-- Custom Fonts -->
+
+    <!-- Font awesome CSS -->
     <link href="<?= BOWER_DIR ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
 </head>
 <body>
   <div id="wrapper">
@@ -35,7 +36,7 @@
           <div class="col-md-2">
             <form role="form" class="form-group">
               <label for="currentdate">Current Date</label>
-              <input type="date" id="currentdate" min="2019-01-01" max="<?= date("Y-m-d") ?>" name="currentdate" value="<?= date("Y-m-d") ?>" class="form-control"/>
+              <input class="form-control" type="date" id="currentdate" min="2019-01-01" max="<?= date("Y-m-d") ?>" name="currentdate" value="<?= date("Y-m-d") ?>" class="form-control"/>
             </form>
           </div>
           <div class="col-md-6"></div>
@@ -99,23 +100,14 @@
 
         <!-- Bootstrap Core JavaScript -->
         <script src="<?= BOWER_DIR ?>/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="<?= BOWER_DIR ?>/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
 
         <!-- Notify -->
         <script src="<?= BOWER_DIR ?>/notifyjs/dist/notify.js"></script>
         <script src="<?= BOWER_DIR ?>/notifyjs/dist/styles/bootstrap/notify-bootstrap.js"></script>
 
-        <!-- DataTables JavaScript -->
-        <script src="<?= BOWER_DIR ?>/datatables/media/js/jquery.dataTables.min.js"></script>
-        <script src="<?= BOWER_DIR ?>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
-
-        <!-- Moment.js -->
-        <script src="<?= BOWER_DIR ?>/moment/moment.min.js"></script>
-
-        <script src="<?= BOWER_DIR ?>/bootstrap/dist/js/daterangepicker.js"></script>
-
         <!-- Metis Menu Plugin JavaScript -->
         <script src="<?= BOWER_DIR ?>/metisMenu/dist/metisMenu.min.js"></script>
+
         <!-- Custom Theme JavaScript -->
         <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
     <script src="<?= JS_DIR ?>/pages/attendance.js"></script>

@@ -16,6 +16,7 @@
     <link href="<?= BOWER_DIR ?>/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?= CSS_DIR ?>/sb-admin-2.css" rel="stylesheet">
+    <link href="<?= CSS_DIR ?>/style.css" rel="stylesheet">
     <!-- Morris Charts CSS -->
     <link href="<?= BOWER_DIR ?>/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom Fonts -->
@@ -52,7 +53,7 @@
                         <form id="frmSearch" role="form">
                             <a onclick="create_user()" class="btn btn-primary">Add User</a>
                             <a onclick="refresh()" class="btn btn-info">Refresh</a>
-                            <div class="input-group"> <span class="input-group-addon">Filter by Role: </span>
+                            <div class="input-group col-md-4 col-sm-4 col-xs-6 role-small-device"> <span class="input-group-addon">Filter by Role: </span>
                                 <select class="form-control" id="filterData" name="filterResult">
                                     <option value="0" name="None"> None </option>
                                     <option value="1" name="None"> Admin </option>
@@ -68,25 +69,27 @@
                         </div>
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                                <table id="userTable" class="table table-bordered table-striped paginated tablesorter">
+                            <div class="table-responsive">
+                                <table width="100%" id="userTable" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>
+                                            <th style="min-width: 150px;">
                                                 Name
                                             </th>
-                                            <th>
+                                            <th style="min-width: 150px;">
                                                 Username
                                             </th>
-                                            <th>
+                                            <th style="min-width: 150px;">
                                                 Email
                                             </th>
-                                            <th>
+                                            <th style="min-width: 150px;">
                                                 Role
                                             </th>
                                             <th style="min-width: 60px;">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
+</div>
                             </div>
                         </div>
                     </div>
@@ -104,10 +107,6 @@
 
     <!-- jQuery -->
     <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>
-
-    <!-- jQuery tablesorter-->
-    <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.js"></script>
-    <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.widgets.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= BOWER_DIR ?>/bootstrap/dist/js/bootstrap.min.js"></script>

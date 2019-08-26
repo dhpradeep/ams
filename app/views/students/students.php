@@ -20,9 +20,6 @@
     <!-- DataTables CSS -->
     <link href="<?= BOWER_DIR ?>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
 
-    <!-- DataTables Responsive CSS -->
-    <link href="<?= BOWER_DIR ?>/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
-
     <!-- Bootstrap Core CSS -->
     <link href="<?= BOWER_DIR ?>/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" rel="stylesheet">
 
@@ -80,7 +77,7 @@
                         <form id="frmSearch" role="form">
                             <a onclick="create_student()" class="btn btn-primary">Add Student</a>
                             <a onclick="refresh()" class="btn btn-info">Refresh</a>
-                            <div class="input-group"> <span class="input-group-addon">Program: </span>
+                            <div class="input-group col-md-2 col-sm-4 col-xs-6"> <span class="input-group-addon">Program: </span>
                                 <select class="form-control" id="filterDataProgram" name="filterResultProgram" style="width: 100px">
                                     <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
                                     <?php
@@ -92,17 +89,19 @@
                                     ?>
                                 </select>
                             </div>
-                            <div class="input-group"> <span class="input-group-addon">Semester/Year: </span>
+                            <div class="input-group col-md-3 col-sm-4 col-xs-6"> <span class="input-group-addon">Semester/Year: </span>
                                 <select class="form-control" id="filterDataSemester" name="filterResultSemester">
                                     <option value="-1" name="None"> None </option>
                                 </select>
                             </div>
-                            <div class="input-group"> <span class="input-group-addon">Section: </span>
+                            <div class="input-group col-md-2 col-sm-4 col-xs-6"> <span class="input-group-addon">Section: </span>
                                 <select class="form-control" id="filterDataSection" name="filterResultSection">
                                     <option value="-1" name="None"> None </option>
                                 </select>
                             </div>
-                            <a onclick="getAllData(2)" class="btn btn-success" style="float:right">Export to excel</a>
+                            <div style="float:right" class="input-group col-md-2 col-sm-4 col-xs-12">
+                            <a onclick="getAllData(2)" class="btn btn-success">Export to excel</a>
+                            </div>
                         </form>
                     </div>
                     <br>
@@ -113,20 +112,22 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                                <table class="table table-striped table-bordered table-hover paginated tablesorter" id="studentTable">
+                                <div class="table-responsive">
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="studentTable">
                                     <thead>
                                         <tr>
                                             <th style="min-width: 60px">Details</th>
-                                            <th>Fullname</th>
-                                            <th>Program</th>
-                                            <th>Semester/Year</th>
-                                            <th>Section</th>
+                                            <th style="min-width: 100px;">Fullname</th>
+                                            <th style="min-width: 80px;">Program</th>
+                                            <th style="min-width: 80px;">Semester/Year</th>
+                                            <th style="min-width: 80px;">Section</th>
                                             <th style="min-width: 30px">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="searchable">
                                     </tbody>
                                 </table>
+                                        </div>
                             </div>
                         </div>
                         <!-- /.panel-body -->
@@ -146,10 +147,6 @@
 
     <!-- jQuery -->
     <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>
-
-    <!-- jQuery tablesorter-->
-    <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.js"></script>
-    <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.widgets.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= BOWER_DIR ?>/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -173,7 +170,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
-    <script src="<?= JS_DIR ?>/pages/student.js?v=1"></script>
+    <script src="<?= JS_DIR ?>/pages/student.js"></script>
 
 
 </body>

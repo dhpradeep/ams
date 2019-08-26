@@ -68,23 +68,25 @@
                         </div>
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                              <table id="programTable" class="table table-bordered table-striped paginated tablesorter">
+                            <div class="table-responsive">
+                              <table width="100%" id="programTable" class="table table-bordered table-striped paginated tablesorter">
                                   <thead>
                                       <tr role="row">
-                                            <th >
+                                            <th style="min-width: 150px;">
                                                 Program Name
                                             </th>
-                                            <th>Year / Semester</th>
-                                            <th>
+                                            <th style="min-width: 150px;">Year / Semester</th>
+                                            <th style="min-width: 150px;">
                                                 Total Year/Semester
                                             </th>
-                                            <th>
+                                            <th style="min-width: 150px;">
                                                 Details
                                             </th>
                                             <th style="min-width: 150px">Action</th>
                                       </tr>
                                   </thead>
                               </table>
+</div>
                             </div>
                         </div>
                     </div>
@@ -100,10 +102,6 @@
          <!-- jQuery -->
     <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>
 
-     <!-- jQuery tablesorter-->
-    <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.js"></script>
-    <script src="<?= BOWER_DIR ?>/jquery.tablesorter/dist/js/jquery.tablesorter.widgets.js"></script>
-
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= BOWER_DIR ?>/bootstrap/dist/js/bootstrap.min.js"></script>
 
@@ -114,20 +112,19 @@
     <script src="<?= BOWER_DIR ?>/datatables/media/js/jquery.dataTables.min.js"></script>
     <script src="<?= BOWER_DIR ?>/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 
-    <!-- ckeditor -->
-    <script src="<?= BOWER_DIR ?>/ckeditor/ckeditor.js"></script>
-
     <!-- Notify -->
     <script src="<?= BOWER_DIR ?>/notifyjs/dist/notify.js"></script>
     <script src="<?= BOWER_DIR ?>/notifyjs/dist/styles/bootstrap/notify-bootstrap.js"></script>
     
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= BOWER_DIR ?>/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+
     <!-- spinJS -->
     <script src="<?= BOWER_DIR ?>/spin.js/spin.js"></script>
+
     <!-- Custom Theme JavaScript -->
     <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
-    <script src="<?= JS_DIR ?>/pages/program.js?v=1" type="text/javascript"></script>
+    <script src="<?= JS_DIR ?>/pages/program.js" type="text/javascript"></script>
 </body>
 
 </html>

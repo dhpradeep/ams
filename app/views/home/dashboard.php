@@ -11,12 +11,8 @@
     <link href="<?= BOWER_DIR ?>/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- MetisMenu CSS -->
     <link href="<?= BOWER_DIR ?>/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-    <!-- Timeline CSS -->
-    <link href="<?= CSS_DIR ?>/timeline.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?= CSS_DIR ?>/sb-admin-2.css" rel="stylesheet">
-    <!-- Morris Charts CSS -->
-    <link href="<?= BOWER_DIR ?>/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="<?= BOWER_DIR ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>

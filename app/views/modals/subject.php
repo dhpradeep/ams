@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label" for="userId">Assign Teacher *</label>
-                        <select class="form-control" id="userId" name="userId" multiple required>
+                        <select class="form-control"  id="userId" name="userId" multiple required>
                             <?php
                             if(!is_null($this->teachers) && count($this->teachers) > 0) {
                                 foreach ($this->teachers as $value) {                            
@@ -60,7 +60,6 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" id="saveBtn">Add</button>
-                <!--<button type="reset" class="btn btn-warning">Reset</button>-->
                 <button class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

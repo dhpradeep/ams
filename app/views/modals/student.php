@@ -35,46 +35,6 @@
                     </li>
                 </ul>
 
-                <!-- required field list -->
-            <!-- First Name : required
-                Middle name: not-required
-                Last name: required
-                -------
-                Program: required
-                Doa : required
-                Dob: not-required
-                Gender: required
-                Nationality: not-required
-                Fathers name: not-required
-                -------
-                #Edu
-                level: required
-                board: required
-                y.o.c: required
-                percentage: required
-                institute: required
-                -------
-                Municipality: not-required
-                Ward. no: not-required
-                Area: required
-                District: required
-                Zone: required
-                Mobile no: required
-                tel-no : not-required
-                block no: not-required
-                email: required
-                gurdian name: not-required
-                gurdian contact: not-required
-                gurdian relationship: not-required
-                -------
-                form no: required
-                Registration no: required (Autofill or hide)
-                
-
-             -->
-
-                <!-- end of required field list -->
-
                 <div class="tab-content">
                 <br>
                     <div role="tabpanel" class=" tab-pane active" id="home">

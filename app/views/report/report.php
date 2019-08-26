@@ -22,6 +22,7 @@
     <link href="<?= CSS_DIR ?>/timeline.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?= CSS_DIR ?>/sb-admin-2.css" rel="stylesheet">
+    <link href="<?= CSS_DIR ?>/style.css" rel="stylesheet">
     <!-- Morris Charts CSS -->
     <link href="<?= BOWER_DIR ?>/morrisjs/morris.css" rel="stylesheet">
     <!-- Custom Fonts -->
@@ -144,9 +145,9 @@
 
                             <!-- expandable filter view -->
                             <div class="row filter_bar_val" style="padding-top:20px;">
-                                <div class="col col-md-12">
+                                <div class="col-md-12">
 
-                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="col-md-3 col-sm-6 col-xs-6 report-small-device">
                                         <div class="input-group"> <span class="input-group-addon">Program: </span>
                                             <select class="form-control" id="filterDataProgram" name="filterResultProgram" style="width: 100px">
                                                 <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
@@ -160,28 +161,28 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="col-md-3 col-sm-6 col-xs-12 report-small-device">
                                         <div class="input-group"> <span class="input-group-addon" style="width: 100px">Semester: </span>
                                             <select class="form-control" id="filterDataSemester" name="filterResultSemester">
                                                 <option value="-1" name="None"> None </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="col-md-3 col-sm-6 col-xs-12 report-small-device">
                                         <div class="input-group"> <span class="input-group-addon" style="width: 100px">Section: </span>
                                             <select class="form-control" id="filterDataSection" name="filterResultSection">
                                                 <option value="-1" name="None"> None </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="col-md-3 col-sm-6 col-xs-12 report-small-device">
                                         <div class="input-group"> <span class="input-group-addon">Date: </span>
-                                            <input class="form-control" id="filterDataDate" type="text" name="daterange" value="" />
+                                            <input onfocus="blur();" class="form-control" id="filterDataDate" type="text" name="daterange" value="" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col col-md-12 m-3">
-                                    <div class="col-md-3 col-sm-6 col-xs-6" style="margin-top: 10px">
+                                    <div class="col-md-3 col-sm-6 col-xs-12" style="margin-top: 10px">
                                         <input class="btn btn-primary" type="button" name="filter" value="Filter" id="filterOverview" />
                                     </div>
                                 </div>
@@ -226,7 +227,7 @@
                             <div class="row filter_table_val" style="padding-top:20px;">
                                 <div class="col col-md-12">
 
-                                <div class="col-md-3 col-sm-6 col-xs-6">
+                                <div class="col-md-3 col-sm-6 col-xs-12 report-small-device">
                                         <div class="input-group"> <span class="input-group-addon">Program: </span>
                                             <select class="form-control" id="filterDataProgram1" name="filterResultProgram1" style="width: 100px">
                                                 <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
@@ -240,21 +241,21 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="col-md-3 col-sm-6 col-xs-12 report-small-device">
                                         <div class="input-group"> <span class="input-group-addon" style="width: 100px">Semester: </span>
                                             <select class="form-control" id="filterDataSemester1" name="filterResultSemester1">
                                                 <option value="-1" name="None"> None </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="col-md-3 col-sm-6 col-xs-12 report-small-device">
                                         <div class="input-group"> <span class="input-group-addon" style="width: 100px">Section: </span>
                                             <select class="form-control" id="filterDataSection1" name="filterResultSection1">
                                                 <option value="-1" name="None"> None </option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="col-md-3 col-sm-6 col-xs-12 report-small-device">
                                         <div class="input-group"> <span class="input-group-addon">Date: </span>
                                             <input id="filterDataDate1" class="form-control" type="text" name="daterange" value="" />
                                         </div>
@@ -270,7 +271,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="table-responsive" id="toExport">
-                                <table id="studentTable" class="table table-striped table-bordered table-hover">
+                                <table width="100%" id="studentTable" class="table table-striped table-bordered table-hover">
                                 </table>
                             </div>
                             <!-- /.table-responsive -->
