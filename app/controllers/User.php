@@ -295,7 +295,7 @@ class User extends Controller
 		$result['success'] = ($result['status'] == 1) ? true : false;
 			$result['draw'] = $_POST['draw'];
 			$result['recordsTotal'] = $totalWithoutFilter;
-			$result['recordsFiltered'] = $index;
+			$result['recordsFiltered'] = $total;
 		unset($_POST);
 		return print json_encode($result);
 	} 

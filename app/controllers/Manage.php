@@ -366,7 +366,7 @@ class Manage extends Controller {
 		$result['success'] = ($result['status'] == 1) ? true : false;
 		$result['draw'] = $_POST['draw'];
 		$result['recordsTotal'] = $totalWithoutCount;
-		$result['recordsFiltered'] = $index;
+		$result['recordsFiltered'] = $total;
 		unset($_POST);
 		return print json_encode($result);
 	}
@@ -625,7 +625,7 @@ class Manage extends Controller {
 		$result['success'] = ($result['status'] == 1) ? true : false;
 		$result['draw'] = $_POST['draw'];
 		$result['recordsTotal'] = $totalCountWithoutFilter;
-		$result['recordsFiltered'] = $index;
+		$result['recordsFiltered'] = $total;
 		unset($_POST);
 		return print json_encode($result);
 	}
@@ -706,38 +706,43 @@ class Manage extends Controller {
 		}
 		$validate = new Validator();
 		$validation = $validate->check($_POST, $this->getValidators());
-		if($validate->passed()){
-			$dataForSearch = array('id' => $data['id']);
-			$res = $this->model->searchData('subjects',$dataForSearch);
-			if(count($res) >= 1) {
-				$idToChange = $data['id'];
-				unset($data['id']);
-				unset($data['userId']);
-				$ret = $this->model->updateData('subjects', $idToChange, $data);
-				$pk = $this->model->getDataId("subjectassign",array('subjectId' => $idToChange));
-				do {
-					if($pk != 0) $this->model->deleteData("subjectassign", $pk);
+		if(isset($_POST['userId']) && count($_POST['userId']) > 0) {
+			if($validate->passed()){
+				$dataForSearch = array('id' => $data['id']);
+				$res = $this->model->searchData('subjects',$dataForSearch);
+				if(count($res) >= 1) {
+					$idToChange = $data['id'];
+					unset($data['id']);
+					unset($data['userId']);
+					$ret = $this->model->updateData('subjects', $idToChange, $data);
 					$pk = $this->model->getDataId("subjectassign",array('subjectId' => $idToChange));
-				}while($pk != 0);
-				$toWrite = 0;
-				if(count($_POST['userId']) > 0) {
-					foreach ($_POST['userId'] as $value) {
-						$toWrite = $this->model->registerData('subjectassign', array('subjectId' => $idToChange,
-									'userId' => $value));
+					do {
+						if($pk != 0) $this->model->deleteData("subjectassign", $pk);
+						$pk = $this->model->getDataId("subjectassign",array('subjectId' => $idToChange));
+					}while($pk != 0);
+					$toWrite = 0;
+					if(count($_POST['userId']) > 0) {
+						foreach ($_POST['userId'] as $value) {
+							$toWrite = $this->model->registerData('subjectassign', array('subjectId' => $idToChange,
+										'userId' => $value));
+						}
 					}
-				}
-				if($ret == 1 || ($toWrite != 0)) {
-					$result['status'] = 1;
-					$result['success'] = true;
+					if($ret == 1 || ($toWrite != 0)) {
+						$result['status'] = 1;
+						$result['success'] = true;
+					} else {
+						$result['status'] = -1;
+						$result['errors'] = $validate->addError("Nothing updated!");
+					}							
 				} else {
-					$result['status'] = -1;
-					$result['errors'] = $validate->addError("Nothing updated!");
-				}							
+					$result['errors'] = $validate->addError("No such subject found.");
+					$result['status'] = 0;
+				}
 			} else {
-				$result['errors'] = $validate->addError("No such subject found.");
 				$result['status'] = 0;
 			}
-		} else {
+		}else {
+			$validate->addError("Please select at least one teacher");
 			$result['status'] = 0;
 		}
 		if($result['status'] == 0 || $result['status'] == -1) {
@@ -751,35 +756,40 @@ class Manage extends Controller {
 	private function addSubject($result){
 		$validate = new Validator();
 		$validation = $validate->check($_POST, $this->getValidators());
-		if($validate->passed()){
-			$data = array();
-			$data['id'] = null;
-			foreach ($_POST as $key => $value) {
-				if(gettype($value) == "boolean" || gettype($value) == "array") {
-					$data[$key] = $_POST[$key];
-				}else {
-					$data[$key] = Input::get($key);
-				}			
-			}
-			unset($data['userId']);
-			$id = $this->model->registerData('subjects', $data);
-			if($id != 0){
-				$toWrite = 0;
-				if(count($_POST['userId']) > 0) {
-					foreach ($_POST['userId'] as $value) {
-						$toWrite = $this->model->registerData('subjectassign', array(
-							'subjectId' => $id, 'userId' => $value));
-					}
+		if(isset($_POST['userId']) && count($_POST['userId']) > 0) {
+			if($validate->passed()){
+				$data = array();
+				$data['id'] = null;
+				foreach ($_POST as $key => $value) {
+					if(gettype($value) == "boolean" || gettype($value) == "array") {
+						$data[$key] = $_POST[$key];
+					}else {
+						$data[$key] = Input::get($key);
+					}			
 				}
-				$result['status'] = 1;
-				$result['success'] = true;
-			}else{
-				$result['status'] = -1;
-				$result['errors'] = $validate->addError("Problem with connection to server!");
+				unset($data['userId']);
+				$id = $this->model->registerData('subjects', $data);
+				if($id != 0){
+					$toWrite = 0;
+					if(count($_POST['userId']) > 0) {
+						foreach ($_POST['userId'] as $value) {
+							$toWrite = $this->model->registerData('subjectassign', array(
+								'subjectId' => $id, 'userId' => $value));
+						}
+					}
+					$result['status'] = 1;
+					$result['success'] = true;
+				}else{
+					$result['status'] = -1;
+					$result['errors'] = $validate->addError("Problem with connection to server!");
+				}
+			} else {
+				$result['status'] = 0;
 			}
-		} else {
+		}else {
+			$validate->addError("Please select at least one teacher");
 			$result['status'] = 0;
-		}
+		}		
 		if($result['status'] == 0 || $result['status'] == -1) {
 			$result['errors'] = $validate->errors();
 			$result['success'] = false;

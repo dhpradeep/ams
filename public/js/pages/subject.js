@@ -149,12 +149,6 @@ function resetFields() {
 
 $(document).ready(function() {
     refresh();
-    $('#userId').multiselect({
-        nonSelectedText: 'Select Teacher',
-        enableFiltering: true,
-        enableCaseInsensitiveFiltering: true,
-        buttonWidth: '100px'
-    });
 });
 
 $(document).on("click", "#saveBtn", function(e) {
@@ -219,6 +213,11 @@ function updateSubject() {
         $(this).val($(this).val().trim());
     });
 
+    var userId = $('#userId').val();
+    if(userId == null) {
+        userId = [];
+    }
+
     var id = $('#subjectId').data('id');
     if (id > 0) {
         $.ajax({
@@ -232,7 +231,7 @@ function updateSubject() {
                 yearOrSemester: $('#yearOrSemester').val(),
                 programId: $('#programId').val(),
                 sectionId: $('#sectionId').val(),
-                userId: $('#userId').val()
+                userId: userId
             },
             success: function(response) {
                 animate(300);
@@ -270,6 +269,11 @@ function addSubject() {
         $(this).val($(this).val().trim());
     });
 
+    var userId = $('#userId').val();
+    if(userId == null) {
+        userId = [];
+    }
+
     $.ajax({
         url: '../manage/subject/add',
         async: true,
@@ -280,7 +284,7 @@ function addSubject() {
             yearOrSemester: $('#yearOrSemester').val(),
             programId: $('#programId').val(),
             sectionId: $('#sectionId').val(),
-            userId: $('#userId').val()
+            userId : userId
         },
         success: function(response) {
             var decode = JSON.parse(response);

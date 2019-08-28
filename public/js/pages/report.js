@@ -244,9 +244,9 @@ function sectionAddFunction(data = null, mode = 0) {
 
 
 function getTable(subjectNames, studentNames, records) {
-    var key, html = "<thead><tr><th>Roll No.</th><th>Name</th>";
+    var key, html = "<thead><tr><th style='overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align:center'>Roll No.</th><th style='text-align:center'>Name</th>";
     for (key in subjectNames) {
-        html += "<th>" + subjectNames[key]['name'] + " ( " + subjectNames[key]['totalAttendance'] + " )</th>";
+        html += "<th style='text-align:center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;'>" + subjectNames[key]['name'] + " ( " + subjectNames[key]['totalAttendance'] + " )</th>";
     }
     html += "</tr></thead><tbody>";
 

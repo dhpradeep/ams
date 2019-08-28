@@ -26,9 +26,6 @@
 
     <!-- Custom Fonts -->
     <link href="<?= BOWER_DIR ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- Bootstrap multiselect CSS -->
-    <link rel="stylesheet" href="<?= CSS_DIR ?>/bootstrap-multiselect.css" />
     
 </head>
 
@@ -159,9 +156,6 @@
     <!-- Custom Theme JavaScript -->
     <script src="<?= JS_DIR ?>/sb-admin-2.js"></script>
     <script src="<?= JS_DIR ?>/pages/subject.js" type="text/javascript"></script>
-
-    <!-- Bootstrap multiSelect JavaScript -->
-    <script src="<?= JS_DIR ?>/bootstrap-multiselect.js"></script>
 
     </body>
 
