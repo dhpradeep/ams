@@ -83,6 +83,9 @@
                                                 Email
                                             </th>
                                             <th style="min-width: 150px;">
+                                                Phone
+                                            </th>
+                                            <th style="min-width: 150px;">
                                                 Role
                                             </th>
                                             <th style="min-width: 60px;">Action</th>
@@ -101,6 +104,7 @@
 
         <!-- modals -->
         <?php include(MODALS_DIR.DS.'users.php'); ?>
+        <?php include(MODALS_DIR.DS.'resetUsers.php'); ?>
 
     </div>
     <!-- /#wrapper -->

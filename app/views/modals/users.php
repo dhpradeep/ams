@@ -28,6 +28,11 @@
                         <span class="help-inline"></span>
                     </div>
                     <div class="form-group col-md-6">
+                        <label>Phone no*</label>
+                        <input type="text" class="form-control" name="mobileNo" id="mobileNo" placeholder="Phone Number" required/>
+                        <span class="help-inline"></span>
+                    </div>
+                    <div class="form-group col-md-6">
                         <label>Username*</label>
                         <input type="text" class="form-control" name="username" id="username" placeholder="Username" required/>
                         <span class="help-inline"></span>

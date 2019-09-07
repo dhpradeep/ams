@@ -631,7 +631,6 @@ class Student extends Controller {
 				),
 				'email' => array(
 					'name' => 'Email',
-					'required' => true,
 					'type' => 'email'
 				),
 				'level' => array(

@@ -79,6 +79,11 @@
                                             <input class="form-control" type="email" name="email" id= "email" placeholder="Email Address" minlength="5" value="<?=$this->profile['email'] ?>" required />
                                             <span class="help-inline"></span>
                                         </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Phone No</label>
+                                            <input class="form-control" type="text" name="mobileNo" id= "mobileNo" placeholder="Phone Number" minlength="2" value="<?=$this->profile['mobileNo'] ?>" required />
+                                            <span class="help-inline"></span>
+                                        </div>
                                         <div class="form-group col-md-12">
                                             <button name="submit_profile" type = "submit" id="btn-save" class="btn btn-primary">  Update </button>
                                             <button type="reset" class="btn btn-warning" data-dismiss="modal">Reset</button>

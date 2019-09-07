@@ -108,6 +108,12 @@ class User extends Controller
 							'min' => 5,
 							'max' => 50,
 							'type' => 'email'
+						),						
+						'mobileNo' => array(
+							'name' => 'Mobile No.',
+							'required' => true,
+							'min' => 1,
+							'max' => 255
 						)
 					));
 					if($validate->passed()){
@@ -205,7 +211,7 @@ class User extends Controller
 
 	public function users($name = '') 
 	{
-		if(($name == "add" || $name == "update" || $name == "delete" || $name == "get") && Session::isLoggedIn(1)) {
+		if(($name == "add" || $name == "update" || $name == "delete" || $name == "get" || $name == "reset") && Session::isLoggedIn(1)) {
 			$result = array('status' => 0);	
 			if(isset($_POST)) {
 				if($name == "get") {
@@ -216,6 +222,9 @@ class User extends Controller
 				}
 				if($name == "update" && isset($_POST['id']) && isset($_POST['role'])) {
 					return $this->updateUser($result);
+				}
+				if($name == "reset" && isset($_POST['id']) && isset($_POST['pass'])) {
+					return $this->resetUser($result);
 				}
 				if($name == "add") {
 					return $this->addUser($result);
@@ -326,6 +335,44 @@ class User extends Controller
 		return print json_encode($result);
 	}
 
+	private function resetUser($result) {
+		if(!isset($_POST['id'])) {
+			$result['error'] = array("Invalid selection.");
+			$result['status'] = 0;
+		}else {
+			$validate = new Validator();
+			$validation = $validate->check($_POST, array(
+				'pass' => array(
+					'name' => 'New Password',
+					'required' => true,
+					'min' => 6,
+					'max' => 25,
+					'matchName' => 'Confirm Password',
+					'matches' => 'confirmPass'
+				)
+			));
+			if($validate->passed()) {
+				$idToDel = Input::get('id');
+				$dataToSearch = array('id' => $idToDel);
+				$res = $this->model->searchData('userlogin',$dataToSearch);
+				if(count($res) >= 1) {
+					$toUpdate = array("passwordHash" => md5(Input::get('pass')));
+					$out = $this->model->updateData('userlogin', $idToDel, $toUpdate);
+					$result['status'] = 1;
+				}else {
+					$result['error'] = array("No such user found.");
+					$result['status'] = 0;
+				}
+			}else {
+					$result['status'] = 0;
+					$result['errors'] = $validate->errors();
+			}
+		}
+		$result['success'] = ($result['status'] == 1) ? true : false;
+		unset($_POST);
+		return print json_encode($result);
+	}
+
 	private function updateUser($result) {
 		$data = array();
 		foreach ($_POST as $key => $value) {
@@ -398,6 +445,12 @@ class User extends Controller
 				'min' => 5,
 				'max' => 50,
 				'type' => 'email'
+			),
+			'mobileNo' => array(
+				'name' => 'Mobile No.',
+				'required' => true,
+				'min' => 1,
+				'max' => 255
 			)
 		));
 		if($validate->passed()){

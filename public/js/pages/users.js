@@ -4,7 +4,41 @@ function create_user(data = null) {
 
 $('body').on('shown.bs.modal', '#adduser', function() {
     $('input:visible:enabled:first', this).focus();
-})
+});
+
+$('body').on('hidden.bs.modal', '#adduser', function() {
+    resetFields();
+});
+
+$('body').on('hidden.bs.modal', '#resetuser', function() {
+    $('#idReset').val(id);
+    $('#nameToReset').html(name);
+    $('#pass').val("");
+    $('#confirmPass').val("");
+});
+
+$('body').on('click', '.reset-icon', function(e){
+    var id = $(this).data('id');
+    var name = $(this).data('name');
+    if(id > 0){
+        $('#idReset').val(id);
+        $('#nameToReset').html(name);
+        $('#resetuser').modal('show');
+    }
+});
+
+function resetFields() {
+    $('#idReset').val(-1);
+    $('#fname').val("");
+    $('#mname').val("");
+    $('#lname').val("");
+    $('#username').val("");
+    $('#passwordHash').val("");
+    $('#cpasswordHash').val("");
+    $('#email').val("");
+    $('#mobileNo').val("");
+    $('#role').val(1);
+}
 
 $(document).ready(function() {
     refresh();
@@ -96,6 +130,7 @@ function addUser() {
             passwordHash: $('#passwordHash').val(),
             cpasswordHash: $('#cpasswordHash').val(),
             email: $('#email').val(),
+            mobileNo: $('#mobileNo').val(),
             role: $('#role').val()
         },
         success: function(response) {
@@ -158,6 +193,51 @@ function deletedata(id) {
     });
 }
 
+$(document).on("click", "#resetUserBtn", function(e) {
+    e.preventDefault();
+    resetpassword();
+});
+
+function resetpassword(id) {
+    var id = $('#idReset').val();
+    if(id > 0) {
+        $.ajax({
+            url: '../user/users/reset',
+            async: true,
+            type: 'POST',
+            data: {
+                id: id,
+                pass: $('#pass').val(),
+                confirmPass: $('#confirmPass').val()
+            },
+            success: function(response) {
+                var decode = JSON.parse(response);
+                if (decode.success == true) {
+                    $('#resetuser').modal('hide');
+                    refresh();
+                    $.notify("Password successfully reset", "success");
+
+                } else if (decode.success === false) {
+                    decode.errors.forEach(function(element) {
+                        $.notify(element, "error");
+                    });
+                    return;
+                }
+            },
+            error: function(error) {
+                console.log("Error:");
+                console.log(error.responseText);
+                console.log(error.message);
+                if (error.responseText) {
+                    var msg = JSON.parse(error.responseText)
+                    $.notify(msg.msg, "error");
+                }
+                return;
+            }
+        });
+    }    
+}
+
 $(document).on("change", "#filterData", function(e) {
     e.preventDefault();
     getAllData();
@@ -210,6 +290,9 @@ function getAllData() {
             { "data": "name" },
             { "data": "username" },
             { "data": "email" },
+            { "data": "mobileNo" ,
+                sortable: false
+            },
             {
                 "data": "role",
                 sortable: true,
@@ -223,7 +306,8 @@ function getAllData() {
             {
                 sortable: false,
                 "render": function(data, type, row, meta) {
-                    return "<a data-id=" + row.id + " class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
+                    return "<a data-id=" + row.id + " data-name=" + row.name + " class='reset-icon btn btn-warning btn-xs'>Reset</a>" +
+                    "<a data-id=" + row.id + " class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
                 }
             }
         ]
