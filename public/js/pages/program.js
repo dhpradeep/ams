@@ -238,6 +238,7 @@ function getAllData() {
         },
         "processing": true,
         "serverSide": true,
+        stateSave : true,
         "ajax": {
             "url": "../manage/program/get",
             "type": "POST"

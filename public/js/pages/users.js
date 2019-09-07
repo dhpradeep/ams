@@ -194,6 +194,7 @@ function getAllData() {
     $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
+        stateSave : true,
         "ajax": {
             "url": "../user/users/get",
             "type": "POST",

@@ -261,6 +261,7 @@ function getAllData() {
     var table = $('#sectionTable').DataTable({
         "processing": true,
         "serverSide": true,
+        stateSave : true,
         "ajax": {
             "url": "../manage/section/get",
             "type": "POST",

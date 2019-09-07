@@ -562,6 +562,7 @@ function export_format(data) {
         zone: "Zone",
         mobileNo: "Mobile",
         telephoneNo: "Telephone",
+        email: "Email",
         guardianName: "Guardian Name",
         guardianRelation: "Guardian Relation",
         guardianContact: "Guardian Contact",
@@ -657,6 +658,7 @@ function getAllData(trigger = null) {
     var table = $('#studentTable').DataTable({
         "processing": true,
         "serverSide": true,
+        stateSave : true,
         "ajax": {
             "url": "../student/all/get",
             "type": "POST",
