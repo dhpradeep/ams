@@ -102,6 +102,9 @@
         </div>
         <!-- /#page-wrapper -->
 
+        
+        <?php include(INCLUDES_DIR.DS.'footer.php'); ?>
+
         <!-- modals -->
         <?php include(MODALS_DIR.DS.'users.php'); ?>
         <?php include(MODALS_DIR.DS.'resetUsers.php'); ?>

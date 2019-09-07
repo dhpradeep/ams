@@ -36,19 +36,6 @@
                     </div>
                 </div>
                 <!-- /.row -->
-
-    <!-- on admin session -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h4>About the system here</h4>
-                        
-                        <blockquote>
-                            This is <?= WEBSITE_TITLE." Version : ".VERSION ?><br><br>
-                          <p>Developed by <strong><a target="blank" href = "<?= BRAND_WEBSITE ?>" ><?= BRAND_NAME ?></a></strong></p>
-                        </blockquote>
-                    </div>
-                </div>
-
     <!-- on student session -->
                 <?php 
                     if(!is_null($this->errors) &&count($this->errors) > 0) {
@@ -86,6 +73,8 @@
             </div>
         <br><br>
         <!-- /#page-wrapper -->
+
+        <?php include(INCLUDES_DIR.DS.'footer.php'); ?>
     </div>
     <!-- /#wrapper -->
     <!-- jQuery -->

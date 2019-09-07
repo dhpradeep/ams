@@ -132,6 +132,8 @@
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
+        <!-- Footer -->
+    <?php include(INCLUDES_DIR.DS.'footer.php'); ?>
 
     </div>
     <!-- /#wrapper -->

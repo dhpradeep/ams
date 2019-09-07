@@ -70,6 +70,8 @@
             </div>
         </div>
     </div>
+    <!-- Footer -->
+    <?php include(INCLUDES_DIR.DS.'footer.php'); ?>
 
     <!-- jQuery -->
     <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>

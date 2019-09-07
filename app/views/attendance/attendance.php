@@ -64,7 +64,7 @@
                           <h4 class="panel-title attendance-panel-title">
                               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?=$value['id']?>" aria-expanded="true" aria-controls="collapseOne">
                                   <i class="more-less glyphicon glyphicon-plus"></i>
-                                  <?= $value['name'] ?> | <b>Year/Semester :</b><?= $value['yearOrSemester'] ?> | <?= $value['sectionName'] ?>
+                                  <?= $value['name'] ?> | <?= $value['code'] ?> | <b>Year/Semester :</b><?= $value['yearOrSemester'] ?> | <?= $value['sectionName'] ?>
                               </a>
                           </h4>
                       </div>
@@ -97,7 +97,12 @@
       </div>
     </div>
 
+
+      <!-- Footer -->
+    <?php include(INCLUDES_DIR.DS.'footer.php'); ?>
+    
     <?php include(MODALS_DIR.DS.'review.php'); ?>
+  
 
   </div>
 

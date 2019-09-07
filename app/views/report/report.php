@@ -282,7 +282,10 @@
                 </div>
             </div>
             <br><br>
+            <!-- Footer -->
         </div>
+         <?php include(INCLUDES_DIR.DS.'footer.php'); ?>
+    </div>
         <!-- /#wrapper -->
         <!-- jQuery -->
         <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>

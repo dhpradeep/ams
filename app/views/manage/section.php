@@ -113,6 +113,9 @@
             </div>
         </div>
 
+        
+        <?php include(INCLUDES_DIR.DS.'footer.php'); ?>
+
     </div>
     <!-- /#wrapper -->
 
