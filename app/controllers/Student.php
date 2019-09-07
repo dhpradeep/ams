@@ -378,7 +378,7 @@ class Student extends Controller {
 						"area" => $data['area'],
 						"district" => $data['district'],
 						"wardNo" => $data['wardNo'],
-						"zone" => $data['zone'],
+						"province" => $data['province'],
 						"mobileNo" => $data['mobileNo'],
 						"telephoneNo" => $data['telephoneNo'],
 						"guardianName" => $data['guardianName'],
@@ -391,7 +391,7 @@ class Student extends Controller {
 					$toRegister = array(
 						"userId" => $idToUpdate,
 						"level" => $data['level'],
-						"faculty" => $data['faculty'],
+						"symbolNo" => $data['symbolNo'],
 						"institution" => $data['institution'],
 						"board" => $data['board'],
 						"yearOfCompletion" => $data['yearOfCompletion'],
@@ -479,7 +479,7 @@ class Student extends Controller {
 								"area" => $data['area'],
 								"district" => $data['district'],
 								"wardNo" => $data['wardNo'],
-								"zone" => $data['zone'],
+								"province" => $data['province'],
 								"mobileNo" => $data['mobileNo'],
 								"telephoneNo" => $data['telephoneNo'],
 								"guardianName" => $data['guardianName'],
@@ -491,7 +491,7 @@ class Student extends Controller {
 								$toRegister = array(
 									"userId" => $userId,
 									"level" => $data['level'],
-									"faculty" => $data['faculty'],
+									"symbolNo" => $data['symbolNo'],
 									"institution" => $data['institution'],
 									"board" => $data['board'],
 									"yearOfCompletion" => $data['yearOfCompletion'],
@@ -617,8 +617,8 @@ class Student extends Controller {
 					'min' => 1,
 					'max' => 255
 				),
-				'zone' => array(
-					'name' => 'Zone',
+				'province' => array(
+					'name' => 'province',
 					'required' => true,
 					'min' => 1,
 					'max' => 255
@@ -641,6 +641,12 @@ class Student extends Controller {
 				),
 				'board' => array(
 					'name' => 'Education Board',
+					'required' => true,
+					'min' => 1,
+					'max' => 255
+				),
+				'symbolNo' => array(
+					'name' => 'Symbol No',
 					'required' => true,
 					'min' => 1,
 					'max' => 255

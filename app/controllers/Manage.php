@@ -663,6 +663,11 @@ class Manage extends Controller {
 	private function getValidators() {
 		if(Session::isLoggedIn(1))
 			return array(
+				'code' => array(
+					'name' => 'Code',
+					'min' => 1,
+					'max' => 255
+				),
 				'name' => array(
 					'name' => 'Name',
 					'required' => true,

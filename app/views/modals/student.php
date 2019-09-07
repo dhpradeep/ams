@@ -127,8 +127,8 @@
                             <span class="help-inline"></span>
                         </div>
                         <div class="form-group col-md-5">
-                            <label for="faculty">Faculty</label>
-                            <input type="text" class="form-control" name="faculty" id="faculty" placeholder="Faculty" />
+                            <label for="symbolNo">Symbol No *</label>
+                            <input type="text" class="form-control" name="symbolNo" id="symbolNo" placeholder="Symbol No" />
                             <span class="help-inline"></span>
                         </div>
                         <div class="form-group col-md-3">
@@ -170,8 +170,8 @@
                                 <span class="help-inline"></span>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="zone">Zone *</label>
-                                <input type="text" class="form-control" name="zone" id="zone" placeholder="Zone" />
+                                <label for="province">Province</label>
+                                <input type="text" class="form-control" name="province" id="province" placeholder="Province" />
                                 <span class="help-inline"></span>
                             </div>
                             <div class="form-group col-md-6">
@@ -185,7 +185,7 @@
                                 <span class="help-inline"></span>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="email">Email *</label>
+                                <label for="email">Email</label>
                                 <input type="text" class="form-control" name="email" id="email" placeholder="Email" />
                                 <span class="help-inline"></span>
                             </div>

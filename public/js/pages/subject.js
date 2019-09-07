@@ -115,6 +115,7 @@ function create_subject(data = null) {
     if (data != null) {
         $("#subjectId").data('id', data.id);
         $('#name').val(data.name);
+        $('#code').val(data.code);
         $('#details').val(data.details);
         $("#userId").val(data.userId);
         $('#userId option:selected').each(function() {
@@ -144,6 +145,7 @@ function resetFields() {
     $('#sectionId').val('-1');
     $("#userId").val([]);
     $('#name').val('');
+    $('#code').val('');
     $('#details').val('');
 }
 
@@ -226,6 +228,7 @@ function updateSubject() {
             type: 'POST',
             data: {
                 id: id,
+                code: $('#code').val(),
                 name: $('#name').val(),
                 details: $('#details').val(),
                 yearOrSemester: $('#yearOrSemester').val(),
@@ -279,6 +282,7 @@ function addSubject() {
         async: true,
         type: 'POST',
         data: {
+            code: $('#code').val(),
             name: $('#name').val(),
             details: $('#details').val(),
             yearOrSemester: $('#yearOrSemester').val(),
@@ -367,6 +371,7 @@ function getAllData() {
         ],
         "columns": [
             { "data": "name" },
+            { "data": "code" },
             { "data": "programName", sortable: false },
             { "data": "yearOrSemester" },
             { "data": "teachers", sortable: false },
@@ -380,7 +385,7 @@ function getAllData() {
             }
         ],
         "order": [
-            [1, 'asc']
+            [0, 'asc']
         ]
     });
 

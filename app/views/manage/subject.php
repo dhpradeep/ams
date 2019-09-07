@@ -97,11 +97,14 @@
                                             <th style="min-width: 150px;">
                                                 Subject Name
                                             </th>
+                                            <th style="min-width: 70px;">
+                                                Subject Code
+                                            </th>
                                             <th style="min-width: 150px;">
                                                 Program Name
                                             </th>
-                                            <th style="min-width: 150px;">
-                                                Semester/Year
+                                            <th style="min-width: 70px;">
+                                                Sem/Year
                                             </th>
                                             <th style="min-width: 200px;">
                                                 Assigned Teachers

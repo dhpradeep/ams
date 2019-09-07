@@ -8,6 +8,11 @@
                 <form role="form">
                     <div class="form-group col-md-6">
                         <input id="subjectId" type="hidden"/>
+                        <label class="control-label" for="code">Subject Code </label>
+                        <input type="text" class="form-control" id="code" name="code" required>
+                        <span class="help-inline"></span>
+                    </div>
+                    <div class="form-group col-md-6">
                         <label class="control-label" for="name">Subject Name *</label>
                         <input type="text" class="form-control" id="name" name="name" required>
                         <span class="help-inline"></span>

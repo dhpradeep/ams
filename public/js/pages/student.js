@@ -135,7 +135,7 @@ function resetFields() {
     $('#wardNo').val('');
     $('#area').val('');
     $('#district').val('');
-    $('#zone').val('');
+    $('#province').val('');
     $('#mobileNo').val('');
     $('#telephoneNo').val('');
     $('#email').val('');
@@ -144,7 +144,7 @@ function resetFields() {
     $('#guardianContact').val('');
     $('#level').val('1');
     $('#board').val('');
-    $('#faculty').val('');
+    $('#symbolNo').val('');
     $('#yearOfCompletion').val('');
     $('#percent').val('');
     $('#institution').val('');
@@ -170,7 +170,7 @@ function setFields(data) {
     $('#wardNo').val(data.wardNo);
     $('#area').val(data.area);
     $('#district').val(data.district);
-    $('#zone').val(data.zone);
+    $('#province').val(data.province);
     $('#mobileNo').val(data.mobileNo);
     $('#telephoneNo').val(data.telephoneNo);
     $('#email').val(data.email);
@@ -179,7 +179,7 @@ function setFields(data) {
     $('#guardianContact').val(data.guardianContact);
     $("#level").val(data.level);
     $("#board").val(data.board);
-    $("#faculty").val(data.faculty);
+    $("#symbolNo").val(data.symbolNo);
     $("#yearOfCompletion").val(data.yearOfCompletion);
     $("#percent").val(data.percent);
     $("#institution").val(data.institution);
@@ -318,7 +318,7 @@ function prepareData(id = 0) {
     data.wardNo = $('#wardNo').val();
     data.area = $('#area').val();
     data.district = $('#district').val();
-    data.zone = $('#zone').val();
+    data.province = $('#province').val();
     data.mobileNo = $('#mobileNo').val();
     data.telephoneNo = $('#telephoneNo').val();
     data.email = $('#email').val();
@@ -327,7 +327,7 @@ function prepareData(id = 0) {
     data.guardianContact = $('#guardianContact').val();
     data.level = $('#level').val();
     data.board = $('#board').val();
-    data.faculty = $('#faculty').val();
+    data.symbolNo = $('#symbolNo').val();
     data.yearOfCompletion = $('#yearOfCompletion').val();
     data.percent = $('#percent').val();
     data.institution = $('#institution').val();
@@ -488,8 +488,8 @@ function format(d) {
         '<td class = "answers"><i>' + d.levelName + '</i></td>' +
         '<td class = "choices">Board</td>' +
         '<td class = "answers">' + d.board + '</td>' +
-        '<td class = "choices">Faculty:</td>' +
-        '<td class = "answers"><i>' + d.faculty + '</i></td>' +
+        '<td class = "choices">Symbol No:</td>' +
+        '<td class = "answers"><i>' + d.symbolNo + '</i></td>' +
         '</tr>' +
         '<tr>' +
         '<td class = "choices">Year of Completion:</td>' +
@@ -523,8 +523,8 @@ function format(d) {
         '<td class = "answers">' + d.area + '</td>' +
         '<td class = "choices">District:</td>' +
         '<td class = "answers">' + d.district + '</td>' +
-        '<td class = "choices">Zone:</td>' +
-        '<td class = "answers">' + d.zone + '</td>' +
+        '<td class = "choices">Province:</td>' +
+        '<td class = "answers">' + d.province + '</td>' +
         '</tr>' +
         '<tr>' +
         '<td class = "choices">Mobile No:</td>' +
@@ -559,7 +559,7 @@ function export_format(data) {
         wardNo: "Ward No",
         area: "Area",
         district: "District",
-        zone: "Zone",
+        province: "Province",
         mobileNo: "Mobile",
         telephoneNo: "Telephone",
         email: "Email",
@@ -568,7 +568,7 @@ function export_format(data) {
         guardianContact: "Guardian Contact",
         levelName: "Level",
         board: "Board",
-        faculty: "Faculty",
+        symbolNo: "Symbol no",
         yearOfCompletion: "Year",
         percent: "Percent / GPA",
         institution: "Institute"
