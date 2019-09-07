@@ -216,6 +216,8 @@ class Student extends Controller {
 			unset($arr[$index]['password']);
 			unset($arr[$index]['role']);
 
+			$arr[$index]['review'] = $this->getReviews($arr[$index]['userId'], $arr[$index]['sectionId']);
+
 			$arr[$index]['levelName'] = ($arr[$index]['level'] == 1) ? "SLC" : "Unkown";			
 			switch ($arr[$index]['gender']) {
 				case 1:
@@ -268,6 +270,43 @@ class Student extends Controller {
 		return print json_encode($result);
 	}
 
+	private function getReviews($id, $section) {
+		$toReturn = array();
+		if($id <= 0 || $id == 0 || $section < 0) {
+			return $toReturn;
+		}else {
+			$allSubjects = $this->model->searchData('subjects', array('sectionId' => $section));
+			if(count($allSubjects) > 0) {
+				$teachers = array();
+				foreach ($allSubjects as $value) {
+					$allTeachers = $this->model->searchData('subjectassign', array('subjectId' => $value['id']));
+					if(count($allTeachers) > 0) {
+						foreach ($allTeachers as $value1) {
+							if(!(in_array($value1['userId'], $teachers))) {
+								array_push($teachers, $value1['userId']);
+							}
+						}
+					}
+				}
+
+				if(count($teachers) > 0) {
+					 foreach ($teachers as $value) {
+					 	$details = $this->model->getData('userlogin', array('id' => $value));
+					 	$name = "Unkown";
+					 	if($details != null) {
+					 		$name = $details['fname']. " ". $details['mname']. " ".$details['lname'];
+					 	}
+					 	$review = $this->model->getData('review', array('teacherId' => $value, "studentId" => $id));
+					 	$date = ($review == null) ? "" : $review['date'];
+					 	$review = ($review == null) ? "" : $review['review'];
+					 	array_push($toReturn, array('name' => $name, 'review' => $review, "date" => $date));
+					 }
+				}				
+			}
+		}
+		return $toReturn;
+	}
+
 	private function getAllStudentRecords($idArray){
 		$total = array();
 		$tableName = array("personaldata","contactdetails","education");
@@ -315,6 +354,11 @@ class Student extends Controller {
 				do {
 					if($pk != 0) $this->model->deleteData("attendance", $pk);
 					$pk = $this->model->getDataId("attendance",array('userId' => $idToDel));
+				}while($pk != 0);
+				$pk = $this->model->getDataId("review",array('studentId' => $idToDel));
+				do {
+					if($pk != 0) $this->model->deleteData("review", $pk);
+					$pk = $this->model->getDataId("review",array('studentId' => $idToDel));
 				}while($pk != 0);
 				$result['status'] = 1;		
 			}else {

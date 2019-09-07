@@ -186,7 +186,9 @@
         <div id="toExport"></div>
 
         <!-- modals -->
-     <?php include(MODALS_DIR.DS.'student.php'); ?>
+     
+     <?php include(MODALS_DIR.DS.'viewReview.php'); ?>
+    </div>
 
     <!-- jQuery -->
     <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>

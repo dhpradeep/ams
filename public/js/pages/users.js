@@ -11,8 +11,8 @@ $('body').on('hidden.bs.modal', '#adduser', function() {
 });
 
 $('body').on('hidden.bs.modal', '#resetuser', function() {
-    $('#idReset').val(id);
-    $('#nameToReset').html(name);
+    $('#idReset').val(-1);
+    $('#nameToReset').html("");
     $('#pass').val("");
     $('#confirmPass').val("");
 });

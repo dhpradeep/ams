@@ -319,6 +319,16 @@ class User extends Controller
 			$res = $this->model->searchData('userlogin',$dataToSearch);
 			if(count($res) >= 1) {
 				$out = $this->model->deleteData('userlogin', $idToDel);
+				$pk = $this->model->getDataId("subjectassign",array('userId' => $idToDel));
+				do {
+					if($pk != 0) $this->model->deleteData("subjectassign", $pk);
+					$pk = $this->model->getDataId("subjectassign",array('userId' => $idToDel));
+				}while($pk != 0);
+				$pk = $this->model->getDataId("review",array('teacherId' => $idToDel));
+				do {
+					if($pk != 0) $this->model->deleteData("review", $pk);
+					$pk = $this->model->getDataId("review",array('teacherId' => $idToDel));
+				}while($pk != 0);
 				if($out == 1) {
 					$result['status'] = 1;
 				}else {

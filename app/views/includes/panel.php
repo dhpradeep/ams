@@ -12,10 +12,10 @@
                         <a href="<?= SITE_URL.DS.'manage'.DS ?>program">Manage Programs</a>
                     </li>
                     <li>
-                    <a href="<?= SITE_URL.DS.'manage'.DS ?>subject">Manage Subjects</a>
+                    <a href="<?= SITE_URL.DS.'manage'.DS ?>section">Manage Section</a>
                     </li>
                     <li>
-                    <a href="<?= SITE_URL.DS.'manage'.DS ?>section">Manage Section</a>
+                    <a href="<?= SITE_URL.DS.'manage'.DS ?>subject">Manage Subjects</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->

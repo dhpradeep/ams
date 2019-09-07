@@ -1,4 +1,4 @@
-<div class="modal fade" id="addStudent" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="addStudent"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -62,6 +62,7 @@
                                     <input class="form-control" type="checkbox" id="status" name="status" checked="true"> 
                                     </label>
                             </div>
+                        </form>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="details">

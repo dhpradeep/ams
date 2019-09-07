@@ -102,8 +102,8 @@ function sectionAddFunction(data = null, mode = 0, value = 0) {
                     }
                 } else if (decode.success === false) {
                     var html = '<option value="-1">None</option>';
-                    if (decode.error != undefined) {
-                        $.notify(decode.error[0], "error");
+                    if (decode.errors != undefined) {
+                        $.notify(decode.errors[0], "error");
                     } else {
                         $.notify("Problem fetching sections for this program and semester/year.", "error");
                     }
@@ -284,8 +284,8 @@ function upgradeProgram(id) {
                 refresh();
                 $.notify("Program upgraded successfully", "success");
             } else if (decode.success === false) {
-                if (decode.error != undefined) {
-                    $.notify(decode.error, "error");
+                if (decode.errors != undefined) {
+                    $.notify(decode.errors, "error");
                 }
                 return;
             }
@@ -728,7 +728,9 @@ function getAllData(trigger = null) {
             {
                 sortable: false,
                 "render": function(data, type, row, meta) {
-                    return "<a data-id=" + row.id + " class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i> </a><a data-id=" + row.id + " class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
+                    return "<a class='review-icon btn btn-info btn-xs'><i class='fa fa-file'></i> </a>"+
+                    "<a data-id=" + row.id + " class='edit-icon btn btn-success btn-xs'><i class='fa fa-pencil'></i> </a>"+
+                    "<a data-id=" + row.id + " class='remove-icon btn btn-danger btn-xs'><i class='fa fa-remove'></i></a>";
                 }
             }
         ],
@@ -759,4 +761,37 @@ function getAllData(trigger = null) {
         var row = table.row(tr);
         create_student(row.data());
     });
+
+    $('#studentTable tbody').on('click', '.review-icon', function() {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        review_handle(row.data());
+    });
+}
+
+$('body').on('hidden.bs.modal', '#viewReview', function() {
+    $('#nameOfStudent').html("");
+    $('#reviewTable').html("");
+});
+
+
+function review_handle(data) {
+    if(data != null && data != undefined) {
+        var table;
+        $('#nameOfStudent').html(data.name);
+        if(data.review != null || data.review.length > 0) {
+            table = "<table><thead><th>Name</th><th>Review</th><th>Date</th></thead><tbody>";
+            for (var i = 0; i < data.review.length; i++) {
+                table += "<tr><td>"+ data.review[i]['name']+
+                "</td><td>"+data.review[i]['review']+
+                "</td><td>"+data.review[i]['date']+"</td></tr>";
+            }
+            table += "</tbody></table>"
+        }else {
+            table = "No data found!";
+        }
+        $('#reviewTable').html(table);
+        $('#viewReview').modal('show');
+        //create_student(data);
+    }
 }

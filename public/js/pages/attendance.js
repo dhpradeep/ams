@@ -7,6 +7,7 @@ $(document).ready( function () {
 $(document).on('click', '.fetchAttendance', function(e) {
 	e.preventDefault();
 	getAllData($(this).data('id'));
+    $('#subjectSelected').data('id',$(this).data('id'));
 });
 
 $("#tableToHide").on('click', '#allChecker', function(e){
@@ -53,6 +54,7 @@ function getHTML(data, subjectId, date) {
                       '<tr>'+
                         '<th scope="col">Roll No</th>'+
                         '<th scope="col">Full Name</th>'+
+                        '<th scope="col">Review</th>'+
                         '<th scope="col">'+
                           '<label class="switch">'+
                             '<input type="checkbox" id="allChecker">'+
@@ -64,6 +66,10 @@ function getHTML(data, subjectId, date) {
                     '<tbody>';
 	for(key in data) {
 		html += '<tr><td>'+ data[key]['rollNo'] +'</td><td>'+ data[key]['name'] + '</td>'+
+                '<td>'+'<a data-sid='+ data[key]['userId'] +' data-tid= '+ $('#teacherId').data('id') +' data-sname='+
+                 data[key]['name'] +
+                 ' href="#" class="student-review btn btn-default btn-xs">Review <span class="badge badge-danger ml-2">'+
+                 data[key]['reviewNo']+'</span></a>'+'</td>'+
 				'<td>'+
                   '<label class="switch">'+
                     '<input class="attendanceStatus" type="checkbox" data-id="'+ data[key]['userId']+ '"';
@@ -142,7 +148,8 @@ function getAllData(mode = 0){
             type: 'POST',
             data: {
                 subjectId : mode,
-                date : date
+                date : date,
+                teacherId: $('#teacherId').data('id')
             } ,
             success: function(response) {
                 var decode = JSON.parse(response);
@@ -177,6 +184,105 @@ function getAllData(mode = 0){
             }
         });
 }
+
+$('body').on('hidden.bs.modal', '#addReview', function() {
+    $('#sid').val(-1);
+    $('#tid').val(-1);
+    $('#nameOfStudent').html("");
+    $('#review').val("");
+    getAllData($('#subjectSelected').data('id'));
+});
+
+$(document).on("click", ".student-review", function() {
+    var sid = $(this).data('sid');
+    var tid = $(this).data('tid');
+    var sname = $(this).data('sname');
+    if(sid > 0 && tid > 0) {
+        getReview(sid, tid, sname);
+    }
+});
+
+
+function getReview(sid, tid, sname) {
+        $.ajax({
+            url: '../attendance/review/get',
+            async: true,
+            type: 'POST',
+            data: {
+                studentId : sid,
+                teacherId : tid
+            },
+            success: function(response) {
+                var decode = JSON.parse(response);
+                if (decode.success == true) {
+                    $('#review').val(decode.review);
+                    $('#nameOfStudent').html(sname);
+                    $('#sid').val(sid);
+                    $('#tid').val(tid);
+                    $('#addReview').modal('show');
+                } else if (decode.success === false) {
+                    if (decode.errors != undefined) {
+                        $.notify(decode.errors[0], "error");
+                    }
+                }
+            },
+            error: function(error) {
+                if (error.responseText) {
+                    var msg = JSON.parse(error.responseText)
+                    $.notify(msg.msg, "error");
+                }
+                return;
+            }
+        });
+}
+
+$(document).on("click", "#sendReviewBtn", function(e) {
+    e.preventDefault();
+    var sid = $('#sid').val();
+    var tid = $('#tid').val();
+    var review = $('#review').val();
+    if(sid > 0 && tid > 0 ){
+        sendReview(sid, tid, review);
+    }else {
+        $.notify("Invalid Student/Teacher Data", "error");
+    }
+});
+
+function sendReview(sid, tid, review) {
+        $.ajax({
+            url: '../attendance/review/set',
+            async: true,
+            type: 'POST',
+            data: {
+                studentId : sid,
+                teacherId : tid,
+                review : review
+            },
+            success: function(response) {
+                var decode = JSON.parse(response);
+                if (decode.success == true) {
+                    $('#addReview').modal('hide');
+                    $.notify("Review saved", "success");
+                } else if (decode.success === false) {
+                    if(decode.status == -1){
+                        $('#addReview').modal('hide');
+                    }
+                    if (decode.errors != undefined) {
+                        $.notify(decode.errors, "error");
+                    }
+                }
+            },
+            error: function(error) {
+                if (error.responseText) {
+                    var msg = JSON.parse(error.responseText)
+                    $.notify(msg.msg, "error");
+                }
+                return;
+            }
+        });
+}
+
+
 
 
 

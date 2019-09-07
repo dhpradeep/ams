@@ -69,30 +69,30 @@
                         </div>
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                            <div class="table-responsive">
-                                <table width="100%" id="userTable" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th style="min-width: 150px;">
-                                                Name
-                                            </th>
-                                            <th style="min-width: 150px;">
-                                                Username
-                                            </th>
-                                            <th style="min-width: 150px;">
-                                                Email
-                                            </th>
-                                            <th style="min-width: 150px;">
-                                                Phone
-                                            </th>
-                                            <th style="min-width: 150px;">
-                                                Role
-                                            </th>
-                                            <th style="min-width: 60px;">Action</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-</div>
+                                <div class="table-responsive">
+                                    <table width="100%" id="userTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style="min-width: 150px;">
+                                                    Name
+                                                </th>
+                                                <th style="min-width: 150px;">
+                                                    Username
+                                                </th>
+                                                <th style="min-width: 150px;">
+                                                    Email
+                                                </th>
+                                                <th style="min-width: 150px;">
+                                                    Phone
+                                                </th>
+                                                <th style="min-width: 150px;">
+                                                    Role
+                                                </th>
+                                                <th style="min-width: 60px;">Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

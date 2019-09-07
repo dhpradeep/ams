@@ -35,6 +35,9 @@
           </div>
           <div class="col-md-2">
             <form role="form" class="form-group">
+              <input type="hidden" name="teacherId" id="teacherId" data-id="<?= Session::getSession('uid'); ?>"/>
+              <input type="hidden" name="subjectSelected" id="subjectSelected" data-id="-1"/>
+
               <label for="currentdate">Current Date</label>
               <input class="form-control" type="date" id="currentdate" min="2019-01-01" max="<?= date("Y-m-d") ?>" name="currentdate" value="<?= date("Y-m-d") ?>" class="form-control"/>
             </form>
@@ -93,7 +96,12 @@
         </div>
       </div>
     </div>
+
+    <?php include(MODALS_DIR.DS.'review.php'); ?>
+
   </div>
+
+
 
         <!-- jQuery -->
         <script src="<?= BOWER_DIR ?>/jquery/dist/jquery.min.js"></script>

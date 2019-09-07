@@ -81,6 +81,7 @@ class Attendance extends Controller {
 					$toReturn = array();
 					$records = array();
 					$found = 0;
+					$teacherId = Input::get('teacherId'); // For review
 					foreach ($allStudents as $key => $value) {
 						$oneRow = $this->model->getData('userlogin', array('id' => $value['userId'])); 
 						$records['name'] = ($oneRow != null) ? $oneRow['fname'].' '.$oneRow['mname'].' '.$oneRow['lname'] : "Unkown";
@@ -98,6 +99,23 @@ class Attendance extends Controller {
 						}else {
 							$records['status'] = 0;
 						}
+						/* For review */
+						if($teacherId > 0){
+							$reviewSearch = $this->model->getData('review', array('teacherId' => $teacherId,
+									"studentId" => $value['userId']));
+							if($reviewSearch != null && strlen($reviewSearch['review']) >= 1) {
+								$records['reviewNo'] = 1;
+								$records['review'] = $reviewSearch['review'];
+							}else{
+								$records['reviewNo'] = 0;
+								$records['review'] = "";
+							}
+						}else {
+							$records['reviewNo'] = 0;
+							$records['review'] = "";
+						}
+						/* Review code end here*/
+
 						array_push($toReturn, $records);						 
 					}
 
@@ -178,6 +196,126 @@ class Attendance extends Controller {
 		unset($_POST);
 		return print json_encode($result);
     }
+
+
+    public function review($name = '') 
+	{
+		if(($name == "get" || $name == "set") && (Session::isLoggedIn(1) || Session::isLoggedIn(2))) {
+			$result = array('status' => 0);	
+			if(isset($_POST)) {
+				if($name == "get") {
+					return $this->getReview($result);
+				}
+				if($name == "set") {
+					return $this->setReview($result);
+				}
+			}else {
+				header("Location: ".SITE_URL."/home/message");
+			}	
+
+		} else {
+			header("Location: ".SITE_URL."/home/message");
+		}
+	}
+
+
+	private function setReview($result){
+		$validate = new Validator();
+		$validation = $validate->check($_POST, array(
+			'review' => array(
+				'name' => 'Review',
+				'min' => 1,
+				'max' => 255
+			)
+		));
+		if($validate->passed()){
+			$data = array();
+			$data['id'] = null;
+			foreach ($_POST as $key => $value) {
+				$data[$key] = Input::get($key);
+			}
+			$searchForStudent = $this->model->getData('personaldata',array(
+				'userId' => $data['studentId']
+			));
+			$searchForTeacher = $this->model->getData('userlogin',array(
+				'id' => $data['teacherId']
+			));
+			if($searchForStudent != null && $searchForTeacher != null) {
+				$searchForReview = $this->model->getData('review',array(
+					'teacherId' => $data['teacherId'],
+					'studentId' => $data['studentId']
+				));
+
+				//delete if empty
+				if($searchForReview != null && strlen($data['review']) == 0) {
+					$id = $this->model->deleteData('review', $searchForReview['id']);
+				}else {
+					$data['date'] = date('Y-m-d');
+					if($searchForReview == null) {
+						$id = $this->model->registerData('review', $data);
+					}else {
+						unset($data['id']);
+						$id = $this->model->updateData('review', $searchForReview['id'], $data);
+					}
+				}
+				
+				
+				if($id != 0){
+					$result['status'] = 1;
+					$result['success'] = true;
+				}else{
+					$result['status'] = -1;
+					$result['errors'] = $validate->addError("Nothing changed!");
+				}
+			} else {
+				$result['status'] = 0;
+				$validate->addError("Student or Teacher Invalid data !");
+			}
+		} else {
+			$result['status'] = 0;
+		}
+		if($result['status'] == 0 || $result['status'] == -1) {
+			$result['errors'] = $validate->errors();
+			$result['success'] = false;
+		} 
+		unset($_POST);
+		return print json_encode($result);			
+	}
+
+	private function getReview($result){
+			$data = array();
+			foreach ($_POST as $key => $value) {
+				$data[$key] = Input::get($key);
+			}
+			$searchForStudent = $this->model->getData('personaldata',array(
+				'userId' => $data['studentId']
+			));
+			$searchForTeacher = $this->model->getData('userlogin',array(
+				'id' => $data['teacherId']
+			));
+			if($searchForStudent != null && $searchForTeacher != null) {
+				$searchForReview = $this->model->getData('review',array(
+					'teacherId' => $data['teacherId'],
+					'studentId' => $data['studentId']
+				));
+				if($searchForReview == null) {
+					$value = "";
+				}else {
+					$value = $searchForReview['review'];
+				}
+				$result['review'] = $value;
+				$result['status'] = 1;
+				$result['success'] = true;
+			} else {
+				$result['status'] = 0;
+				$result['errors'] = array("Student or Teacher Invalid data !");
+			}
+		if($result['status'] == 0) {
+			$result['success'] = false;
+		} 
+		unset($_POST);
+		return print json_encode($result);			
+	}
 
 }
 
