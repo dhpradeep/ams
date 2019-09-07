@@ -144,52 +144,17 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            Student Settings
-                        </div>
-                        <div class="panel-body">
-                            <div class="col-md-12" style="padding-left: 0px;">
-                                <p class="text-info">Upgrade final semester students to graduate.</p>
-                            </div>
-                            <form>
-                                <div class="form-group col-md-12 input-group"> <span class="input-group-addon">Program: </span>
-                                    <select class="form-control" id="upgradeProgram" name="upgradeProgram" style="width: 100px">
-                                        <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
-                                        <?php
-                                            foreach ($this->program as $value) {
-                                        ?>
-                                                <option data-no='<?= $value['noOfYearOrSemester'] ?>' data-value='<?= $value['id'] ?>' value="<?= $value['id'] ?>" name="<?= $value['name'] ?>"><?= $value['name'] ?></option>
-                                        <?php
-                                             } 
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-12" style="padding-left: 0px;">
-                                    <button id="upgradeProgramBtn" name="submit_security" type = "button" id="btn-save" class=" btn btn-primary"> Upgrade </button>
-                                </div>                                       
-                            </form>
-                            
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
         </div>
         <!-- /#page-wrapper -->
+
+        <!-- modals -->
+     
+         <?php include(MODALS_DIR.DS.'student.php'); ?>
+         <?php include(MODALS_DIR.DS.'viewReview.php'); ?>
         <!-- Footer -->
         <?php include(INCLUDES_DIR.DS.'footer.php'); ?>
 
         <div id="toExport"></div>
-
-        <!-- modals -->
-     
-     <?php include(MODALS_DIR.DS.'viewReview.php'); ?>
     </div>
 
     <!-- jQuery -->

@@ -34,9 +34,9 @@
                     <li>
                         <a href="<?= SITE_URL.DS.'user'.DS ?>users">Manage Users</a>
                     </li>
-                    <!-- <li>
-                        <a href="settings.php">Manage Exam Timer</a>
-                    </li> -->
+                    <li>
+                        <a href="<?= SITE_URL.'/admin'?>">Admin settings</a>
+                    </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
