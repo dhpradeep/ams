@@ -528,7 +528,7 @@ class Manage extends Controller {
 		$columnToSort = null;
 		$sortDir = null;
 		$stringToSearch = null;
-		$fieldToSearch = array("name","details");
+		$fieldToSearch = array("name","details","code");
 		if(isset($_POST["order"][0]["column"])){
 			$sortDir = Sanitize::escape($_POST["order"][0]["dir"]);
 

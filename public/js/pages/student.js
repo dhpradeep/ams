@@ -13,6 +13,10 @@ $("#programId").change(function() {
     sectionAddFunction();
 });
 
+$("#filterDataStatus").change(function() {
+    getAllData();
+});
+
 
 $("#filterDataProgram").change(function() {
     semesterAddFunction($(this), 1);
@@ -148,6 +152,7 @@ function resetFields() {
     $('#yearOfCompletion').val('');
     $('#percent').val('');
     $('#institution').val('');
+    $("#status").prop("checked", true);
 
 }
 
@@ -183,6 +188,7 @@ function setFields(data) {
     $("#yearOfCompletion").val(data.yearOfCompletion);
     $("#percent").val(data.percent);
     $("#institution").val(data.institution);
+    $("#status").prop("checked", isTrue(data.status));
 }
 
 function create_student(data = null) {
@@ -331,6 +337,7 @@ function prepareData(id = 0) {
     data.yearOfCompletion = $('#yearOfCompletion').val();
     data.percent = $('#percent').val();
     data.institution = $('#institution').val();
+    data.status = $("#status").prop("checked");
 
     return data;
 }
@@ -476,6 +483,18 @@ function refresh() {
     animate(500);
 }
 
+function isTrue(str) {
+    return (str == "true");
+}
+
+function returnIcon(str) {
+    if (isTrue(str)) {
+        return "<a class='btn btn-success btn-xs'><i class='fa fa-check'></i></a>";
+    } else {
+        return "<a class='btn btn-warning btn-xs'><i class='fa fa-remove'></i></a>";
+    }
+}
+
 /* Formatting function for row details*/
 function format(d) {
     var start = '<tr>' +
@@ -541,6 +560,9 @@ function format(d) {
         '<td class = "answers">' + d.guardianContact + '</td>' +
         '</tr>' + education +
         '<tr>' +
+        '<td class = "choices">Status:</td>' +
+        '<td class = "answers">' + returnIcon(d.status) + '</td>' +
+        '</tr>'+
         '</table>';
 }
 
@@ -571,7 +593,8 @@ function export_format(data) {
         symbolNo: "Symbol no",
         yearOfCompletion: "Year",
         percent: "Percent / GPA",
-        institution: "Institute"
+        institution: "Institute",
+        status: "Status"
     };
 
     if (data.length <= 0) {
@@ -665,7 +688,8 @@ function getAllData(trigger = null) {
             "data": {
                 filterDataProgram: $("#filterDataProgram").val(),
                 filterDataSemester: $("#filterDataSemester").val(),
-                filterDataSection: $("#filterDataSection").val()
+                filterDataSection: $("#filterDataSection").val(),
+                filterDataStatus: $("#filterDataStatus").val()
             }
         },
         "drawCallback": function(data) {

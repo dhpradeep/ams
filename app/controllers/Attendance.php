@@ -66,7 +66,7 @@ class Attendance extends Controller {
 
 		if(strlen($date) == 10 && $string == true) {
 			if($section != null) {
-				$allStudents = $this->model->searchData("personaldata", array("sectionId" => $section['sectionId'] ));
+				$allStudents = $this->model->searchData("personaldata", array("sectionId" => $section['sectionId'], "status" => "true" ));
 				//filter passed out
 				$i = 0;
 				foreach ($allStudents as $value) {

@@ -50,7 +50,7 @@ class Report extends Controller {
 		$endDate = Sanitize::escape($_POST['endDate']);
 
 		$allSubjects = $this->model->searchData("subjects", array("sectionId" => Sanitize::escape($_POST['sectionId'])));
-		$allStudents = $this->model->searchData("personaldata", array("sectionId" => Sanitize::escape($_POST['sectionId']), "yearOrSemester" => Sanitize::escape($_POST['yearOrSemester'])));
+		$allStudents = $this->model->searchData("personaldata", array("sectionId" => Sanitize::escape($_POST['sectionId']), "yearOrSemester" => Sanitize::escape($_POST['yearOrSemester']), "status" => "true"));
 
 		if(strlen($startDate) == 10 && strlen($endDate) == 10) {
 			if(count($allSubjects) != 0) {

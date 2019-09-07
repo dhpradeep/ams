@@ -55,6 +55,13 @@
                                 <input type="text" class="form-control" name="lname" id="lname" placeholder="Last Name" />
                                 <span class="help-inline"></span>
                             </div>
+                            <div class="form-group col-md-6">
+                                <label></label>
+                                    <label for="status">
+                                    Status (Active)
+                                    <input class="form-control" type="checkbox" id="status" name="status" checked="true"> 
+                                    </label>
+                            </div>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="details">

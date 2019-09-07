@@ -170,6 +170,17 @@ class Student extends Controller {
 			}
 		}
 
+		if(isset($_POST['filterDataStatus']) && ($_POST['filterDataStatus'] == "true" || $_POST['filterDataStatus'] == "false")) {
+			$i = 0;
+			foreach ($res as $value) {
+				if($value['status'] != $_POST['filterDataStatus']) {
+					array_splice($res, $i, 1);
+					$i--;
+				}
+				$i++;
+			}
+		}
+
 		if(isset($_POST['filterDataSemester']) && $_POST['filterDataSemester'] > 0) {
 			$i = 0;
 			foreach ($res as $value) {
@@ -367,7 +378,8 @@ class Student extends Controller {
 						"gender" => $data['gender'],
 						"nationality" => $data['nationality'],
 						"fatherName" => $data['fatherName'],
-						"rollNo" => $data['rollNo']
+						"rollNo" => $data['rollNo'],
+						"status" => $data['status']
 					);
 					$output = $this->model->updateData("personaldata", $pk, $toRegister);
 					array_push($updates, $output);	
@@ -469,7 +481,8 @@ class Student extends Controller {
 						"gender" => $data['gender'],
 						"nationality" => $data['nationality'],
 						"fatherName" => $data['fatherName'],
-						"rollNo" => $data['rollNo']
+						"rollNo" => $data['rollNo'],
+						"status" => $data['status']
 					);
 					$personalId = $this->model->registerData("personaldata", $toRegister);
 						if($personalId != 0) {

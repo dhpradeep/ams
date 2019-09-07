@@ -77,6 +77,13 @@
                         <form id="frmSearch" role="form">
                             <a onclick="create_student()" class="btn btn-primary">Add Student</a>
                             <a onclick="refresh()" class="btn btn-info">Refresh</a>
+                            <div class="input-group col-md-2 col-sm-4 col-xs-6"> <span class="input-group-addon">Status: </span>
+                                <select class="form-control" id="filterDataStatus" name="filterResultStatus">
+                                    <option value="-1" name="None"> None </option>
+                                    <option value="true" selected> Active </option>
+                                    <option value="false"> Inactive </option>
+                                </select>
+                            </div>
                             <div class="input-group col-md-2 col-sm-4 col-xs-6"> <span class="input-group-addon">Program: </span>
                                 <select class="form-control" id="filterDataProgram" name="filterResultProgram" style="width: 100px">
                                     <option data-no="-1" data-value='-1' value='-1' name="None">None</option>
@@ -89,7 +96,7 @@
                                     ?>
                                 </select>
                             </div>
-                            <div class="input-group col-md-3 col-sm-4 col-xs-6"> <span class="input-group-addon">Semester/Year: </span>
+                            <div class="input-group col-md-2 col-sm-4 col-xs-6"> <span class="input-group-addon">Semester/Year: </span>
                                 <select class="form-control" id="filterDataSemester" name="filterResultSemester">
                                     <option value="-1" name="None"> None </option>
                                 </select>
