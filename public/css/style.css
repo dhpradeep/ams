@@ -168,7 +168,7 @@ input:checked+.slider:before {
     float: "right";
 }
 
-@media (max-width: 1220px) {
+@media (max-width: 1507px) {
     .export-to-excel {
         float: left;
         margin-top: 5px;
