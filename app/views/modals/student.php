@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Manage Program</h3>
+                <h3>Manage Student</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
